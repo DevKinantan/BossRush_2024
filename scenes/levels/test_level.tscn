@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://cn453nivl717n"]
+[gd_scene load_steps=7 format=3 uid="uid://cn453nivl717n"]
 
 [ext_resource type="PackedScene" uid="uid://dree0fqsr8bo0" path="res://scenes/player/player.tscn" id="1_w1fdc"]
+[ext_resource type="Script" path="res://scripts/PlayerCamera.gd" id="2_kkvat"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1xxoo"]
 size = Vector2(1165, 25)
@@ -19,10 +20,12 @@ size = Vector2(20, 200)
 [node name="Player" parent="." instance=ExtResource("1_w1fdc")]
 position = Vector2(549, 552)
 
-[node name="Camera2D" type="Camera2D" parent="Player"]
+[node name="PlayerCamera" type="Camera2D" parent="Player"]
+offset = Vector2(0, -80)
 zoom = Vector2(1.5, 1.5)
 position_smoothing_enabled = true
-position_smoothing_speed = 10.0
+position_smoothing_speed = 30.0
+script = ExtResource("2_kkvat")
 
 [node name="Bot" type="StaticBody2D" parent="."]
 position = Vector2(574, 648)
@@ -174,3 +177,5 @@ shape = SubResource("RectangleShape2D_ajrmt")
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Siku4"]
 position = Vector2(-40, 90)
 shape = SubResource("RectangleShape2D_4oe8v")
+
+[connection signal="gravity_direction_changed" from="Player" to="Player/PlayerCamera" method="_on_player_gravity_direction_changed"]
