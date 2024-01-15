@@ -2,12 +2,17 @@ class_name Player extends CharacterBody2D
 
 signal gravity_direction_changed(gravity_direction)
 
-
-const SPEED = 500.0
+const DOUBLETAP_DELAY = .25
+const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
 
-var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+@onready var character_sprite = $Sprite2D
+
 @export var gravity_direction = Vector2(0, 1)
+var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+
+var doubletap_time = DOUBLETAP_DELAY
+var last_keycode = 0
 
 
 enum PlayerState {
@@ -29,8 +34,25 @@ func rotate_gravity(angle_degree:float):
 	return current_gravity_angle
 
 
+func rotate_character(angle_degree:float):
+	var tween = create_tween()
+	tween.tween_property(self, "rotation_degrees", angle_degree, 0.2)
+	#rotation_degrees = angle_degree
+
+
+func flip_character():
+	if gravity_direction.y:
+		character_sprite.flip_h = (gravity_direction.y * velocity.x) < 0
+	elif gravity_direction.x:
+		character_sprite.flip_h = (gravity_direction.x * velocity.y) > 0
+
+
 func _jump_state():
 	pass
+
+
+func _process(delta):
+	doubletap_time -= delta
 
 
 func _physics_process(delta):
@@ -49,6 +71,7 @@ func _physics_process(delta):
 		var direction = Input.get_axis("ui_left", "ui_right")
 		if direction:
 			velocity.x = direction * SPEED
+			flip_character()
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 	
@@ -56,6 +79,7 @@ func _physics_process(delta):
 		var direction = Input.get_axis("ui_up", "ui_down")
 		if direction:
 			velocity.y = direction * SPEED
+			flip_character()
 		else:
 			velocity.y = move_toward(velocity.y, 0, SPEED)
 
@@ -65,6 +89,29 @@ func _physics_process(delta):
 func _input(event):
 	if event.is_action_pressed("ui_rotate_gravity_90"):
 		rotation_degrees = rad_to_deg(rotate_gravity(-90)) - 90
-	
+
 	elif event.is_action_pressed("ui_rotate_gravity_-90"):
 		rotation_degrees = rad_to_deg(rotate_gravity(90)) - 90
+
+	if event is InputEventKey and event.is_pressed() and not event.is_echo():
+		if last_keycode == event.keycode and doubletap_time >= 0: 
+			#print("DOUBLETAP: ", String.chr(event.keycode))
+			var target_gravity_degree = 0
+			if String.chr(event.keycode) == "W":
+				target_gravity_degree = rad_to_deg(gravity_direction.angle_to(Vector2.UP))
+			elif String.chr(event.keycode) == "A":
+				target_gravity_degree = rad_to_deg(gravity_direction.angle_to(Vector2.LEFT))
+			elif String.chr(event.keycode) == "S":
+				target_gravity_degree = rad_to_deg(gravity_direction.angle_to(Vector2.DOWN))
+			elif String.chr(event.keycode) == "D":
+				target_gravity_degree = rad_to_deg(gravity_direction.angle_to(Vector2.RIGHT))
+
+			target_gravity_degree = round(target_gravity_degree)
+			if target_gravity_degree:
+				rotate_character(rad_to_deg(rotate_gravity(target_gravity_degree)) - 90)
+
+			last_keycode = 0
+
+		else:
+			last_keycode = event.keycode
+		doubletap_time = DOUBLETAP_DELAY
