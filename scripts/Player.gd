@@ -3,10 +3,11 @@ class_name Player extends CharacterBody2D
 signal gravity_direction_changed(gravity_direction)
 
 const DOUBLETAP_DELAY = .25
-const SPEED = 300.0
+const SPEED = 400.0
 const JUMP_VELOCITY = -400.0
 
 @onready var character_sprite = $Sprite2D
+@onready var weapon_pivot = $WeaponPivot
 
 @export var gravity_direction = Vector2(0, 1)
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -38,6 +39,22 @@ func rotate_character(angle_degree:float):
 	var tween = create_tween()
 	tween.tween_property(self, "rotation_degrees", angle_degree, 0.2)
 	#rotation_degrees = angle_degree
+
+
+func rotate_weapon():
+	var weapon = weapon_pivot.get_children()
+	if weapon:
+		weapon_pivot.rotation = global_position.angle_to_point(get_global_mouse_position()) - rotation
+
+		if gravity_direction.y:
+			weapon[0].flip_v = (gravity_direction.y != 1)
+			if (cos(weapon_pivot.rotation) * gravity_direction.y) < 0:
+				weapon[0].flip_v = not(weapon[0].flip_v)
+
+		elif gravity_direction.x:
+			weapon[0].flip_v = (gravity_direction.x != 1)
+			if (cos(weapon_pivot.rotation) * gravity_direction.x) < 0:
+				weapon[0].flip_v = not(weapon[0].flip_v)
 
 
 func flip_character():
@@ -84,6 +101,9 @@ func _physics_process(delta):
 			velocity.y = move_toward(velocity.y, 0, SPEED)
 
 	move_and_slide()
+	
+	rotate_weapon()
+	
 
 
 func _input(event):
@@ -115,3 +135,7 @@ func _input(event):
 		else:
 			last_keycode = event.keycode
 		doubletap_time = DOUBLETAP_DELAY
+		
+		if event is InputEventMouseMotion:
+			print("yahoo")
+			rotate_weapon()
