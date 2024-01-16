@@ -104,6 +104,21 @@ func _physics_process(delta):
 	
 	rotate_weapon()
 	
+	if Input.is_action_pressed("ui_change_gravity"):
+		var target_gravity_degree = 0
+
+		if Input.is_action_pressed("ui_up"):
+			target_gravity_degree = rad_to_deg(gravity_direction.angle_to(Vector2.UP))
+		elif Input.is_action_pressed("ui_left"):
+			target_gravity_degree = rad_to_deg(gravity_direction.angle_to(Vector2.LEFT))
+		elif Input.is_action_pressed("ui_down"):
+			target_gravity_degree = rad_to_deg(gravity_direction.angle_to(Vector2.DOWN))
+		elif Input.is_action_pressed("ui_right"):
+			target_gravity_degree = rad_to_deg(gravity_direction.angle_to(Vector2.RIGHT))
+
+		target_gravity_degree = round(target_gravity_degree)
+		if target_gravity_degree:
+			rotate_character(rad_to_deg(rotate_gravity(target_gravity_degree)) - 90)
 
 
 func _input(event):
@@ -139,3 +154,5 @@ func _input(event):
 		if event is InputEventMouseMotion:
 			print("yahoo")
 			rotate_weapon()
+	
+
