@@ -19,7 +19,8 @@ size = Vector2(20, 200)
 [node name="TestLevel" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("1_w1fdc")]
-position = Vector2(549, 552)
+position = Vector2(534, 612)
+metadata/_edit_group_ = true
 
 [node name="PlayerCamera" type="Camera2D" parent="Player"]
 script = ExtResource("2_kkvat")
@@ -179,5 +180,3 @@ shape = SubResource("RectangleShape2D_4oe8v")
 position = Vector2(588, 269)
 scale = Vector2(8, 8)
 texture = ExtResource("3_4dyjo")
-
-[connection signal="gravity_direction_changed" from="Player" to="Player/PlayerCamera" method="_on_player_gravity_direction_changed"]

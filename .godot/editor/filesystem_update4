@@ -1,4 +1,3 @@
-res://scenes/player/player.tscn
 res://scenes/levels/test_level.tscn
-res://scripts/Player.gd
+res://scenes/player/player.tscn
 res://scripts/PlayerCamera.gd

@@ -67,6 +67,15 @@ ui_rotate_gravity_-90={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="Player"
+2d_physics/layer_2="PlayerAttack"
+2d_physics/layer_3="Enemy"
+2d_physics/layer_4="EnemyAttack"
+2d_physics/layer_5="Environment"
+2d_physics/layer_6="Projectile"
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
