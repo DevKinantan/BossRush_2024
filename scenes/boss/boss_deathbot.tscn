@@ -1,0 +1,46 @@
+[gd_scene load_steps=6 format=3 uid="uid://bykmodijguc37"]
+
+[ext_resource type="Texture2D" uid="uid://boy12bght2a2p" path="res://assets/assets_rig/Kaki FUll.png" id="1_6cyqa"]
+[ext_resource type="Texture2D" uid="uid://u5y06in6v2gw" path="res://assets/assets_rig/Tangan Kiri.png" id="2_yggcl"]
+[ext_resource type="Texture2D" uid="uid://d1wliprutug6u" path="res://assets/assets_rig/Badan.png" id="3_6tmtd"]
+[ext_resource type="Texture2D" uid="uid://bfok2vcd8hepu" path="res://assets/assets_rig/Tangan Kanan.png" id="4_rfpt3"]
+[ext_resource type="Texture2D" uid="uid://dj5dwnu03ve02" path="res://assets/assets_rig/Kepala.png" id="5_w7na5"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(251, 179)
+scale = Vector2(0.015, 0.015)
+
+[node name="KakiFUll" type="Sprite2D" parent="Node2D"]
+position = Vector2(1252, 6145)
+texture = ExtResource("1_6cyqa")
+
+[node name="KakiFUll2" type="Sprite2D" parent="Node2D"]
+position = Vector2(2114, 6150)
+texture = ExtResource("1_6cyqa")
+
+[node name="TanganKiri" type="Sprite2D" parent="Node2D"]
+position = Vector2(469, 3577)
+texture = ExtResource("2_yggcl")
+
+[node name="Badan" type="Sprite2D" parent="Node2D"]
+position = Vector2(1641, 4082)
+texture = ExtResource("3_6tmtd")
+
+[node name="TanganKanan" type="Sprite2D" parent="Node2D"]
+position = Vector2(3485, 3553)
+texture = ExtResource("4_rfpt3")
+
+[node name="Kepala" type="Sprite2D" parent="Node2D"]
+position = Vector2(1793, 1533)
+texture = ExtResource("5_w7na5")
+
+[node name="Skeleton2D" type="Skeleton2D" parent="."]
+position = Vector2(273, 244)
+
+[node name="Bone2D" type="Bone2D" parent="Skeleton2D"]
+position = Vector2(-1, 13)
+
+[node name="Bone2D" type="Bone2D" parent="Skeleton2D/Bone2D"]
+position = Vector2(3, -32)
