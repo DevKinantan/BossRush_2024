@@ -9,7 +9,7 @@ const JUMP_VELOCITY = -400.0
 @onready var character_sprite = $Sprite2D
 @onready var weapon_pivot = $WeaponPivot
 
-@export var gravity_direction = Vector2(0, 1)
+var gravity_direction = Vector2(0, 1)
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 var doubletap_time = DOUBLETAP_DELAY
@@ -62,6 +62,9 @@ func flip_character():
 		character_sprite.flip_h = (gravity_direction.y * velocity.x) < 0
 	elif gravity_direction.x:
 		character_sprite.flip_h = (gravity_direction.x * velocity.y) > 0
+	
+	var offset_x = character_sprite.offset.x
+	character_sprite.offset.x = abs(offset_x) if character_sprite.flip_h else -abs(offset_x)
 
 
 func _jump_state():
@@ -100,10 +103,6 @@ func _physics_process(delta):
 		else:
 			velocity.y = move_toward(velocity.y, 0, SPEED)
 
-	move_and_slide()
-	
-	rotate_weapon()
-	
 	if Input.is_action_pressed("ui_change_gravity"):
 		var target_gravity_degree = 0
 
@@ -120,14 +119,11 @@ func _physics_process(delta):
 		if target_gravity_degree:
 			rotate_character(rad_to_deg(rotate_gravity(target_gravity_degree)) - 90)
 
+	move_and_slide()
+	
+
 
 func _input(event):
-	if event.is_action_pressed("ui_rotate_gravity_90"):
-		rotation_degrees = rad_to_deg(rotate_gravity(-90)) - 90
-
-	elif event.is_action_pressed("ui_rotate_gravity_-90"):
-		rotation_degrees = rad_to_deg(rotate_gravity(90)) - 90
-
 	if event is InputEventKey and event.is_pressed() and not event.is_echo():
 		if last_keycode == event.keycode and doubletap_time >= 0: 
 			#print("DOUBLETAP: ", String.chr(event.keycode))
@@ -151,8 +147,7 @@ func _input(event):
 			last_keycode = event.keycode
 		doubletap_time = DOUBLETAP_DELAY
 		
-		if event is InputEventMouseMotion:
-			print("yahoo")
-			rotate_weapon()
+	if event is InputEventMouseMotion:
+		rotate_weapon()
 	
 
