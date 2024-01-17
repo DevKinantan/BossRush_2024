@@ -10,6 +10,21 @@
 radius = 8.0
 height = 34.0
 
+[sub_resource type="Animation" id="Animation_qcvt5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PointLight2D:enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
 [sub_resource type="Animation" id="Animation_sapxe"]
 resource_name = "Shoot"
 length = 0.3
@@ -24,21 +39,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [false, true, false]
-}
-
-[sub_resource type="Animation" id="Animation_qcvt5"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("PointLight2D:enabled")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_x5e1t"]
@@ -69,9 +69,9 @@ script = ExtResource("4_1vfg3")
 
 [node name="PointLight2D" type="PointLight2D" parent="WeaponPivot/PistolA"]
 position = Vector2(16, 0)
-scale = Vector2(1, 1)
 enabled = false
 color = Color(1, 0.945098, 0, 1)
+range_z_min = -4
 texture = ExtResource("5_yee3l")
 texture_scale = 0.8
 

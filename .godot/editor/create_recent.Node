@@ -1,6 +1,7 @@
+CanvasModulate
+TileMap
 AnimationPlayer
 PointLight2D
-CanvasModulate
 Sprite2D
 CollisionShape2D
 RigidBody2D
