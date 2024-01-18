@@ -12,35 +12,47 @@
 position = Vector2(251, 179)
 scale = Vector2(0.015, 0.015)
 
-[node name="KakiFUll" type="Sprite2D" parent="Node2D"]
-position = Vector2(1252, 6145)
-texture = ExtResource("1_6cyqa")
-
-[node name="KakiFUll2" type="Sprite2D" parent="Node2D"]
-position = Vector2(2114, 6150)
-texture = ExtResource("1_6cyqa")
-
-[node name="TanganKiri" type="Sprite2D" parent="Node2D"]
-position = Vector2(469, 3577)
-texture = ExtResource("2_yggcl")
-
-[node name="Badan" type="Sprite2D" parent="Node2D"]
-position = Vector2(1641, 4082)
-texture = ExtResource("3_6tmtd")
-
-[node name="TanganKanan" type="Sprite2D" parent="Node2D"]
-position = Vector2(3485, 3553)
-texture = ExtResource("4_rfpt3")
-
-[node name="Kepala" type="Sprite2D" parent="Node2D"]
-position = Vector2(1793, 1533)
-texture = ExtResource("5_w7na5")
-
 [node name="Skeleton2D" type="Skeleton2D" parent="."]
 position = Vector2(273, 244)
 
+[node name="KakiFUll" type="Sprite2D" parent="Skeleton2D"]
+position = Vector2(-3.22003, 27.175)
+scale = Vector2(0.015, 0.015)
+texture = ExtResource("1_6cyqa")
+
+[node name="KakiFUll2" type="Sprite2D" parent="Skeleton2D"]
+position = Vector2(9.70999, 27.25)
+scale = Vector2(0.015, 0.015)
+texture = ExtResource("1_6cyqa")
+
 [node name="Bone2D" type="Bone2D" parent="Skeleton2D"]
-position = Vector2(-1, 13)
+position = Vector2(-3, 12)
 
 [node name="Bone2D" type="Bone2D" parent="Skeleton2D/Bone2D"]
-position = Vector2(3, -32)
+position = Vector2(18, -24)
+
+[node name="TanganKanan" type="Sprite2D" parent="Skeleton2D/Bone2D/Bone2D"]
+position = Vector2(12, 1.295)
+scale = Vector2(0.015, 0.015)
+texture = ExtResource("4_rfpt3")
+
+[node name="Bone2D2" type="Bone2D" parent="Skeleton2D/Bone2D"]
+position = Vector2(-2, -24)
+rotation = 3.06131
+scale = Vector2(1, 1)
+
+[node name="TanganKiri" type="Sprite2D" parent="Skeleton2D/Bone2D/Bone2D2"]
+position = Vector2(9.98546, 0.146286)
+rotation = -3.06131
+scale = Vector2(0.015, 0.015)
+texture = ExtResource("2_yggcl")
+
+[node name="Badan" type="Sprite2D" parent="Skeleton2D"]
+position = Vector2(2.61499, -3.77)
+scale = Vector2(0.015, 0.015)
+texture = ExtResource("3_6tmtd")
+
+[node name="Kepala" type="Sprite2D" parent="Skeleton2D"]
+position = Vector2(4.89499, -42.005)
+scale = Vector2(0.015, 0.015)
+texture = ExtResource("5_w7na5")

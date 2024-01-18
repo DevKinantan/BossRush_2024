@@ -1,10 +1,10 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1705416894
+::res://::1705566434
 export_presets.cfg::TextFile::-1::1705415691::0::1::::<><>::
 icon.png::CompressedTexture2D::4824471813352389772::1705415641::1705415641::1::::<><>::
 README.md::TextFile::-1::1705415641::0::1::::<><>::
 ::res://assets/::1705416888
-::res://assets/assets_rig/::1705417026
+::res://assets/assets_rig/::1705417027
 Badan.png::CompressedTexture2D::9030271284575950682::1705416913::1705416913::1::::<><>::
 Kaki FUll.png::CompressedTexture2D::3420236481107026445::1705416931::1705416931::1::::<><>::
 Kepala.png::CompressedTexture2D::7853115129761369093::1705416831::1705416895::1::::<><>::
@@ -20,8 +20,8 @@ gun1_dummy.png::CompressedTexture2D::3728163993870867793::1705415691::1705415691
 icon_sword.png::CompressedTexture2D::2969089472625121167::1705415691::1705415691::1::::<><>::
 stump_projectile.png::CompressedTexture2D::7110417171303369908::1705415691::1705415691::1::::<><>::
 ::res://scenes/::1705416764
-::res://scenes/boss/::1705416794
-boss_deathbot.tscn::PackedScene::4092350483920554112::1705416794::0::1::::<><>::
+::res://scenes/boss/::1705419647
+boss_deathbot.tscn::PackedScene::4092350483920554112::1705419647::0::1::::<><>::uid://boy12bght2a2p::::res://assets/assets_rig/Kaki FUll.png<>uid://u5y06in6v2gw::::res://assets/assets_rig/Tangan Kiri.png<>uid://d1wliprutug6u::::res://assets/assets_rig/Badan.png<>uid://bfok2vcd8hepu::::res://assets/assets_rig/Tangan Kanan.png<>uid://dj5dwnu03ve02::::res://assets/assets_rig/Kepala.png
 ::res://scenes/levels/::1705415691
 test_level.tscn::PackedScene::5747035497692807301::1705415691::0::1::::<><>::uid://dree0fqsr8bo0::::res://scenes/player/player.tscn<>res://scripts/PlayerCamera.gd<>uid://b1hs452rw13to::::res://assets/sprites/dummy.png
 ::res://scenes/player/::1705415691
