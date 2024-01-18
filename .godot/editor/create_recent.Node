@@ -1,5 +1,6 @@
-Sprite2D
+AudioStreamPlayer
 AnimationPlayer
+Sprite2D
 PointLight2D
 CanvasModulate
 CollisionShape2D
