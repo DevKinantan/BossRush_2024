@@ -25,5 +25,3 @@ func _input(event):
 		elif event.is_action_pressed("ui_zoom_out"):
 			if zoom.x > zoom_min:
 				zoom -= Vector2(zoom_step, zoom_step)
-		print(zoom.x, " ", zoom_max)
-		print(zoom.x > zoom_max)

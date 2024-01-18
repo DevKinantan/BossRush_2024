@@ -1,7 +1,3 @@
 res://scenes/levels/test_level.tscn
-res://scripts/Player.gd
 res://scenes/player/player.tscn
 res://scenes/projectile/projectile_A.tscn
-res://scripts/weapon/RangeWeapon.gd
-res://scripts/Projectile.gd
-res://scripts/PlayerCamera.gd
