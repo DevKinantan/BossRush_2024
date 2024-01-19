@@ -1,17 +1,14 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1705566434
-export_presets.cfg::TextFile::-1::1705415691::0::1::::<><>::
+::res://::1705671922
+export_presets.cfg::TextFile::-1::1705584915::0::1::::<><>::
 icon.png::CompressedTexture2D::4824471813352389772::1705415641::1705415641::1::::<><>::
 README.md::TextFile::-1::1705415641::0::1::::<><>::
-::res://assets/::1705416888
-::res://assets/assets_rig/::1705417027
-Badan.png::CompressedTexture2D::9030271284575950682::1705416913::1705416913::1::::<><>::
-Kaki FUll.png::CompressedTexture2D::3420236481107026445::1705416931::1705416931::1::::<><>::
-Kepala.png::CompressedTexture2D::7853115129761369093::1705416831::1705416895::1::::<><>::
-Tangan Kanan.png::CompressedTexture2D::2766922683063844170::1705417026::1705417027::1::::<><>::
-Tangan Kiri.png::CompressedTexture2D::1467211699271692038::1705417026::1705417027::1::::<><>::
-::res://assets/sprites/::1705416894
-boss_type1.png::CompressedTexture2D::8216058315214798584::1705415411::1705416529::1::::<><>::
+::res://assets/::1705584915
+::res://assets/assets_rig/::1705588801
+boss_pinch_sheets.png::CompressedTexture2D::3535232138423566900::1705588467::1705588467::1::::<><>::
+pinch_reff.png::CompressedTexture2D::1680657966274140663::1705588801::1705588801::1::::<><>::
+::res://assets/sprites/::1705584915
+boss_type1.png::CompressedTexture2D::8216058315214798584::1705584915::1705584915::1::::<><>::
 character_gravtyyyyyy_dummy.png::CompressedTexture2D::8884741542650621649::1705415691::1705415691::1::::<><>::
 character_gravty_dummy.png::CompressedTexture2D::5424322313229933181::1705415691::1705415691::1::::<><>::
 dummy.png::CompressedTexture2D::4226927574666479892::1705415641::1705415641::1::::<><>::
@@ -19,13 +16,13 @@ dummy_character sheets.png::CompressedTexture2D::56837966924708124::1705415691::
 gun1_dummy.png::CompressedTexture2D::3728163993870867793::1705415691::1705415691::1::::<><>::
 icon_sword.png::CompressedTexture2D::2969089472625121167::1705415691::1705415691::1::::<><>::
 stump_projectile.png::CompressedTexture2D::7110417171303369908::1705415691::1705415691::1::::<><>::
-::res://scenes/::1705416764
-::res://scenes/boss/::1705419647
-boss_deathbot.tscn::PackedScene::4092350483920554112::1705419647::0::1::::<><>::uid://boy12bght2a2p::::res://assets/assets_rig/Kaki FUll.png<>uid://u5y06in6v2gw::::res://assets/assets_rig/Tangan Kiri.png<>uid://d1wliprutug6u::::res://assets/assets_rig/Badan.png<>uid://bfok2vcd8hepu::::res://assets/assets_rig/Tangan Kanan.png<>uid://dj5dwnu03ve02::::res://assets/assets_rig/Kepala.png
-::res://scenes/levels/::1705415691
-test_level.tscn::PackedScene::5747035497692807301::1705415691::0::1::::<><>::uid://dree0fqsr8bo0::::res://scenes/player/player.tscn<>res://scripts/PlayerCamera.gd<>uid://b1hs452rw13to::::res://assets/sprites/dummy.png
-::res://scenes/player/::1705415691
-player.tscn::PackedScene::8361017704936256465::1705415691::0::1::::<><>::res://scripts/Player.gd<>uid://dyt3no1hcqmt2::::res://assets/sprites/character_gravtyyyyyy_dummy.png<>uid://btd7k0vmlu83f::::res://assets/sprites/gun1_dummy.png
-::res://scripts/::1705415691
-Player.gd::GDScript::-1::1705415691::0::1::::Player<>CharacterBody2D<>::
-PlayerCamera.gd::GDScript::-1::1705415691::0::1::::<>Camera2D<>::
+::res://scenes/::1705584915
+::res://scenes/boss/::1705595734
+boss_deathbot.tscn::PackedScene::4092350483920554112::1705595734::0::1::::<><>::uid://bqmq0y45n4781::::res://assets/assets_rig/boss_pinch_sheets.png<>uid://x7egq8ioqqih::::res://assets/assets_rig/pinch_reff.png
+::res://scenes/levels/::1705584915
+test_level.tscn::PackedScene::5747035497692807301::1705584915::0::1::::<><>::uid://dree0fqsr8bo0::::res://scenes/player/player.tscn<>res://scripts/PlayerCamera.gd<>uid://b1hs452rw13to::::res://assets/sprites/dummy.png
+::res://scenes/player/::1705584915
+player.tscn::PackedScene::8361017704936256465::1705584915::0::1::::<><>::res://scripts/Player.gd<>uid://dyt3no1hcqmt2::::res://assets/sprites/character_gravtyyyyyy_dummy.png<>uid://btd7k0vmlu83f::::res://assets/sprites/gun1_dummy.png
+::res://scripts/::1705584915
+Player.gd::GDScript::-1::1705584915::0::1::::Player<>CharacterBody2D<>::
+PlayerCamera.gd::GDScript::-1::1705584915::0::1::::<>Camera2D<>::

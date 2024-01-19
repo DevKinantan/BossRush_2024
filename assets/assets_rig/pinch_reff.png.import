@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bfok2vcd8hepu"
-path="res://.godot/imported/Tangan Kanan.png-f996fa455bc2e25dab0378d5addd0a3d.ctex"
+uid="uid://x7egq8ioqqih"
+path="res://.godot/imported/pinch_reff.png-d282f289b0b0b28c491cefca65433bf5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/assets_rig/Tangan Kanan.png"
-dest_files=["res://.godot/imported/Tangan Kanan.png-f996fa455bc2e25dab0378d5addd0a3d.ctex"]
+source_file="res://assets/assets_rig/pinch_reff.png"
+dest_files=["res://.godot/imported/pinch_reff.png-d282f289b0b0b28c491cefca65433bf5.ctex"]
 
 [params]
 

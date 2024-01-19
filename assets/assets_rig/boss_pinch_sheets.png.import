@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://boy12bght2a2p"
-path="res://.godot/imported/Kaki FUll.png-ad5382d880617f06c5b62e9aed2bf5b5.ctex"
+uid="uid://bqmq0y45n4781"
+path="res://.godot/imported/boss_pinch_sheets.png-6f0858ea6e3f1d0f8f409bfbc96a9233.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/assets_rig/Kaki FUll.png"
-dest_files=["res://.godot/imported/Kaki FUll.png-ad5382d880617f06c5b62e9aed2bf5b5.ctex"]
+source_file="res://assets/assets_rig/boss_pinch_sheets.png"
+dest_files=["res://.godot/imported/boss_pinch_sheets.png-6f0858ea6e3f1d0f8f409bfbc96a9233.ctex"]
 
 [params]
 
