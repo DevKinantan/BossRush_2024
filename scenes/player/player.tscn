@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://dree0fqsr8bo0"]
+[gd_scene load_steps=12 format=3 uid="uid://dree0fqsr8bo0"]
 
 [ext_resource type="Script" path="res://scripts/Player.gd" id="1_l1vsu"]
-[ext_resource type="Texture2D" uid="uid://dyt3no1hcqmt2" path="res://assets/sprites/character_gravtyyyyyy_dummy.png" id="2_qnp7l"]
+[ext_resource type="Texture2D" uid="uid://cj1ncsu3ahjnx" path="res://assets/sprites/character_gravtyy8.png" id="2_5m235"]
+[ext_resource type="Texture2D" uid="uid://v6fq5y17q1y8" path="res://assets/Envi/light.png" id="3_qo5pe"]
 [ext_resource type="Texture2D" uid="uid://d1xf7yu2lajuv" path="res://assets/animation/weapon/pistol-Sheet.png" id="3_xgepf"]
 [ext_resource type="Script" path="res://scripts/weapon/RangeWeapon.gd" id="4_1vfg3"]
 [ext_resource type="Texture2D" uid="uid://du2emj3dwv4vw" path="res://assets/sprites/light.png" id="5_yee3l"]
@@ -76,9 +77,16 @@ _data = {
 script = ExtResource("1_l1vsu")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.15, 0.15)
-texture = ExtResource("2_qnp7l")
-offset = Vector2(-15, 0)
+texture = ExtResource("2_5m235")
+
+[node name="PointLight2D2" type="PointLight2D" parent="."]
+z_index = -5
+position = Vector2(1.99994, 1.00006)
+scale = Vector2(0.11747, 0.125937)
+color = Color(0.513726, 0.780392, 1, 1)
+texture = ExtResource("3_qo5pe")
+texture_scale = 2.19
+metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_2ewdk")
@@ -94,12 +102,11 @@ script = ExtResource("4_1vfg3")
 
 [node name="PointLight2D" type="PointLight2D" parent="WeaponPivot/PistolA"]
 position = Vector2(4, -1)
-scale = Vector2(0.2, 0.2)
 enabled = false
 color = Color(1, 0.945098, 0, 1)
 range_z_min = -1
 texture = ExtResource("5_yee3l")
-texture_scale = 0.8
+texture_scale = 0.2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="WeaponPivot/PistolA"]
 libraries = {

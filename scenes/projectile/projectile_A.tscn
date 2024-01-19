@@ -28,6 +28,7 @@ hframes = 4
 frame = 1
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]
+position = Vector2(12, 0)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_phthp")
 

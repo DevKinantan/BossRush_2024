@@ -3,8 +3,8 @@ class_name Player extends CharacterBody2D
 signal gravity_direction_changed(gravity_direction)
 
 const DOUBLETAP_DELAY = .25
-const SPEED = 400.0
-const JUMP_VELOCITY = -300.0
+const SPEED = 300.0
+const JUMP_VELOCITY = -350.0
 
 @onready var character_sprite: Sprite2D = $Sprite2D
 @onready var weapon_pivot = $WeaponPivot
@@ -76,21 +76,16 @@ func _process(delta):
 
 
 func _physics_process(delta):
-	# Add the gravity.
 	if not is_on_floor():
 		velocity += (gravity * delta) * gravity_direction
 
-	# Handle jump.
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 		velocity = JUMP_VELOCITY * gravity_direction
 
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	#print(round(gravity_direction.x), " ", round(gravity_direction.y))
 	if not gravity_direction.x:
 		var direction = Input.get_axis("ui_left", "ui_right")
 		if direction:
-			velocity.x = direction * SPEED
+			velocity.x = move_toward(velocity.x, direction*SPEED, SPEED/4)
 			flip_character()
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
@@ -120,7 +115,6 @@ func _physics_process(delta):
 			rotate_character(rad_to_deg(rotate_gravity(target_gravity_degree)) - 90)
 
 	move_and_slide()
-	
 
 
 func _input(event):
