@@ -740,7 +740,7 @@ metadata/_edit_lock_ = true
 [node name="Back2" type="Sprite2D" parent="."]
 modulate = Color(0.603922, 0.337255, 0.92549, 1)
 z_index = -9
-position = Vector2(1075, 718)
+position = Vector2(1035, 718)
 scale = Vector2(4.16211, 4.58125)
 texture = ExtResource("7_bhmlf")
 metadata/_edit_lock_ = true
@@ -764,7 +764,7 @@ texture_scale = 2.19
 visible = false
 modulate = Color(0.745098, 0.403922, 0.745098, 1)
 z_index = -5
-position = Vector2(473, 283)
+position = Vector2(476, 283)
 texture = ExtResource("10_4v4jy")
 metadata/_edit_lock_ = true
 

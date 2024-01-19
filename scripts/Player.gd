@@ -4,9 +4,9 @@ signal gravity_direction_changed(gravity_direction)
 
 const DOUBLETAP_DELAY = .25
 const SPEED = 400.0
-const JUMP_VELOCITY = -400.0
+const JUMP_VELOCITY = -300.0
 
-@onready var character_sprite = $Sprite2D
+@onready var character_sprite: Sprite2D = $Sprite2D
 @onready var weapon_pivot = $WeaponPivot
 
 var gravity_direction = Vector2(0, 1)
