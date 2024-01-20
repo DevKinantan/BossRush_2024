@@ -8,6 +8,7 @@ const JUMP_VELOCITY = -350.0
 
 @onready var character_sprite: Sprite2D = $Sprite2D
 @onready var weapon_pivot = $WeaponPivot
+@export var weapon: Weapon
 
 var gravity_direction = Vector2(0, 1)
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -20,8 +21,31 @@ enum PlayerState {
 	IDLE,
 	WALK,
 	JUMP,
+	FLOAT,
 	ATTACK,
 }
+
+var state := PlayerState.IDLE
+
+
+func idle_state():
+	pass
+
+
+func walk_state():
+	pass
+
+
+func jump_state():
+	pass
+
+
+func float_state():
+	pass
+
+
+func attack_state():
+	pass
 
 
 func rotate_gravity(angle_degree:float):
@@ -65,10 +89,6 @@ func flip_character():
 	
 	var offset_x = character_sprite.offset.x
 	character_sprite.offset.x = abs(offset_x) if character_sprite.flip_h else -abs(offset_x)
-
-
-func _jump_state():
-	pass
 
 
 func _process(delta):

@@ -1,4 +1,4 @@
-extends Sprite2D
+extends Weapon
 
 @export var projectile_scn = preload("res://scenes/projectile/projectile_A.tscn")
 @onready var animation_player = $AnimationPlayer
