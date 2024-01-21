@@ -17,7 +17,3 @@ func shoot():
 	projectile.rotation = get_parent().rotation - get_parent().get_parent().gravity_direction.angle()
 	projectile.rotation += Vector2.UP.angle() if get_parent().get_parent().gravity_direction.x else Vector2.DOWN.angle() 
 	get_tree().get_root().get_child(0).add_child(projectile)
-
-
-func _input(event):
-	pass

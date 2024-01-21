@@ -121,19 +121,18 @@ func rotate_character(angle_degree:float):
 	tween.tween_property(self, "rotation_degrees", angle_degree, 0.2)
 
 
-func rotate_weapon():
-	if weapon:
-		weapon_pivot.rotation = global_position.angle_to_point(get_global_mouse_position()) - rotation
+func rotate_weapon(angle: float):
+	weapon_pivot.rotation = angle
 
-		if gravity_direction.y:
-			weapon.flip_v = (gravity_direction.y != 1)
-			if (cos(weapon_pivot.rotation) * gravity_direction.y) < 0:
-				weapon.flip_v = not(weapon.flip_v)
+	if gravity_direction.y:
+		weapon.flip_v = (gravity_direction.y != 1)
+		if (cos(weapon_pivot.rotation) * gravity_direction.y) < 0:
+			weapon.flip_v = not(weapon.flip_v)
 
-		elif gravity_direction.x:
-			weapon.flip_v = (gravity_direction.x != 1)
-			if (cos(weapon_pivot.rotation) * gravity_direction.x) < 0:
-				weapon.flip_v = not(weapon.flip_v)
+	elif gravity_direction.x:
+		weapon.flip_v = (gravity_direction.x != 1)
+		if (cos(weapon_pivot.rotation) * gravity_direction.x) < 0:
+			weapon.flip_v = not(weapon.flip_v)
 
 
 func flip_character():
@@ -203,7 +202,16 @@ func _physics_process(delta):
 		if target_gravity_degree:
 			rotate_character(rad_to_deg(rotate_gravity(target_gravity_degree)) - 90)
 
-	rotate_weapon()
+	if weapon:
+		if weapon.weapon_type == Weapon.WeaponType.RANGE:
+			rotate_weapon(global_position.angle_to_point(get_global_mouse_position()) - rotation)
+		
+		elif weapon.weapon_type == Weapon.WeaponType.MELEE and weapon.state == Weapon.WeaponState.IDLE:
+			if character_sprite.flip_h:
+				rotate_weapon(Vector2.RIGHT.angle())
+			else:
+				rotate_weapon(Vector2.LEFT.angle())
+			weapon.flip_v = not weapon.flip_v
 
 	move_and_slide()
 
@@ -237,4 +245,7 @@ func _input(event):
 
 	if event.is_action_pressed("ui_attack") and not event.is_echo():
 		if weapon:
+			if weapon.weapon_type == Weapon.WeaponType.MELEE:
+				rotate_weapon(global_position.angle_to_point(get_global_mouse_position()) - rotation)
+
 			weapon.attack()

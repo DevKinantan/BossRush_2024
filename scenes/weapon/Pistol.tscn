@@ -85,6 +85,7 @@ position = Vector2(20, 0)
 texture = ExtResource("1_s4iyb")
 hframes = 3
 script = ExtResource("2_vc5ic")
+weapon_type = 1
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 position = Vector2(4, -1)
