@@ -6,8 +6,11 @@ const DOUBLETAP_DELAY = .25
 const SPEED = 300.0
 const JUMP_VELOCITY = -350.0
 
-@onready var character_sprite: Sprite2D = $Sprite2D
+@onready var character_sprite: Sprite2D = $CharacterSprite
+@onready var character_animation: AnimationPlayer = $CharacterAnimation
+@onready var character_lighting: PointLight2D = $CharacterLighting
 @onready var weapon_pivot = $WeaponPivot
+
 @export var weapon: Weapon
 
 var gravity_direction = Vector2(0, 1)
@@ -21,7 +24,7 @@ enum PlayerState {
 	IDLE,
 	WALK,
 	JUMP,
-	FLOAT,
+	LEVITATE,
 	ATTACK,
 }
 
@@ -29,19 +32,73 @@ var state := PlayerState.IDLE
 
 
 func idle_state():
-	pass
+	character_animation.play("Idle")
+
+	get_move_direction_input()
+	get_jump_input()
+
+	if is_on_floor() and velocity != Vector2.ZERO:
+		character_animation.stop()
+		state = PlayerState.WALK
+	
+	elif not is_on_floor():
+		character_animation.stop()
+		state = PlayerState.JUMP
 
 
 func walk_state():
-	pass
+	character_animation.play("Walk")
+
+	get_move_direction_input()
+	get_jump_input()
+	
+	if is_on_floor() and velocity.is_equal_approx(Vector2.ZERO):
+		character_animation.stop()
+		state = PlayerState.IDLE
+	
+	elif not is_on_floor():
+		character_animation.stop()
+		state = PlayerState.JUMP
 
 
-func jump_state():
-	pass
+func jump_state(delta):
+	character_animation.play("Jump")
+
+	get_move_direction_input()
+
+	if not is_on_floor():
+		velocity += (gravity * delta) * gravity_direction
+	
+	elif is_on_floor():
+		character_animation.stop()
+		state = PlayerState.IDLE
+	
+	if Input.is_action_just_pressed("ui_jump"):
+		velocity = Vector2.ZERO
+		character_animation.stop()
+		var tween = create_tween()
+		tween.tween_property(character_lighting, "energy", 2, 0.2)
+		state = PlayerState.LEVITATE
 
 
-func float_state():
-	pass
+func levitate_state(delta):
+	character_animation.play("Jump")
+
+	if Input.is_action_just_released("ui_jump"):
+		var tween = create_tween()
+		tween.tween_property(character_lighting, "energy", 1, 0.2)
+		state = PlayerState.JUMP
+	
+	if not is_on_floor() :
+		velocity = (gravity * delta) * gravity_direction# * 0.5
+	
+	elif is_on_floor():
+		character_animation.stop()
+		var tween = create_tween()
+		tween.tween_property(character_lighting, "energy", 1, 0.2)
+		state = PlayerState.IDLE
+	
+	get_move_direction_input()
 
 
 func attack_state():
@@ -62,23 +119,21 @@ func rotate_gravity(angle_degree:float):
 func rotate_character(angle_degree:float):
 	var tween = create_tween()
 	tween.tween_property(self, "rotation_degrees", angle_degree, 0.2)
-	#rotation_degrees = angle_degree
 
 
 func rotate_weapon():
-	var weapon = weapon_pivot.get_children()
 	if weapon:
 		weapon_pivot.rotation = global_position.angle_to_point(get_global_mouse_position()) - rotation
 
 		if gravity_direction.y:
-			weapon[0].flip_v = (gravity_direction.y != 1)
+			weapon.flip_v = (gravity_direction.y != 1)
 			if (cos(weapon_pivot.rotation) * gravity_direction.y) < 0:
-				weapon[0].flip_v = not(weapon[0].flip_v)
+				weapon.flip_v = not(weapon.flip_v)
 
 		elif gravity_direction.x:
-			weapon[0].flip_v = (gravity_direction.x != 1)
+			weapon.flip_v = (gravity_direction.x != 1)
 			if (cos(weapon_pivot.rotation) * gravity_direction.x) < 0:
-				weapon[0].flip_v = not(weapon[0].flip_v)
+				weapon.flip_v = not(weapon.flip_v)
 
 
 func flip_character():
@@ -91,17 +146,7 @@ func flip_character():
 	character_sprite.offset.x = abs(offset_x) if character_sprite.flip_h else -abs(offset_x)
 
 
-func _process(delta):
-	doubletap_time -= delta
-
-
-func _physics_process(delta):
-	if not is_on_floor():
-		velocity += (gravity * delta) * gravity_direction
-
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity = JUMP_VELOCITY * gravity_direction
-
+func get_move_direction_input():
 	if not gravity_direction.x:
 		var direction = Input.get_axis("ui_left", "ui_right")
 		if direction:
@@ -109,15 +154,39 @@ func _physics_process(delta):
 			flip_character()
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
-	
+
 	elif not gravity_direction.y:
 		var direction = Input.get_axis("ui_up", "ui_down")
 		if direction:
-			velocity.y = direction * SPEED
+			velocity.y = move_toward(velocity.y, direction*SPEED, SPEED/4)
 			flip_character()
 		else:
 			velocity.y = move_toward(velocity.y, 0, SPEED)
 
+
+func get_jump_input():
+	if Input.is_action_just_pressed("ui_jump") and is_on_floor():
+		velocity = JUMP_VELOCITY * gravity_direction
+
+
+func _process(delta):
+	doubletap_time -= delta
+
+
+func _physics_process(delta):
+	match state:
+		PlayerState.IDLE:
+			idle_state()
+		
+		PlayerState.WALK:
+			walk_state()
+		
+		PlayerState.JUMP:
+			jump_state(delta)
+		
+		PlayerState.LEVITATE:
+			levitate_state(delta)
+	
 	if Input.is_action_pressed("ui_change_gravity"):
 		var target_gravity_degree = 0
 
@@ -133,6 +202,8 @@ func _physics_process(delta):
 		target_gravity_degree = round(target_gravity_degree)
 		if target_gravity_degree:
 			rotate_character(rad_to_deg(rotate_gravity(target_gravity_degree)) - 90)
+
+	rotate_weapon()
 
 	move_and_slide()
 
@@ -161,7 +232,9 @@ func _input(event):
 			last_keycode = event.keycode
 		doubletap_time = DOUBLETAP_DELAY
 		
-	if event is InputEventMouseMotion:
-		rotate_weapon()
-	
+	#if event is InputEventMouseMotion:
+		#rotate_weapon()
 
+	if event.is_action_pressed("ui_attack") and not event.is_echo():
+		if weapon:
+			weapon.attack()
