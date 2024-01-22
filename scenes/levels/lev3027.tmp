@@ -4,8 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://cgdnb5a4sqp2t" path="res://assets/Envi/tile.png" id="1_kvwmk"]
 [ext_resource type="Texture2D" uid="uid://ckrdx7c4o3faw" path="res://assets/Envi/back.png" id="2_iyc1x"]
 [ext_resource type="PackedScene" uid="uid://dree0fqsr8bo0" path="res://scenes/player/player.tscn" id="3_0fgxk"]
+[ext_resource type="Script" path="res://scripts/PlayerCamera.gd" id="4_v58gq"]
 [ext_resource type="Texture2D" uid="uid://cj1ncsu3ahjnx" path="res://assets/sprites/character_gravtyy8.png" id="5_jgrha"]
-[ext_resource type="PackedScene" uid="uid://7uj75r48185n" path="res://scenes/player/player_camera.tscn" id="5_lrcwy"]
 [ext_resource type="Texture2D" uid="uid://sw154d5nii7n" path="res://assets/Envi/back2.png" id="7_bhmlf"]
 [ext_resource type="Texture2D" uid="uid://bu76pki8yi7ap" path="res://assets/Envi/decorbg.png" id="8_xoglo"]
 [ext_resource type="Texture2D" uid="uid://v6fq5y17q1y8" path="res://assets/Envi/light.png" id="9_27j1o"]
@@ -719,7 +719,12 @@ metadata/_edit_lock_ = true
 position = Vector2(586, 832)
 metadata/_edit_group_ = true
 
-[node name="PlayerCamera" parent="Player" instance=ExtResource("5_lrcwy")]
+[node name="PlayerCamera" type="Camera2D" parent="Player"]
+script = ExtResource("4_v58gq")
+offset_power = 0.3
+
+[node name="ShakeTimer" type="Timer" parent="Player/PlayerCamera"]
+one_shot = true
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 
@@ -839,3 +844,5 @@ metadata/_edit_lock_ = true
 
 [node name="Boss_1" parent="." instance=ExtResource("12_02aub")]
 position = Vector2(681, 746)
+
+[connection signal="timeout" from="Player/PlayerCamera/ShakeTimer" to="Player/PlayerCamera" method="_on_shake_timer_timeout"]

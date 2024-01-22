@@ -119,4 +119,3 @@ rotation = -3.14159
 visible = false
 
 [node name="Claymore" parent="WeaponPivot" instance=ExtResource("5_i6hh2")]
-scale = Vector2(2, 2)
