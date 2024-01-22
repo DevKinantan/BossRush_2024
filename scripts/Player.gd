@@ -18,6 +18,7 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 var doubletap_time = DOUBLETAP_DELAY
 var last_keycode = 0
+var last_velocity = Vector2.ZERO
 
 
 enum PlayerState {
@@ -72,6 +73,8 @@ func jump_state(delta):
 	elif is_on_floor():
 		character_animation.stop()
 		state = PlayerState.IDLE
+		var magnitude = (abs(last_velocity.x) + abs(last_velocity.y)) / 10
+		shake_camera(magnitude)
 	
 	if Input.is_action_just_pressed("ui_jump"):
 		velocity = Vector2.ZERO
@@ -97,6 +100,8 @@ func levitate_state(delta):
 		var tween = create_tween()
 		tween.tween_property(character_lighting, "energy", 1, 0.2)
 		state = PlayerState.IDLE
+		var magnitude = (abs(last_velocity.x) + abs(last_velocity.y)) / 10
+		shake_camera(magnitude)
 	
 	get_move_direction_input()
 
@@ -168,6 +173,12 @@ func get_jump_input():
 		velocity = JUMP_VELOCITY * gravity_direction
 
 
+func shake_camera(magnitude:int):
+	var camera = get_viewport().get_camera_2d()
+	if camera is PlayerCamera2D:
+		camera.shake(magnitude, 0.2)
+
+
 func _process(delta):
 	doubletap_time -= delta
 
@@ -214,6 +225,9 @@ func _physics_process(delta):
 			weapon.flip_v = not weapon.flip_v
 
 	move_and_slide()
+	
+	if not is_on_floor():
+		last_velocity = velocity
 
 
 func _input(event):

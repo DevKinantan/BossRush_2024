@@ -1,4 +1,4 @@
-extends Camera2D
+class_name PlayerCamera2D extends Camera2D
 
 
 @export var offset_power: float = 0.2
@@ -14,7 +14,7 @@ var shaking: bool = false
 var shake_magnitude = 0
 
 
-func shake(magnitude: int = 1, duration: float = 0.5):
+func shake(magnitude: int = 100, duration: float = 0.1):
 	shaking = true
 	shake_magnitude = magnitude
 	shake_timer.start(duration)
@@ -42,8 +42,8 @@ func _input(event):
 			if zoom.x > zoom_min:
 				zoom -= Vector2(zoom_step, zoom_step)
 	
-	if event.is_action_pressed("ui_interact"):
-		shake(50, 0.2)
+	#if event.is_action_pressed("ui_interact"):
+		#shake(50, 0.2)
 
 
 func _on_shake_timer_timeout():
