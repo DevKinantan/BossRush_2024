@@ -106,7 +106,8 @@ libraries = {
 autoplay = "Idle"
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-energy = 0.8
+color = Color(0.662745, 0.603922, 0.0196078, 1)
+energy = 1.66
 texture = ExtResource("3_tjsdd")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://g3qbne6n25l5"]
+[gd_scene load_steps=17 format=3 uid="uid://g3qbne6n25l5"]
 
 [ext_resource type="Texture2D" uid="uid://dv5glmgdfw7nb" path="res://assets/Envi/object.png" id="1_d6q4b"]
 [ext_resource type="Texture2D" uid="uid://cgdnb5a4sqp2t" path="res://assets/Envi/tile.png" id="1_kvwmk"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://6y7dboqkdyxl" path="res://assets/Envi/wall.png" id="10_4v4jy"]
 [ext_resource type="Texture2D" uid="uid://dssvtl1r4nj6h" path="res://assets/Envi/tallll.png" id="11_lolmu"]
 [ext_resource type="PackedScene" uid="uid://bd703il7fav2n" path="res://scenes/boss/boss_1/boss_1.tscn" id="12_02aub"]
+[ext_resource type="Script" path="res://scripts/level/Background.gd" id="12_866d6"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_f8y6g"]
 texture = ExtResource("1_d6q4b")
@@ -825,6 +826,7 @@ z_index = -5
 position = Vector2(505, 671)
 scale = Vector2(1.136, 1.138)
 texture = ExtResource("11_lolmu")
+script = ExtResource("12_866d6")
 metadata/_edit_lock_ = true
 
 [node name="Tallll2" type="Sprite2D" parent="Tallll"]
@@ -838,4 +840,11 @@ texture = ExtResource("11_lolmu")
 metadata/_edit_lock_ = true
 
 [node name="Boss_1" parent="." instance=ExtResource("12_02aub")]
-position = Vector2(681, 746)
+position = Vector2(824, 647)
+scale = Vector2(3.5, 3.5)
+
+[node name="PointLight2D" parent="Boss_1" index="2"]
+energy = 1.2
+texture_scale = 0.4
+
+[editable path="Boss_1"]

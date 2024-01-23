@@ -86,7 +86,7 @@ _data = {
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("weapon")]
 script = ExtResource("1_l1vsu")
-weapon = NodePath("WeaponPivot/Pistol")
+weapon = NodePath("WeaponPivot/Claymore")
 
 [node name="CharacterSprite" type="Sprite2D" parent="."]
 texture = ExtResource("2_mbxj6")
@@ -116,6 +116,7 @@ libraries = {
 rotation = -3.14159
 
 [node name="Pistol" parent="WeaponPivot" instance=ExtResource("4_2mko8")]
+visible = false
 
 [node name="Claymore" parent="WeaponPivot" instance=ExtResource("5_i6hh2")]
-visible = false
+z_index = 1

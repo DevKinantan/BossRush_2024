@@ -181,7 +181,18 @@ func shake_camera(magnitude:int):
 
 func _process(delta):
 	doubletap_time -= delta
-
+	
+	if Input.is_action_just_pressed("ui_swap_weapon"):
+		if weapon.name == "Claymore":
+			weapon = $WeaponPivot/Pistol
+			$WeaponPivot/Pistol.visible = true
+			$WeaponPivot/Claymore.visible = false
+		
+		elif weapon.name == "Pistol":
+			weapon = $WeaponPivot/Claymore
+			$WeaponPivot/Pistol.visible = false
+			$WeaponPivot/Claymore.visible = true
+	
 
 func _physics_process(delta):
 	match state:
