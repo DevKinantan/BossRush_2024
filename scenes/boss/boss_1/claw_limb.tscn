@@ -1,0 +1,238 @@
+[gd_scene load_steps=16 format=3 uid="uid://c5pqbkhk5ucos"]
+
+[ext_resource type="PackedScene" uid="uid://cvs7l31kped8o" path="res://scenes/boss/boss_1/shoulder.tscn" id="1_ndf41"]
+[ext_resource type="PackedScene" uid="uid://c8rj82ls8w12x" path="res://scenes/boss/boss_1/deathbot_claw.tscn" id="2_yy28c"]
+[ext_resource type="Texture2D" uid="uid://dmfsukjj6bgua" path="res://assets/animation/boss_1/boss_animation_portal_weapon.png" id="3_cvcde"]
+[ext_resource type="Shader" path="res://shader/transparent_mask.gdshader" id="4_qpn6x"]
+[ext_resource type="Texture2D" uid="uid://5a6bulm7xirg" path="res://assets/sprites/transparent_mask.png" id="5_rqgos"]
+[ext_resource type="Texture2D" uid="uid://du2emj3dwv4vw" path="res://assets/sprites/light.png" id="7_8jdbq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_42px8"]
+shader = ExtResource("4_qpn6x")
+
+[sub_resource type="Animation" id="Animation_mlxw2"]
+resource_name = "Open"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationPlayer")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.6),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": ["Idle", -1, 1.0, false],
+"method": &"play"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PointLight2D:energy")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 2.0]
+}
+
+[sub_resource type="Animation" id="Animation_728q6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PointLight2D:energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [2.0]
+}
+
+[sub_resource type="Animation" id="Animation_6tp57"]
+resource_name = "Idle"
+length = 0.7
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [6, 7, 8, 9, 10, 11, 12]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PointLight2D:energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [2.0, 1.5, 2.5, 2.0]
+}
+
+[sub_resource type="Animation" id="Animation_y8k6q"]
+resource_name = "Close"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [12, 5, 4, 3, 2, 1, 0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PointLight2D:energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.7),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [2.0, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_03nb0"]
+_data = {
+"Close": SubResource("Animation_y8k6q"),
+"Idle": SubResource("Animation_6tp57"),
+"Open": SubResource("Animation_mlxw2"),
+"RESET": SubResource("Animation_728q6")
+}
+
+[sub_resource type="Animation" id="Animation_g3adg"]
+resource_name = "HandMove"
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BackBufferCopy/Limb:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.2, 10),
+"update": 0,
+"values": [Vector2(-140, 0), Vector2(100, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_53yip"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BackBufferCopy/Limb:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-140, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1aexc"]
+_data = {
+"HandMove": SubResource("Animation_g3adg"),
+"RESET": SubResource("Animation_53yip")
+}
+
+[node name="ClawLimb" type="Node2D"]
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="."]
+position = Vector2(-100, 0)
+copy_mode = 2
+
+[node name="Limb" type="Node2D" parent="BackBufferCopy"]
+position = Vector2(-140, 0)
+rotation = -1.5708
+metadata/_edit_group_ = true
+
+[node name="Shoulder" parent="BackBufferCopy/Limb" instance=ExtResource("1_ndf41")]
+
+[node name="DeathbotClaw" parent="BackBufferCopy/Limb" instance=ExtResource("2_yy28c")]
+position = Vector2(0, 137)
+
+[node name="RF2" parent="BackBufferCopy/Limb/DeathbotClaw/Skeleton2D/Base/RF1" index="1"]
+scale = Vector2(0.999999, 0.999999)
+
+[node name="Mask" type="Sprite2D" parent="BackBufferCopy"]
+light_mask = 0
+material = SubResource("ShaderMaterial_42px8")
+position = Vector2(-21, 0)
+scale = Vector2(2.4, 1)
+texture = ExtResource("5_rqgos")
+
+[node name="Portal" type="Sprite2D" parent="."]
+z_index = 2
+rotation = 1.5708
+texture = ExtResource("3_cvcde")
+hframes = 13
+
+[node name="PointLight2D" type="PointLight2D" parent="Portal"]
+position = Vector2(-1, 1)
+rotation = -1.5708
+color = Color(0.227451, 0, 0.709804, 1)
+energy = 2.0
+range_z_min = -1
+range_z_max = 1
+texture = ExtResource("7_8jdbq")
+texture_scale = 0.5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Portal"]
+libraries = {
+"": SubResource("AnimationLibrary_03nb0")
+}
+autoplay = "Open"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_1aexc")
+}
+autoplay = "HandMove"
+
+[editable path="BackBufferCopy/Limb/DeathbotClaw"]
