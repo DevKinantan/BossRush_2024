@@ -3,7 +3,7 @@ class_name Player extends CharacterBody2D
 signal gravity_direction_changed(gravity_direction)
 
 const DOUBLETAP_DELAY = .25
-const SPEED = 300.0
+const SPEED = 250.0
 const JUMP_VELOCITY = -350.0
 
 @onready var character_sprite: Sprite2D = $CharacterSprite
@@ -48,7 +48,10 @@ func idle_state():
 
 
 func walk_state():
-	character_animation.play("Walk")
+	if is_on_wall():
+		character_animation.play("Idle")
+	else:
+		character_animation.play("Walk")
 
 	get_move_direction_input()
 	get_jump_input()
@@ -179,6 +182,11 @@ func shake_camera(magnitude:int):
 		camera.shake(magnitude, 0.2)
 
 
+func is_mouse_distance_less_than(n:int):
+	var distance = get_global_mouse_position().distance_to(global_position)
+	return distance < n
+
+
 func _process(delta):
 	doubletap_time -= delta
 	
@@ -242,6 +250,7 @@ func _physics_process(delta):
 
 
 func _input(event):
+	# Double tap AWSD to change gravity
 	if event is InputEventKey and event.is_pressed() and not event.is_echo():
 		if last_keycode == event.keycode and doubletap_time >= 0: 
 			#print("DOUBLETAP: ", String.chr(event.keycode))
@@ -273,4 +282,5 @@ func _input(event):
 			if weapon.weapon_type == Weapon.WeaponType.MELEE:
 				rotate_weapon(global_position.angle_to_point(get_global_mouse_position()) - rotation)
 
-			weapon.attack()
+			if not (weapon.weapon_type == Weapon.WeaponType.RANGE and is_mouse_distance_less_than(25)):
+				weapon.attack()
