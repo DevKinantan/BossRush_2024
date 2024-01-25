@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dree0fqsr8bo0"]
+[gd_scene load_steps=23 format=3 uid="uid://dree0fqsr8bo0"]
 
 [ext_resource type="Script" path="res://scripts/Player.gd" id="1_l1vsu"]
 [ext_resource type="Texture2D" uid="uid://duliqo0toy4g7" path="res://assets/animation/player/character_sheet.png" id="2_mbxj6"]
@@ -6,6 +6,16 @@
 [ext_resource type="PackedScene" uid="uid://blmsd72bwr4js" path="res://scenes/weapon/Pistol.tscn" id="4_2mko8"]
 [ext_resource type="PackedScene" uid="uid://d31un6l3w8fnt" path="res://scenes/weapon/claymore.tscn" id="5_i6hh2"]
 [ext_resource type="PackedScene" uid="uid://7uj75r48185n" path="res://scenes/player/player_camera.tscn" id="6_p4e1i"]
+[ext_resource type="Script" path="res://scripts/RandomAudioPlayer.gd" id="7_rto0k"]
+[ext_resource type="AudioStream" uid="uid://be8pr0tr0deb3" path="res://assets/SFX/footstep/footstep_gravel_1.wav" id="8_anr8m"]
+[ext_resource type="AudioStream" uid="uid://cji0uxnlpf5a2" path="res://assets/SFX/footstep/footstep_gravel_2.wav" id="9_vgcqt"]
+[ext_resource type="AudioStream" uid="uid://vf53e4coimav" path="res://assets/SFX/footstep/footstep_gravel_4.wav" id="11_m7672"]
+[ext_resource type="AudioStream" uid="uid://btpnuqr6yeuwk" path="res://assets/SFX/footstep/footstep_gravel_5.wav" id="12_k37xm"]
+[ext_resource type="AudioStream" uid="uid://boghj7kyjbob0" path="res://assets/SFX/footstep/footstep_gravel_7.wav" id="12_t3kc2"]
+[ext_resource type="AudioStream" uid="uid://ch6eb7egqwaqm" path="res://assets/SFX/footstep/footstep_gravel_6.wav" id="13_l6di0"]
+[ext_resource type="AudioStream" uid="uid://b0m8e3d1uv6mk" path="res://assets/SFX/footstep/footstep_gravel_8.wav" id="13_tw1np"]
+[ext_resource type="AudioStream" uid="uid://dd4p31gouorba" path="res://assets/SFX/footstep/footstep_gravel_9.wav" id="14_kvgnd"]
+[ext_resource type="AudioStream" uid="uid://cw78ugv6ij8xm" path="res://assets/SFX/footstep/footstep_gravel_10.wav" id="15_3cu3f"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2ewdk"]
 radius = 8.0
@@ -62,8 +72,9 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_i3se2"]
 resource_name = "Walk"
-length = 0.5
+length = 0.6
 loop_mode = 1
+step = 0.15
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -71,10 +82,27 @@ tracks/0/path = NodePath("CharacterSprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.15, 0.3, 0.45),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [10, 11, 12, 12, 13]
+"values": [10, 11, 12, 13]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Footsteps")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.15, 0.45),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"play_random_audio"
+}, {
+"args": [],
+"method": &"play_random_audio"
+}]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_u71k4"]
@@ -97,10 +125,10 @@ vframes = 3
 frame = 5
 
 [node name="CharacterLighting" type="PointLight2D" parent="."]
-visible = false
 position = Vector2(1.99994, 1.00006)
 scale = Vector2(0.11747, 0.125937)
 color = Color(0.513726, 0.780392, 1, 1)
+energy = 0.5
 range_z_min = -6
 texture = ExtResource("3_qo5pe")
 texture_scale = 2.19
@@ -115,7 +143,6 @@ libraries = {
 }
 
 [node name="WeaponPivot" type="Marker2D" parent="."]
-rotation = -3.14159
 
 [node name="Pistol" parent="WeaponPivot" instance=ExtResource("4_2mko8")]
 visible = false
@@ -124,3 +151,33 @@ visible = false
 z_index = 1
 
 [node name="PlayerCamera" parent="." instance=ExtResource("6_p4e1i")]
+
+[node name="Footsteps" type="Node" parent="."]
+script = ExtResource("7_rto0k")
+
+[node name="Gravel_1" type="AudioStreamPlayer" parent="Footsteps"]
+stream = ExtResource("8_anr8m")
+
+[node name="Gravel_2" type="AudioStreamPlayer" parent="Footsteps"]
+stream = ExtResource("9_vgcqt")
+
+[node name="Gravel_4" type="AudioStreamPlayer" parent="Footsteps"]
+stream = ExtResource("11_m7672")
+
+[node name="Gravel_5" type="AudioStreamPlayer" parent="Footsteps"]
+stream = ExtResource("12_k37xm")
+
+[node name="Gravel_6" type="AudioStreamPlayer" parent="Footsteps"]
+stream = ExtResource("13_l6di0")
+
+[node name="Gravel_7" type="AudioStreamPlayer" parent="Footsteps"]
+stream = ExtResource("12_t3kc2")
+
+[node name="Gravel_8" type="AudioStreamPlayer" parent="Footsteps"]
+stream = ExtResource("13_tw1np")
+
+[node name="Gravel_9" type="AudioStreamPlayer" parent="Footsteps"]
+stream = ExtResource("14_kvgnd")
+
+[node name="Gravel_10" type="AudioStreamPlayer" parent="Footsteps"]
+stream = ExtResource("15_3cu3f")

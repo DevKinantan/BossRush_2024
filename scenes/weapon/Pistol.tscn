@@ -1,8 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://blmsd72bwr4js"]
+[gd_scene load_steps=11 format=3 uid="uid://blmsd72bwr4js"]
 
 [ext_resource type="Texture2D" uid="uid://d1xf7yu2lajuv" path="res://assets/animation/weapon/pistol-Sheet.png" id="1_s4iyb"]
 [ext_resource type="Script" path="res://scripts/weapon/Pistol.gd" id="2_vc5ic"]
 [ext_resource type="Texture2D" uid="uid://du2emj3dwv4vw" path="res://assets/sprites/light.png" id="3_654bx"]
+[ext_resource type="AudioStream" uid="uid://cl3hddgp3sfxt" path="res://assets/SFX/pistol/pistol_1.wav" id="4_5n2sb"]
+[ext_resource type="Script" path="res://scripts/RandomAudioPlayer.gd" id="4_ea78j"]
+[ext_resource type="AudioStream" uid="uid://bkj7d3w1crmcu" path="res://assets/SFX/pistol/pistol_2.wav" id="5_86a2u"]
+[ext_resource type="AudioStream" uid="uid://d1jghvnm8l23y" path="res://assets/SFX/pistol/pistol_3.wav" id="6_jxk3y"]
 
 [sub_resource type="Animation" id="Animation_qcvt5"]
 length = 0.001
@@ -33,7 +37,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_sapxe"]
 resource_name = "Shoot"
-length = 0.3
+length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -72,6 +76,20 @@ tracks/2/keys = {
 "method": &"shoot"
 }]
 }
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ShotSounds")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"play_random_audio"
+}]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_x5e1t"]
 _data = {
@@ -99,3 +117,15 @@ texture_scale = 0.2
 libraries = {
 "": SubResource("AnimationLibrary_x5e1t")
 }
+
+[node name="ShotSounds" type="Node" parent="."]
+script = ExtResource("4_ea78j")
+
+[node name="Pistol1" type="AudioStreamPlayer" parent="ShotSounds"]
+stream = ExtResource("4_5n2sb")
+
+[node name="Pistol2" type="AudioStreamPlayer" parent="ShotSounds"]
+stream = ExtResource("5_86a2u")
+
+[node name="Pistol3" type="AudioStreamPlayer" parent="ShotSounds"]
+stream = ExtResource("6_jxk3y")
