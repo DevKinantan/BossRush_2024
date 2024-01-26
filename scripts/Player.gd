@@ -76,7 +76,7 @@ func jump_state(delta):
 	elif is_on_floor():
 		character_animation.stop()
 		state = PlayerState.IDLE
-		var magnitude = (abs(last_velocity.x) + abs(last_velocity.y)) / 10
+		var magnitude = (abs(last_velocity.x) + abs(last_velocity.y)) / 5
 		shake_camera(magnitude)
 	
 	if Input.is_action_just_pressed("ui_jump"):
@@ -103,7 +103,7 @@ func levitate_state(delta):
 		var tween = create_tween()
 		tween.tween_property(character_lighting, "energy", 1, 0.2)
 		state = PlayerState.IDLE
-		var magnitude = (abs(last_velocity.x) + abs(last_velocity.y)) / 10
+		var magnitude = (abs(last_velocity.x) + abs(last_velocity.y)) / 5
 		shake_camera(magnitude)
 	
 	get_move_direction_input()

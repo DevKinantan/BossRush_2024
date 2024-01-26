@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://dree0fqsr8bo0"]
+[gd_scene load_steps=25 format=3 uid="uid://dree0fqsr8bo0"]
 
 [ext_resource type="Script" path="res://scripts/Player.gd" id="1_l1vsu"]
 [ext_resource type="Texture2D" uid="uid://duliqo0toy4g7" path="res://assets/animation/player/character_sheet.png" id="2_mbxj6"]
@@ -16,6 +16,7 @@
 [ext_resource type="AudioStream" uid="uid://b0m8e3d1uv6mk" path="res://assets/SFX/footstep/footstep_gravel_8.wav" id="13_tw1np"]
 [ext_resource type="AudioStream" uid="uid://dd4p31gouorba" path="res://assets/SFX/footstep/footstep_gravel_9.wav" id="14_kvgnd"]
 [ext_resource type="AudioStream" uid="uid://cw78ugv6ij8xm" path="res://assets/SFX/footstep/footstep_gravel_10.wav" id="15_3cu3f"]
+[ext_resource type="Script" path="res://scripts/Hurtbox.gd" id="17_m83rb"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2ewdk"]
 radius = 8.0
@@ -113,9 +114,16 @@ _data = {
 "Walk": SubResource("Animation_i3se2")
 }
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3llxf"]
+radius = 6.0
+height = 26.0
+
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("weapon")]
 script = ExtResource("1_l1vsu")
 weapon = NodePath("WeaponPivot/Claymore")
+
+[node name="PlayerCamera" parent="." instance=ExtResource("6_p4e1i")]
+zoom = Vector2(0.9, 0.9)
 
 [node name="CharacterSprite" type="Sprite2D" parent="."]
 texture = ExtResource("2_mbxj6")
@@ -150,8 +158,6 @@ visible = false
 [node name="Claymore" parent="WeaponPivot" instance=ExtResource("5_i6hh2")]
 z_index = 1
 
-[node name="PlayerCamera" parent="." instance=ExtResource("6_p4e1i")]
-
 [node name="Footsteps" type="Node" parent="."]
 script = ExtResource("7_rto0k")
 
@@ -181,3 +187,9 @@ stream = ExtResource("14_kvgnd")
 
 [node name="Gravel_10" type="AudioStreamPlayer" parent="Footsteps"]
 stream = ExtResource("15_3cu3f")
+
+[node name="Hurtbox" type="Area2D" parent="."]
+script = ExtResource("17_m83rb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("CapsuleShape2D_3llxf")

@@ -20,4 +20,4 @@ func shoot():
 	
 	var camera = get_viewport().get_camera_2d()
 	if camera is PlayerCamera2D:
-		camera.shake(100, 0.1)
+		camera.shake(200, 0.1)

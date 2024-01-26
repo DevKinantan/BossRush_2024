@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://bd703il7fav2n"]
+[gd_scene load_steps=13 format=3 uid="uid://bd703il7fav2n"]
 
 [ext_resource type="Texture2D" uid="uid://cac2mdgwkq1lw" path="res://assets/animation/boss_1/boss_idle.png" id="1_1basg"]
+[ext_resource type="Script" path="res://scripts/boss/boss_1/Boss_1.gd" id="1_h3ob4"]
 [ext_resource type="Texture2D" uid="uid://cj3hjoitiq0t7" path="res://assets/animation/boss_1/boss_idle_head.png" id="1_t2lvo"]
 [ext_resource type="Texture2D" uid="uid://du2emj3dwv4vw" path="res://assets/sprites/light.png" id="3_tjsdd"]
 
@@ -83,7 +84,12 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_b1284"]
 radius = 31.4006
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_0epan"]
+radius = 400.0
+
 [node name="Boss_1" type="CharacterBody2D"]
+scale = Vector2(3.5, 3.5)
+script = ExtResource("1_h3ob4")
 
 [node name="Head" type="Sprite2D" parent="."]
 texture = ExtResource("1_t2lvo")
@@ -107,8 +113,24 @@ autoplay = "Idle"
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 color = Color(0.662745, 0.603922, 0.0196078, 1)
-energy = 1.66
+energy = 0.8
 texture = ExtResource("3_tjsdd")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_b1284")
+
+[node name="AttackPivot" type="Marker2D" parent="."]
+scale = Vector2(0.3, 0.3)
+
+[node name="DetectionArea" type="Area2D" parent="."]
+scale = Vector2(0.3, 0.3)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+shape = SubResource("CircleShape2D_0epan")
+
+[node name="CooldownTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
+[connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]

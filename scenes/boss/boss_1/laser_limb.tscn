@@ -1,0 +1,134 @@
+[gd_scene load_steps=12 format=3 uid="uid://kq3wcnewfmy"]
+
+[ext_resource type="PackedScene" uid="uid://cvs7l31kped8o" path="res://scenes/boss/boss_1/shoulder.tscn" id="1_cbqun"]
+[ext_resource type="Script" path="res://scripts/boss/boss_1/LaserLimb.gd" id="1_xtbxb"]
+[ext_resource type="PackedScene" uid="uid://cs12smfvvjt1f" path="res://scenes/boss/boss_1/deathbot_laser.tscn" id="2_0cujt"]
+[ext_resource type="Shader" path="res://shader/transparent_mask.gdshader" id="3_id23r"]
+[ext_resource type="Texture2D" uid="uid://5a6bulm7xirg" path="res://assets/sprites/transparent_mask.png" id="4_o3swv"]
+[ext_resource type="PackedScene" uid="uid://gani5w0ojo3d" path="res://scenes/levels/portal.tscn" id="5_k2abt"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_42px8"]
+shader = ExtResource("3_id23r")
+
+[sub_resource type="Animation" id="Animation_g3adg"]
+resource_name = "HandMove"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BackBufferCopy/Limb:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.9),
+"transitions": PackedFloat32Array(1, 10),
+"update": 0,
+"values": [Vector2(-220, 0), Vector2(-30, 0)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"hand_move_animation_end"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_53yip"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BackBufferCopy/Limb:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-140, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_r6jat"]
+resource_name = "HandBack"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BackBufferCopy/Limb:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.669859, 3.31285),
+"update": 0,
+"values": [Vector2(-30, 0), Vector2(-220, 0)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Portal/AnimationPlayer")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": ["Close", -1, 1.0, false],
+"method": &"play"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1aexc"]
+_data = {
+"HandBack": SubResource("Animation_r6jat"),
+"HandMove": SubResource("Animation_g3adg"),
+"RESET": SubResource("Animation_53yip")
+}
+
+[node name="LaserLimb" type="Node2D"]
+script = ExtResource("1_xtbxb")
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="."]
+position = Vector2(-100, 0)
+copy_mode = 2
+
+[node name="Limb" type="Node2D" parent="BackBufferCopy"]
+position = Vector2(-140, 0)
+rotation = -1.5708
+metadata/_edit_group_ = true
+
+[node name="Shoulder" parent="BackBufferCopy/Limb" instance=ExtResource("1_cbqun")]
+
+[node name="DeathbotLaser" parent="BackBufferCopy/Limb" instance=ExtResource("2_0cujt")]
+position = Vector2(0, 133)
+
+[node name="Mask" type="Sprite2D" parent="BackBufferCopy"]
+light_mask = 0
+material = SubResource("ShaderMaterial_42px8")
+position = Vector2(-64.5, 0)
+scale = Vector2(3.27, 1)
+texture = ExtResource("4_o3swv")
+
+[node name="Portal" parent="." instance=ExtResource("5_k2abt")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_1aexc")
+}
+autoplay = "HandMove"
+
+[node name="ShootTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="laser_start" from="BackBufferCopy/Limb/DeathbotLaser" to="." method="_on_deathbot_laser_laser_start"]
+[connection signal="laser_stop" from="BackBufferCopy/Limb/DeathbotLaser" to="." method="_on_deathbot_laser_laser_stop"]
+[connection signal="portal_closed" from="Portal" to="." method="_on_portal_portal_closed"]
+[connection signal="portal_opened" from="Portal" to="." method="_on_portal_portal_opened"]
+[connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]
+
+[editable path="Portal"]

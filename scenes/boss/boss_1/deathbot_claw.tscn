@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://c8rj82ls8w12x"]
+[gd_scene load_steps=7 format=3 uid="uid://c8rj82ls8w12x"]
 
 [ext_resource type="Texture2D" uid="uid://x7egq8ioqqih" path="res://assets/assets_rig/pinch_reff.png" id="1_a0oqm"]
 [ext_resource type="Texture2D" uid="uid://bqmq0y45n4781" path="res://assets/assets_rig/boss_pinch_sheets.png" id="2_105b7"]
@@ -113,6 +113,10 @@ _data = {
 "RESET": SubResource("Animation_jbh04")
 }
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6i20e"]
+radius = 35.0
+height = 86.0
+
 [node name="DeathbotClaw" type="Node2D"]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -180,17 +184,26 @@ rest = Transform2D(1, 0, 0, 1, -22, 10)
 [node name="LF2" type="Bone2D" parent="Skeleton2D/Base/RF1/LF1"]
 position = Vector2(-15.0142, 19.9825)
 rotation = 1.0472
-scale = Vector2(1, 1)
 rest = Transform2D(0.925311, 0.379208, -0.379208, 0.925311, -17, 19)
+auto_calculate_length_and_angle = false
+length = 16.0
+bone_angle = 60.0001
 
 [node name="RF2" type="Bone2D" parent="Skeleton2D/Base/RF1"]
 position = Vector2(31.9948, 11.0152)
 rotation = -0.254911
-scale = Vector2(1, 1)
 rest = Transform2D(1, 0, 0, 1, 25, 7)
 
 [node name="RF3" type="Bone2D" parent="Skeleton2D/Base/RF1/RF2"]
 position = Vector2(3, 24)
 rotation = 1.91986
-scale = Vector2(1, 1)
 rest = Transform2D(-0.558851, 0.829268, -0.829268, -0.558851, 3, 24)
+auto_calculate_length_and_angle = false
+length = 16.0
+bone_angle = 110.0
+
+[node name="HitArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea"]
+position = Vector2(0, 44)
+shape = SubResource("CapsuleShape2D_6i20e")
