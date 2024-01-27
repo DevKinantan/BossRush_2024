@@ -243,7 +243,7 @@ offsets = PackedFloat32Array(0.0267857, 0.482143, 1)
 colors = PackedColorArray(0.760784, 0.105882, 1, 1, 0.207843, 0.164706, 0.572549, 1, 0.207843, 0.164706, 0.568627, 0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_04pfw"]
-size = Vector2(69, 7)
+size = Vector2(69, 12)
 
 [node name="Portal" type="Sprite2D"]
 z_index = 2
@@ -283,10 +283,12 @@ color = Color(0.835294, 0.105882, 1, 1)
 color_ramp = SubResource("Gradient_ii0ji")
 
 [node name="TeleportArea" type="Area2D" parent="."]
+collision_layer = 17
+collision_mask = 17
 monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TeleportArea"]
-position = Vector2(-0.500003, 1.5)
+position = Vector2(-0.500003, 1)
 shape = SubResource("RectangleShape2D_04pfw")
 
 [connection signal="body_entered" from="TeleportArea" to="." method="_on_teleport_area_body_entered"]

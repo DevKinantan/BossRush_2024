@@ -12,6 +12,7 @@ enum TeleportPortalType {
 @onready var animation_player = $AnimationPlayer
 
 @export var can_teleport: bool = false
+@export var only_projectile: bool = false
 @export var teleport_type: TeleportPortalType = TeleportPortalType.IN
 @export var linked_portal: Portal
 
@@ -39,10 +40,19 @@ func _ready():
 
 
 func _on_teleport_area_body_entered(body):
-	if teleport_type == TeleportPortalType.IN:
-		if body is Player and linked_portal:
-			print("kokoron")
+	if teleport_type == TeleportPortalType.IN and linked_portal:
+		if body is Player and not only_projectile:
 			body.global_position = linked_portal.global_position
+			#print(body.global_position)
+		
+		elif body is Projectile:
+			var angle = Vector2.RIGHT.angle()
+			if linked_portal.get_parent() is Node2D:
+				angle = linked_portal.get_parent().rotation
+			angle -= Vector2.DOWN.angle()
+			body.velocity = rotate_vec2(body.velocity, angle - Vector2.DOWN.angle())
+			body.global_position = linked_portal.global_position
+			body.set_target(body.Target.PLAYER)
 	
 	elif teleport_type == TeleportPortalType.OUT:
 		var angle = Vector2.RIGHT.angle()
@@ -50,7 +60,7 @@ func _on_teleport_area_body_entered(body):
 			angle = get_parent().rotation
 		angle -= Vector2.DOWN.angle()
 		
-		if body is Player:
+		if body is Player and not only_projectile:
 			body.have_external_velocity = true
 			body.velocity = rotate_vec2(body.velocity, angle)
 			if body.gravity_direction == Vector2.LEFT or body.gravity_direction == Vector2.RIGHT:
@@ -59,4 +69,3 @@ func _on_teleport_area_body_entered(body):
 				body.velocity = rotate_vec2(body.velocity, body.gravity_direction.angle() - Vector2.DOWN.angle())
 			close_portal()
 			linked_portal.close_portal()
-			
