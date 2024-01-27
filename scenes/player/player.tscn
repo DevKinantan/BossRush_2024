@@ -193,3 +193,8 @@ script = ExtResource("17_m83rb")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
 shape = SubResource("CapsuleShape2D_3llxf")
+
+[node name="ShadowTimer" type="Timer" parent="."]
+wait_time = 0.05
+
+[connection signal="timeout" from="ShadowTimer" to="." method="_on_shadow_timer_timeout"]

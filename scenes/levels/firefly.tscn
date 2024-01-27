@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://cfanpoyfuhmfw"]
+
+[ext_resource type="Script" path="res://scripts/Firefly.gd" id="1_nq406"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2cuyj"]
+size = Vector2(24.75, 13)
+
+[sub_resource type="Gradient" id="Gradient_8vdl0"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[node name="Firefly" type="Area2D"]
+position = Vector2(497, 1145)
+script = ExtResource("1_nq406")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_2cuyj")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+emitting = false
+lifetime = 1.5
+one_shot = true
+emission_shape = 3
+emission_rect_extents = Vector2(10, 1)
+direction = Vector2(0, -1)
+gravity = Vector2(0, 0)
+initial_velocity_min = 50.0
+initial_velocity_max = 50.0
+color_ramp = SubResource("Gradient_8vdl0")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

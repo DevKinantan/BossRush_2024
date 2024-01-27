@@ -28,9 +28,10 @@ func _physics_process(_delta):
 		if area is Hurtbox:
 			cast_point = to_local(get_collision_point())
 			collision_particle.position = cast_point
-			collision_particle.emitting = is_casting
+			collision_particle.emitting = true
 		else:
 			add_exception(area)
+			collision_particle.emitting = false
 
 	line.points[1] = cast_point
 	beam_particle.position = cast_point * 0.5

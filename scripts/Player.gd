@@ -10,12 +10,16 @@ const JUMP_VELOCITY = -350.0
 @onready var character_animation: AnimationPlayer = $CharacterAnimation
 @onready var character_lighting: PointLight2D = $CharacterLighting
 @onready var weapon_pivot = $WeaponPivot
+@onready var shadow_timer: Timer = $ShadowTimer
 
 @export var weapon: Weapon
+
+var player_shadow_scn = preload("res://scenes/player/player_shadow.tscn")
 
 var gravity_direction = Vector2(0, 1)
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
+var have_external_velocity:bool = false
 var doubletap_time = DOUBLETAP_DELAY
 var last_keycode = 0
 var last_velocity = Vector2.ZERO
@@ -92,7 +96,7 @@ func levitate_state(delta):
 
 	if Input.is_action_just_released("ui_jump"):
 		var tween = create_tween()
-		tween.tween_property(character_lighting, "energy", 1, 0.2)
+		tween.tween_property(character_lighting, "energy", 0.5, 0.2)
 		state = PlayerState.JUMP
 	
 	if not is_on_floor() :
@@ -101,16 +105,12 @@ func levitate_state(delta):
 	elif is_on_floor():
 		character_animation.stop()
 		var tween = create_tween()
-		tween.tween_property(character_lighting, "energy", 1, 0.2)
+		tween.tween_property(character_lighting, "energy", 0.5, 0.2)
 		state = PlayerState.IDLE
 		var magnitude = (abs(last_velocity.x) + abs(last_velocity.y)) / 5
 		shake_camera(magnitude)
 	
 	get_move_direction_input()
-
-
-func attack_state():
-	pass
 
 
 func rotate_gravity(angle_degree:float):
@@ -125,8 +125,11 @@ func rotate_gravity(angle_degree:float):
 
 
 func rotate_character(angle_degree:float):
+	#shadow_timer.start()
 	var tween = create_tween()
+	tween.tween_callback(shadow_timer.start)
 	tween.tween_property(self, "rotation_degrees", angle_degree, 0.2)
+	tween.tween_callback(shadow_timer.stop).set_delay(0.5)
 
 
 func rotate_weapon(angle: float):
@@ -159,16 +162,24 @@ func get_move_direction_input():
 		if direction:
 			velocity.x = move_toward(velocity.x, direction*SPEED, SPEED/4)
 			flip_character()
+			have_external_velocity = false
 		else:
-			velocity.x = move_toward(velocity.x, 0, SPEED)
+			if have_external_velocity:
+				velocity.x = move_toward(velocity.x, 0, 10)
+			else :
+				velocity.x = move_toward(velocity.x, 0, SPEED)
 
 	elif not gravity_direction.y:
 		var direction = Input.get_axis("ui_up", "ui_down")
 		if direction:
 			velocity.y = move_toward(velocity.y, direction*SPEED, SPEED/4)
 			flip_character()
+			have_external_velocity = false
 		else:
-			velocity.y = move_toward(velocity.y, 0, SPEED)
+			if have_external_velocity:
+				velocity.y = move_toward(velocity.y, 0, 10)
+			else:
+				velocity.y = move_toward(velocity.y, 0, SPEED)
 
 
 func get_jump_input():
@@ -284,3 +295,12 @@ func _input(event):
 
 			if not (weapon.weapon_type == Weapon.WeaponType.RANGE and is_mouse_distance_less_than(25)):
 				weapon.attack()
+
+
+func _on_shadow_timer_timeout():
+	var player_shadow = player_shadow_scn.instantiate()
+	player_shadow.position = position
+	player_shadow.rotation = rotation
+	player_shadow.flip_h = character_sprite.flip_h
+	
+	get_tree().current_scene.add_child(player_shadow)

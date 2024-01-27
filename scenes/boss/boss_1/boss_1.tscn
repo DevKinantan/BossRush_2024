@@ -85,7 +85,7 @@ _data = {
 radius = 31.4006
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0epan"]
-radius = 400.0
+radius = 300.0
 
 [node name="Boss_1" type="CharacterBody2D"]
 scale = Vector2(3.5, 3.5)

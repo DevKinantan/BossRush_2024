@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://cgswfgwrmy6c4"]
+
+[ext_resource type="Texture2D" uid="uid://duliqo0toy4g7" path="res://assets/animation/player/character_sheet.png" id="1_fpyd4"]
+[ext_resource type="Script" path="res://scripts/PlayerShadow.gd" id="2_y73up"]
+
+[node name="PlayerShadow" type="Sprite2D"]
+self_modulate = Color(1, 1, 1, 0.498039)
+light_mask = 0
+z_index = -1
+texture = ExtResource("1_fpyd4")
+hframes = 5
+vframes = 3
+frame = 10
+script = ExtResource("2_y73up")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

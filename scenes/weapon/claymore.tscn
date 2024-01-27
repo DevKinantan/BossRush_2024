@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://d31un6l3w8fnt"]
+[gd_scene load_steps=10 format=3 uid="uid://d31un6l3w8fnt"]
 
 [ext_resource type="Texture2D" uid="uid://cyk0ovwyh0x56" path="res://assets/animation/weapon/claymore.png" id="1_s8fy2"]
 [ext_resource type="Script" path="res://scripts/weapon/Claymore.gd" id="2_khiq8"]
@@ -261,6 +261,10 @@ _data = {
 "Slash_2": SubResource("Animation_gkswo")
 }
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rmnjw"]
+radius = 11.0
+height = 40.6667
+
 [node name="Claymore" type="Sprite2D"]
 z_index = 3
 position = Vector2(0, -10)
@@ -289,3 +293,10 @@ autoplay = "Idle"
 [node name="ChainAttackTimer" type="Timer" parent="."]
 wait_time = 0.2
 one_shot = true
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(15.6667, 0)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CapsuleShape2D_rmnjw")

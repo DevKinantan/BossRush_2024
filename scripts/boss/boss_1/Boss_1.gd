@@ -1,4 +1,4 @@
-extends CharacterBody2D
+extends Enemy
 
 signal player_enter_boss_area
 signal player_exit_boss_area
