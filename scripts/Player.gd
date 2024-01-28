@@ -11,6 +11,7 @@ const JUMP_VELOCITY = -350.0
 @onready var character_lighting: PointLight2D = $CharacterLighting
 @onready var weapon_pivot = $WeaponPivot
 @onready var shadow_timer: Timer = $ShadowTimer
+@onready var koyori_timer: Timer = $KoyoriTimer
 
 @export var weapon: Weapon
 
@@ -23,6 +24,7 @@ var have_external_velocity:bool = false
 var doubletap_time = DOUBLETAP_DELAY
 var last_keycode = 0
 var last_velocity = Vector2.ZERO
+var in_koyori_jump = false
 
 
 enum PlayerState {
@@ -39,16 +41,17 @@ var state := PlayerState.IDLE
 func idle_state():
 	character_animation.play("Idle")
 
-	get_move_direction_input()
-	get_jump_input()
-
-	if is_on_floor() and velocity != Vector2.ZERO:
-		character_animation.stop()
-		state = PlayerState.WALK
-	
-	elif not is_on_floor():
+	if not is_on_floor():
 		character_animation.stop()
 		state = PlayerState.JUMP
+		in_koyori_jump = false
+
+	elif is_on_floor() and velocity != Vector2.ZERO:
+		character_animation.stop()
+		state = PlayerState.WALK
+
+	get_move_direction_input()
+	get_jump_input()
 
 
 func walk_state():
@@ -59,19 +62,29 @@ func walk_state():
 
 	get_move_direction_input()
 	get_jump_input()
-	
-	if is_on_floor() and velocity.is_equal_approx(Vector2.ZERO):
+
+	if (is_on_floor() or in_koyori_jump) and velocity.is_equal_approx(Vector2.ZERO):
 		character_animation.stop()
 		state = PlayerState.IDLE
 	
 	elif not is_on_floor():
-		character_animation.stop()
-		state = PlayerState.JUMP
+		if not in_koyori_jump:
+			if not koyori_timer.is_stopped():
+				koyori_timer.stop()
+			koyori_timer.start()
+			in_koyori_jump = true
+
+		if not koyori_timer.is_stopped():
+			get_jump_input()
+
+		else: 
+			character_animation.stop()
+			state = PlayerState.JUMP
+			in_koyori_jump = false
 
 
 func jump_state(delta):
 	character_animation.play("Jump")
-
 	get_move_direction_input()
 
 	if not is_on_floor():
@@ -120,6 +133,8 @@ func rotate_gravity(angle_degree:float):
 	up_direction = gravity_direction * -1
 	
 	emit_signal("gravity_direction_changed", gravity_direction)
+	in_koyori_jump = false
+	#state = PlayerState.JUMP
 	
 	return current_gravity_angle
 
@@ -129,7 +144,7 @@ func rotate_character(angle_degree:float):
 	var tween = create_tween()
 	tween.tween_callback(shadow_timer.start)
 	tween.tween_property(self, "rotation_degrees", angle_degree, 0.2)
-	tween.tween_callback(shadow_timer.stop).set_delay(0.5)
+	tween.tween_callback(shadow_timer.stop).set_delay(0.2)
 
 
 func rotate_weapon(angle: float):
@@ -183,8 +198,10 @@ func get_move_direction_input():
 
 
 func get_jump_input():
-	if Input.is_action_just_pressed("ui_jump") and is_on_floor():
-		velocity = JUMP_VELOCITY * gravity_direction
+	if Input.is_action_just_pressed("ui_jump") and (is_on_floor() or in_koyori_jump):
+		velocity = (JUMP_VELOCITY - 30 if in_koyori_jump else JUMP_VELOCITY) * gravity_direction
+		state = PlayerState.JUMP
+		in_koyori_jump = false
 
 
 func shake_camera(magnitude:int):
@@ -199,6 +216,7 @@ func is_mouse_distance_less_than(n:int):
 
 
 func _process(delta):
+	#print(state)
 	doubletap_time -= delta
 	
 	if Input.is_action_just_pressed("ui_swap_weapon"):

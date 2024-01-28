@@ -198,8 +198,4 @@ libraries = {
 [node name="ShadowTimer" type="Timer" parent="."]
 wait_time = 0.05
 
-[node name="KoyoriTimer" type="Timer" parent="."]
-wait_time = 0.1
-one_shot = true
-
 [connection signal="timeout" from="ShadowTimer" to="." method="_on_shadow_timer_timeout"]
