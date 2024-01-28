@@ -4,4 +4,5 @@ extends Area2D
 
 
 func _on_body_entered(body):
-	particle.emitting = true
+	if body is Player:
+		particle.emitting = true
