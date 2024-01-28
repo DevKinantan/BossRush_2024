@@ -7,14 +7,10 @@
 radius = 3.0
 height = 10.0
 
-[node name="ProjectileA" type="RigidBody2D"]
-z_index = -1
+[node name="ProjectileA" type="CharacterBody2D"]
+z_index = 2
 collision_layer = 16
 collision_mask = 16
-gravity_scale = 0.0
-max_contacts_reported = 1
-contact_monitor = true
-linear_velocity = Vector2(10, 10)
 script = ExtResource("1_j1rw8")
 
 [node name="ProjectileSprite" type="Sprite2D" parent="."]
@@ -22,14 +18,15 @@ self_modulate = Color(5, 2, 1, 1)
 position = Vector2(-1, 1)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("1_d8sw3")
-offset = Vector2(15, 0)
 flip_h = true
 hframes = 4
 frame = 1
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]
-position = Vector2(12, 0)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_phthp")
 
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
