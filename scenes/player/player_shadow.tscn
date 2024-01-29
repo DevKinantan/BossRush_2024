@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://scripts/PlayerShadow.gd" id="2_y73up"]
 
 [node name="PlayerShadow" type="Sprite2D"]
-self_modulate = Color(1, 1, 1, 0.498039)
+self_modulate = Color(2, 2, 2, 0.498)
 light_mask = 0
 z_index = -1
 texture = ExtResource("1_fpyd4")
