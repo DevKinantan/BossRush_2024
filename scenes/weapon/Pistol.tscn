@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://blmsd72bwr4js"]
+[gd_scene load_steps=19 format=3 uid="uid://blmsd72bwr4js"]
 
 [ext_resource type="Texture2D" uid="uid://d1xf7yu2lajuv" path="res://assets/animation/weapon/pistol-Sheet.png" id="1_s4iyb"]
 [ext_resource type="Script" path="res://scripts/weapon/Pistol.gd" id="2_vc5ic"]
@@ -7,6 +7,14 @@
 [ext_resource type="Script" path="res://scripts/RandomAudioPlayer.gd" id="4_ea78j"]
 [ext_resource type="AudioStream" uid="uid://bkj7d3w1crmcu" path="res://assets/SFX/pistol/pistol_2.wav" id="5_86a2u"]
 [ext_resource type="AudioStream" uid="uid://d1jghvnm8l23y" path="res://assets/SFX/pistol/pistol_3.wav" id="6_jxk3y"]
+[ext_resource type="AudioStream" uid="uid://deck2wo6echu5" path="res://assets/SFX/pistol/reload_1.wav" id="8_6h8ug"]
+[ext_resource type="AudioStream" uid="uid://c3meoknexitro" path="res://assets/SFX/pistol/push_magazine.ogg" id="9_ob2v8"]
+[ext_resource type="AudioStream" uid="uid://b7qyaabclnfyg" path="res://assets/SFX/pistol/reload_2.wav" id="9_thkhh"]
+[ext_resource type="AudioStream" uid="uid://db2kax64jm1d5" path="res://assets/SFX/pistol/reload_3.wav" id="10_sr6aq"]
+[ext_resource type="AudioStream" uid="uid://dqr25ubue7lcx" path="res://assets/SFX/pistol/reload_4.wav" id="11_gqujs"]
+[ext_resource type="AudioStream" uid="uid://13kr8a5x2apr" path="res://assets/SFX/pistol/reload_5.wav" id="12_jgkmb"]
+[ext_resource type="AudioStream" uid="uid://6m6jmuqnxm1s" path="res://assets/SFX/pistol/reload_6.wav" id="13_g2wjn"]
+[ext_resource type="AudioStream" uid="uid://bahfw68hdqolr" path="res://assets/SFX/pistol/empty.wav" id="15_n5w6t"]
 
 [sub_resource type="Animation" id="Animation_qcvt5"]
 length = 0.001
@@ -33,6 +41,18 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PointLight2D:energy")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
 }
 
 [sub_resource type="Animation" id="Animation_sapxe"]
@@ -90,6 +110,18 @@ tracks/3/keys = {
 "method": &"play_random_audio"
 }]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("PointLight2D:energy")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.1, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 0.0]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_x5e1t"]
 _data = {
@@ -103,6 +135,7 @@ position = Vector2(20, 0)
 texture = ExtResource("1_s4iyb")
 hframes = 3
 script = ExtResource("2_vc5ic")
+damage = 1
 weapon_type = 1
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
@@ -118,6 +151,10 @@ libraries = {
 "": SubResource("AnimationLibrary_x5e1t")
 }
 
+[node name="ReloadTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
 [node name="ShotSounds" type="Node" parent="."]
 script = ExtResource("4_ea78j")
 
@@ -129,3 +166,32 @@ stream = ExtResource("5_86a2u")
 
 [node name="Pistol3" type="AudioStreamPlayer" parent="ShotSounds"]
 stream = ExtResource("6_jxk3y")
+
+[node name="ReloadSounds" type="Node" parent="."]
+script = ExtResource("4_ea78j")
+
+[node name="Reload1" type="AudioStreamPlayer" parent="ReloadSounds"]
+stream = ExtResource("8_6h8ug")
+
+[node name="Reload2" type="AudioStreamPlayer" parent="ReloadSounds"]
+stream = ExtResource("9_thkhh")
+
+[node name="Reload3" type="AudioStreamPlayer" parent="ReloadSounds"]
+stream = ExtResource("10_sr6aq")
+
+[node name="Reload4" type="AudioStreamPlayer" parent="ReloadSounds"]
+stream = ExtResource("11_gqujs")
+
+[node name="Reload5" type="AudioStreamPlayer" parent="ReloadSounds"]
+stream = ExtResource("12_jgkmb")
+
+[node name="Reload6" type="AudioStreamPlayer" parent="ReloadSounds"]
+stream = ExtResource("13_g2wjn")
+
+[node name="PushMagazineAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_ob2v8")
+
+[node name="EmptyMagazineAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("15_n5w6t")
+
+[connection signal="timeout" from="ReloadTimer" to="." method="_on_reload_timer_timeout"]
