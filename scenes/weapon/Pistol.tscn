@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://blmsd72bwr4js"]
+[gd_scene load_steps=21 format=3 uid="uid://blmsd72bwr4js"]
 
 [ext_resource type="Texture2D" uid="uid://d1xf7yu2lajuv" path="res://assets/animation/weapon/pistol-Sheet.png" id="1_s4iyb"]
 [ext_resource type="Script" path="res://scripts/weapon/Pistol.gd" id="2_vc5ic"]
@@ -123,8 +123,42 @@ tracks/4/keys = {
 "values": [1.0, 0.0]
 }
 
+[sub_resource type="Animation" id="Animation_38d06"]
+resource_name = "Empty"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2]
+}
+
+[sub_resource type="Animation" id="Animation_1n7ef"]
+resource_name = "Normal"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_x5e1t"]
 _data = {
+"Empty": SubResource("Animation_38d06"),
+"Normal": SubResource("Animation_1n7ef"),
 "RESET": SubResource("Animation_qcvt5"),
 "Shoot": SubResource("Animation_sapxe")
 }

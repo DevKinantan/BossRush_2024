@@ -1,8 +1,7 @@
 extends Weapon
 
 @export var projectile_scn = preload("res://scenes/projectile/projectile_A.tscn")
-var max_capacity:int = 6
-var magazine: int = 6
+@export var max_capacity:int = 6
 @export var total_bullets: int = 15
 
 @onready var animation_player = $AnimationPlayer
@@ -12,6 +11,7 @@ var magazine: int = 6
 @onready var empty_magazine_audio = $EmptyMagazineAudio
 
 var projectile_velocity:float = 1000.0
+var magazine: int = max_capacity
 
 
 func attack():
@@ -42,8 +42,16 @@ func shoot():
 		camera.shake(200, 0.1)
 		
 	if magazine == 0 and total_bullets > 0:
+		if animation_player.is_playing():
+			animation_player.stop()
+		animation_player.play("Empty")
 		reload_sounds.play_random_audio()
 		reload_timer.start()
+	
+	elif magazine == 0 and total_bullets == 0:
+		if animation_player.is_playing():
+			animation_player.stop()
+		animation_player.play("Empty")
 
 
 func _on_reload_timer_timeout():
@@ -56,3 +64,6 @@ func _on_reload_timer_timeout():
 	
 	elif (magazine == max_capacity) or (total_bullets == 0):
 		push_magazine_audio.play()
+		if animation_player.is_playing():
+			animation_player.stop()
+		animation_player.play("Normal")
