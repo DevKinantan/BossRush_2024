@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cac2mdgwkq1lw" path="res://assets/animation/boss_1/boss_idle.png" id="2_8is53"]
 
 [node name="DeadBoss_1" type="RigidBody2D"]
+z_index = -1
 collision_layer = 192
 collision_mask = 192
 mass = 100.0
