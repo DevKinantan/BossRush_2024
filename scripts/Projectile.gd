@@ -26,7 +26,8 @@ func set_target(t:Target):
 			set_collision_mask_value(4, true)
 			set_collision_layer_value(4, true)
 
-			set_collision_layer_value(3, false)
+			set_collision_layer_value(2, false)
+			set_collision_mask_value(2, false)
 			#set_collision_mask_value(3, false)
 			set_collision_mask_value(5, false)
 			set_collision_layer_value(5, false)

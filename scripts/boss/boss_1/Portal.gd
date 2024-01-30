@@ -15,6 +15,8 @@ enum TeleportPortalType {
 @export var only_projectile: bool = false
 @export var teleport_type: TeleportPortalType = TeleportPortalType.IN
 @export var linked_portal: Portal
+@export var queue_free_parent: bool = false
+@export var specific_target_pos: Vector2
 
 
 func open_portal_end():
@@ -23,7 +25,10 @@ func open_portal_end():
 
 func close_portal_end():
 	emit_signal("portal_closed")
-	if can_teleport:
+	if queue_free_parent:
+		get_parent().queue_free()
+
+	elif can_teleport:
 		queue_free()
 
 
@@ -48,10 +53,17 @@ func _on_teleport_area_body_entered(body):
 		
 		elif body is Projectile:
 			var angle = Vector2.RIGHT.angle()
-			if linked_portal.get_parent() is Node2D:
-				angle = linked_portal.get_parent().rotation
-			angle -= Vector2.DOWN.angle()
-			body.velocity = rotate_vec2(body.velocity, angle - Vector2.DOWN.angle())
+			if specific_target_pos:
+				var body_velocity = abs(body.velocity.x) + abs(body.velocity.y)
+				var direction = linked_portal.global_position.direction_to(specific_target_pos)
+				body.velocity = direction * body_velocity
+			
+			else:
+				if linked_portal.get_parent() is Node2D:
+					angle = linked_portal.get_parent().rotation
+				angle += Vector2.RIGHT.angle()
+				body.velocity = rotate_vec2(body.velocity, angle)# + Vector2.RIGHT.angle())
+
 			body.global_position = linked_portal.global_position
 			body.set_target(body.Target.PLAYER)
 	

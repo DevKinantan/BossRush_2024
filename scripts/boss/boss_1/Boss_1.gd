@@ -22,12 +22,14 @@ var portal_scn = preload("res://scenes/levels/portal.tscn")
 @export var can_attack:bool = false
 @export var max_hp:float = 100.0
 @export var damage_to_teleport: float = 10.0
+@export var projectile_damage_to_create_portal: float = 2.0
 
 var hp := max_hp
 var is_invicible: bool = false
 var player_nearby:Player
 var teleport_locations = []
 var damage_accumulation:float = 0.0
+var projectile_damage_accumulation:float = 0.0
 
 enum BossState {
 	ALIVE,
@@ -75,11 +77,40 @@ func defensive_portal_attack():
 	portal_in.scale = Vector2(2, 2)
 	
 	var tween = create_tween()
-	tween.tween_property(portal_in, "position", Vector2(200 + attack_offset, 0), 1.0).set_delay(0.7)
+	tween.tween_property(portal_in, "position", Vector2(300 + attack_offset, 0), 1.0).set_delay(0.7)
 	tween.tween_callback(portal_in.close_portal)
 	tween.tween_callback(portal_out.close_portal)
 	
 	can_attack = false
+
+
+func create_portal_shield(angle: float):
+	if not level_controller:
+		return
+
+	var portal_out = level_controller.create_bullet_out_portal_near_player()
+	var portal_in = portal_scn.instantiate()
+	portal_in.can_teleport = true
+	portal_in.only_projectile = true
+	portal_in.queue_free_parent = true
+	portal_in.specific_target_pos = level_controller.player.global_position
+
+	portal_in.linked_portal = portal_out
+	portal_out.linked_portal = portal_in
+
+	var defense_pivot := Node2D.new()
+	add_child(defense_pivot)
+	defense_pivot.scale = Vector2(0.3, 0.3)
+	defense_pivot.global_position = global_position
+	defense_pivot.rotation = angle
+	defense_pivot.call_deferred("add_child", portal_in)
+	#portal_pivot.add_child(portal_in)
+	portal_in.position.x = attack_offset + 50
+	portal_in.scale = Vector2(2.0, 2.0)
+
+	var tween = create_tween()
+	tween.tween_callback(portal_in.close_portal).set_delay(3.0)
+	tween.tween_callback(portal_out.close_portal)
 
 
 func attack_near_player():
@@ -146,10 +177,6 @@ func alive_state():
 		velocity.y = move_toward(velocity.y, 0, 1)
 
 
-func dead_state():
-	pass
-
-
 func _ready():
 	teleport_locations.append(global_position)
 	defensive_claw_attack(false)
@@ -159,17 +186,19 @@ func _ready():
 
 
 func _process(_delta):
-	if player_nearby and can_attack and cooldown_timer.is_stopped() and not animation_player.is_playing() and state == BossState.ALIVE:
-		attack_near_player()
+	pass
 	
 	#velocity = Vector2(0, 50)
 	#move_and_slide()
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	match state:
 		BossState.ALIVE:
 			alive_state()
+	
+	if player_nearby and can_attack and cooldown_timer.is_stopped() and not animation_player.is_playing() and state == BossState.ALIVE:
+		attack_near_player()
 	
 	move_and_slide()
 
@@ -186,6 +215,8 @@ func _on_detection_area_body_exited(body):
 
 func _on_attack_tree_exited():
 	can_attack = true
+	if not cooldown_timer.is_stopped():
+		cooldown_timer.stop()
 	cooldown_timer.start()
 
 
@@ -203,15 +234,23 @@ func _on_hurtbox_damage_registered(damage, type, pos):
 		damage_accumulation += damage
 		hp -= damage
 
+		if type == Hurtbox.HitType.PROJECTILE:
+			projectile_damage_accumulation += damage
+
 		if hp <= 0:
 			state = BossState.DEAD
 			velocity = Vector2.ZERO
 			can_attack = false
 			is_invicible = true
 			animation_player.play("Dead")
-		
+
 		elif damage_accumulation >= damage_to_teleport:
 			teleport(pos)
+
+		elif projectile_damage_accumulation >= projectile_damage_to_create_portal:
+			projectile_damage_accumulation = 0
+			var player_pos = level_controller.player.global_position
+			create_portal_shield(get_angle_to(player_pos))
 
 
 func _on_critical_hurt_box_damage_registered(damage, type, pos):
@@ -221,6 +260,9 @@ func _on_critical_hurt_box_damage_registered(damage, type, pos):
 		hit_animation_player.play("HeadHit")
 		damage_accumulation += damage
 		hp -= damage
+		
+		if type == Hurtbox.HitType.PROJECTILE:
+			projectile_damage_accumulation += damage
 
 		if hp <= 0:
 			state = BossState.DEAD
@@ -231,6 +273,11 @@ func _on_critical_hurt_box_damage_registered(damage, type, pos):
 
 		elif damage_accumulation >= damage_to_teleport:
 			teleport(pos)
+		
+		elif projectile_damage_accumulation >= projectile_damage_to_create_portal:
+			projectile_damage_accumulation = 0
+			var player_pos = level_controller.player.global_position
+			create_portal_shield(get_angle_to(player_pos))
 
 
 func _on_invincible_timer_timeout():
