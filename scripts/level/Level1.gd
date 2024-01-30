@@ -25,6 +25,31 @@ func create_farthest_player_teleport_portal():
 	portal.teleport_type = Portal.TeleportPortalType.OUT
 	farthest_marker.add_child(portal)
 	portal.global_position = farthest_marker.global_position
+
+	return portal
+
+
+func create_bullet_out_portal_near_player():
+	var portal = portal_scn.instantiate()
+	portal.can_teleport = true
+	portal.only_projectile = true
+	portal.teleport_type = Portal.TeleportPortalType.OUT
+	portal.queue_free_parent = true
+
+	var pivot_node := Node2D.new()
+	add_child(pivot_node)
+	pivot_node.global_position = player.global_position
+	pivot_node.call_deferred("add_child", portal)
+	#pivot_node.add_child(portal)
+	
+	if player.global_position.x < boss.global_position.x:
+		pivot_node.rotation_degrees = randi_range(-90, 90)
+	
+	elif player.global_position.x > boss.global_position.x:
+		pivot_node.rotation_degrees = randi_range(90, 360)
+
+	portal.position.x = randi_range(-150, -100)
+
 	return portal
 
 
