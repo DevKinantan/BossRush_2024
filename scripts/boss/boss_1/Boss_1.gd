@@ -9,15 +9,34 @@ signal player_exit_boss_area
 @onready var attack_pivot := $AttackPivot
 @onready var portal_pivot := $BackBufferCopy/PortalPivot
 @onready var animation_player := $AnimationPlayer
+@onready var hit_animation_player := $HitAnimationPlayer
 @onready var border_detector := $BorderDetector
 @onready var cooldown_timer:Timer = $CooldownTimer
+@onready var invincible_timer:Timer = $InvincibleTimer
 
-@onready var claw_limb_scn = preload("res://scenes/boss/boss_1/claw_limb.tscn")
-@onready var laser_limb_scn = preload("res://scenes/boss/boss_1/laser_limb.tscn")
+var claw_limb_scn = preload("res://scenes/boss/boss_1/claw_limb.tscn")
+var laser_limb_scn = preload("res://scenes/boss/boss_1/laser_limb.tscn")
+var dead_body_scn = preload("res://scenes/boss/boss_1/dead_boss_1.tscn")
+var portal_scn = preload("res://scenes/levels/portal.tscn")
 
 @export var can_attack:bool = false
+@export var max_hp:float = 100.0
+@export var damage_to_teleport: float = 10.0
+
+var hp := max_hp
+var is_invicible: bool = false
 var player_nearby:Player
 var teleport_locations = []
+var damage_accumulation:float = 0.0
+
+enum BossState {
+	ALIVE,
+	TELEPORT,
+	DEAD
+}
+
+var level_controller: Level1
+var state = BossState.ALIVE
 
 
 func defensive_claw_attack(wiggle:bool):
@@ -40,17 +59,38 @@ func defensive_laser_attack():
 
 
 func defensive_portal_attack():
-	pass
+	if not level_controller:
+		return
+	
+	var portal_out = level_controller.create_farthest_player_teleport_portal()
+	var portal_in = portal_scn.instantiate()
+	portal_in.can_teleport = true
+	portal_in.connect("tree_exited", _on_attack_tree_exited)
+
+	portal_in.linked_portal = portal_out
+	portal_out.linked_portal = portal_in
+	
+	attack_pivot.add_child(portal_in)
+	portal_in.position.x = attack_offset
+	portal_in.scale = Vector2(2, 2)
+	
+	var tween = create_tween()
+	tween.tween_property(portal_in, "position", Vector2(200 + attack_offset, 0), 1.0).set_delay(0.7)
+	tween.tween_callback(portal_in.close_portal)
+	tween.tween_callback(portal_out.close_portal)
+	
+	can_attack = false
 
 
 func attack_near_player():
 	attack_pivot.rotation = get_angle_to(player_nearby.global_position)# + body.velocity)
 	
-	var attack_variance:int = randi_range(1, 3)
+	var attack_variance:int = randi_range(1, 4)
 	match attack_variance:
 		1: defensive_claw_attack(false)
 		2: defensive_claw_attack(true)
 		3: defensive_laser_attack()
+		4: defensive_portal_attack()
 
 
 func get_farthest_teleport_positions():
@@ -73,6 +113,7 @@ func teleport(portal_direction: Vector2):
 	animation_player.play("EnterPortal")
 	can_attack = false
 	border_detector.set_is_active(false)
+	damage_accumulation = 0.0
 
 
 func enter_portal_end():
@@ -84,21 +125,17 @@ func exit_portal_end():
 	animation_player.play("NoPortal")
 	can_attack = true
 	border_detector.set_is_active(true)
+	state = BossState.ALIVE
 
 
-func _ready():
-	teleport_locations.append(global_position)
+func dead_end():
+	var dead_body = dead_body_scn.instantiate()
+	get_tree().current_scene.add_child(dead_body)
+	dead_body.global_position = global_position
+	queue_free()
 
 
-func _process(_delta):
-	if player_nearby and can_attack and cooldown_timer.is_stopped() and not animation_player.is_playing():
-		attack_near_player()
-	
-	#velocity = Vector2(0, 50)
-	#move_and_slide()
-
-
-func _physics_process(delta):
+func alive_state():
 	if player_nearby:
 		var direction = global_position.direction_to(player_nearby.global_position).normalized() * -1
 		velocity.x = move_toward(velocity.x, direction.x * speed, 1)
@@ -107,6 +144,32 @@ func _physics_process(delta):
 	else:
 		velocity.x = move_toward(velocity.x, 0, 1)
 		velocity.y = move_toward(velocity.y, 0, 1)
+
+
+func dead_state():
+	pass
+
+
+func _ready():
+	teleport_locations.append(global_position)
+	defensive_claw_attack(false)
+	
+	if get_parent() is Level1:
+		level_controller = get_parent()
+
+
+func _process(_delta):
+	if player_nearby and can_attack and cooldown_timer.is_stopped() and not animation_player.is_playing() and state == BossState.ALIVE:
+		attack_near_player()
+	
+	#velocity = Vector2(0, 50)
+	#move_and_slide()
+
+
+func _physics_process(delta):
+	match state:
+		BossState.ALIVE:
+			alive_state()
 	
 	move_and_slide()
 
@@ -129,3 +192,46 @@ func _on_attack_tree_exited():
 func _on_border_detector_is_coliding(direction):
 	#print(direction)
 	teleport(direction * -1)
+	state = BossState.TELEPORT
+
+
+func _on_hurtbox_damage_registered(damage, type, pos):
+	if not is_invicible:
+		invincible_timer.start()
+		is_invicible = true
+		hit_animation_player.play("BodyHit")
+		damage_accumulation += damage
+		hp -= damage
+
+		if hp <= 0:
+			state = BossState.DEAD
+			velocity = Vector2.ZERO
+			can_attack = false
+			is_invicible = true
+			animation_player.play("Dead")
+		
+		elif damage_accumulation >= damage_to_teleport:
+			teleport(pos)
+
+
+func _on_critical_hurt_box_damage_registered(damage, type, pos):
+	if not is_invicible:
+		invincible_timer.start()
+		is_invicible = true
+		hit_animation_player.play("HeadHit")
+		damage_accumulation += damage
+		hp -= damage
+
+		if hp <= 0:
+			state = BossState.DEAD
+			velocity = Vector2.ZERO
+			can_attack = false
+			is_invicible = true
+			animation_player.play("Dead")
+
+		elif damage_accumulation >= damage_to_teleport:
+			teleport(pos)
+
+
+func _on_invincible_timer_timeout():
+	is_invicible = false

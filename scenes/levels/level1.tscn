@@ -816,7 +816,7 @@ radius = 80.0
 script = ExtResource("1_0i6nl")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color(0.784314, 0.784314, 0.784314, 1)
+color = Color(0.866667, 0.866667, 0.866667, 1)
 
 [node name="TileMap" type="TileMap" parent="."]
 position = Vector2(-2, 0)
@@ -828,10 +828,20 @@ layer_0/tile_data = PackedInt32Array(0, 1, 0, 65536, 1, 0, 131072, 1, 0, 196608,
 visible = false
 collision_layer = 64
 collision_mask = 64
+monitoring = false
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="MapBorderArea"]
 build_mode = 1
 polygon = PackedVector2Array(309, 676, 216, 220, 711, 110, 956, 190, 1271, 116, 1801, 235, 1676, 667, 1783, 1188, 1151, 1230, 1067, 988, 863, 982, 786, 1215, 192, 1116)
+
+[node name="StaticBorder" type="StaticBody2D" parent="."]
+visible = false
+collision_layer = 64
+collision_mask = 64
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBorder"]
+build_mode = 1
+polygon = PackedVector2Array(222, 892, 220, 1120, 255, 1120, 255, 1151, 541, 1152, 543, 1183, 574, 1183, 575, 1216, 766, 1216, 766, 1184, 798, 1184, 798, 1088, 830, 1088, 831, 992, 862, 992, 862, 960, 1086, 960, 1086, 992, 1118, 992, 1118, 1088, 1150, 1088, 1150, 1184, 1182, 1184, 1182, 1216, 1406, 1216, 1406, 1184, 1438, 1184, 1438, 1152, 1726, 1152, 1726, 1120, 1758, 1120, 1758, 897, 1694, 864, 1664, 700, 1671, 156, 300, 105, 297, 546, 325, 683, 280, 862, 254, 867)
 
 [node name="Environment" type="Node2D" parent="."]
 
@@ -1114,11 +1124,25 @@ position = Vector2(1744, 345)
 [node name="TeleportPortalOut" type="Node2D" parent="."]
 
 [node name="OutPortal_1" type="Marker2D" parent="TeleportPortalOut"]
-position = Vector2(345, 819)
+position = Vector2(245, 992)
 metadata/_edit_group_ = true
 
 [node name="OutPortal_2" type="Marker2D" parent="TeleportPortalOut"]
-position = Vector2(597, 719)
+position = Vector2(1627, 1025)
+rotation = 3.14159
+metadata/_edit_group_ = true
+
+[node name="OutPortal_3" type="Marker2D" parent="TeleportPortalOut"]
+position = Vector2(1470, 243)
+rotation = 1.5708
+metadata/_edit_group_ = true
+
+[node name="OutPortal_4" type="Marker2D" parent="TeleportPortalOut"]
+position = Vector2(565, 201)
+metadata/_edit_group_ = true
+
+[node name="OutPortal_5" type="Marker2D" parent="TeleportPortalOut"]
+position = Vector2(361, 294)
 rotation = 1.5708
 metadata/_edit_group_ = true
 
@@ -1137,11 +1161,11 @@ position = Vector2(1290, 439)
 position = Vector2(1310, 767)
 
 [node name="Player" parent="." instance=ExtResource("3_0fgxk")]
-position = Vector2(514, 829)
+position = Vector2(302, 526)
 metadata/_edit_group_ = true
 
 [node name="Boss_1" parent="." instance=ExtResource("15_b7ise")]
-position = Vector2(971, 625)
+position = Vector2(1424, 748)
 can_attack = true
 metadata/_edit_group_ = true
 

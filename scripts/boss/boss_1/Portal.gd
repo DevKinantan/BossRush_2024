@@ -28,7 +28,8 @@ func close_portal_end():
 
 
 func close_portal():
-	animation_player.play("Close")
+	if animation_player:
+		animation_player.play("Close")
 
 
 func rotate_vec2(vec2:Vector2, angle:float):
