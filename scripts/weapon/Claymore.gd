@@ -48,4 +48,4 @@ func _on_hitbox_area_entered(area):
 	if area is Hurtbox:
 		var camera = get_viewport().get_camera_2d()
 		if camera is PlayerCamera2D:
-			camera.shake(300, 0.1)
+			camera.shake(300, 0.2)
