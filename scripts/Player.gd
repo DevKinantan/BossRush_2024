@@ -1,6 +1,8 @@
 class_name Player extends CharacterBody2D
 
 signal gravity_direction_changed(gravity_direction)
+signal hp_changed(current_hp)
+signal mp_changed(current_mp)
 
 const DOUBLETAP_DELAY = .25
 const SPEED = 250.0
@@ -12,8 +14,24 @@ const JUMP_VELOCITY = -350.0
 @onready var weapon_pivot = $WeaponPivot
 @onready var shadow_timer: Timer = $ShadowTimer
 @onready var koyori_timer: Timer = $KoyoriTimer
+@onready var invincible_timer: Timer = $InvincibleTimer
 
 @export var weapon: Weapon
+@export var max_hp: int = 10
+@export var max_mp: float = 100.0
+@export var levitate_cost: float = 10.0
+@export var mp_recovery: float = 20.0
+@export var rotate_gravity_cost: float = 10.0
+
+var hp: int = max_hp:
+	set(new_value):
+		hp = clamp(new_value, 0, max_hp)
+		hp_changed.emit(hp)
+
+var mp: float = max_mp:
+	set(new_value):
+		mp = clamp(new_value, 0, max_mp)
+		mp_changed.emit(mp)
 
 var player_shadow_scn = preload("res://scenes/player/player_shadow.tscn")
 
@@ -32,7 +50,9 @@ enum PlayerState {
 	WALK,
 	JUMP,
 	LEVITATE,
-	ATTACK,
+	DAMAGED,
+	DEAD,
+	FALL,
 }
 
 var state := PlayerState.IDLE
@@ -74,10 +94,10 @@ func walk_state():
 			koyori_timer.start()
 			in_koyori_jump = true
 
-		if not koyori_timer.is_stopped():
-			get_jump_input()
+		#if not koyori_timer.is_stopped():
+			#get_jump_input()
 
-		else: 
+		if koyori_timer.is_stopped(): 
 			character_animation.stop()
 			state = PlayerState.JUMP
 			in_koyori_jump = false
@@ -94,9 +114,13 @@ func jump_state(delta):
 		character_animation.stop()
 		state = PlayerState.IDLE
 		var magnitude = (abs(last_velocity.x) + abs(last_velocity.y)) / 5
-		shake_camera(magnitude)
+		shake_camera(magnitude, 0.3)
+		if magnitude > 180:
+			character_animation.play("Fall")
+			state = PlayerState.FALL
+			velocity = Vector2.ZERO
 	
-	if Input.is_action_just_pressed("ui_jump"):
+	if Input.is_action_just_pressed("ui_jump") and (mp > 0):
 		velocity = Vector2.ZERO
 		character_animation.stop()
 		var tween = create_tween()
@@ -107,9 +131,9 @@ func jump_state(delta):
 func levitate_state(delta):
 	character_animation.play("Jump")
 
-	if Input.is_action_just_released("ui_jump"):
+	if Input.is_action_just_released("ui_jump") or (mp <= 0):
 		var tween = create_tween()
-		tween.tween_property(character_lighting, "energy", 0.5, 0.2)
+		tween.tween_property(character_lighting, "energy", 1.0, 0.2)
 		state = PlayerState.JUMP
 	
 	if not is_on_floor() :
@@ -118,12 +142,22 @@ func levitate_state(delta):
 	elif is_on_floor():
 		character_animation.stop()
 		var tween = create_tween()
-		tween.tween_property(character_lighting, "energy", 0.5, 0.2)
+		tween.tween_property(character_lighting, "energy", 1.0, 0.2)
 		state = PlayerState.IDLE
 		var magnitude = (abs(last_velocity.x) + abs(last_velocity.y)) / 5
 		shake_camera(magnitude)
 	
 	get_move_direction_input()
+
+
+func damaged_state(delta):
+	if not is_on_floor():
+		velocity += (gravity * delta) * gravity_direction
+
+
+func dead_state(delta):
+	if not is_on_floor():
+		velocity += (gravity * delta) * gravity_direction
 
 
 func rotate_gravity(angle_degree:float):
@@ -204,10 +238,10 @@ func get_jump_input():
 		in_koyori_jump = false
 
 
-func shake_camera(magnitude:int):
+func shake_camera(magnitude:int, duration:float = 0.2):
 	var camera = get_viewport().get_camera_2d()
 	if camera is PlayerCamera2D:
-		camera.shake(magnitude, 0.2)
+		camera.shake(magnitude, duration)
 
 
 func is_mouse_distance_less_than(n:int):
@@ -215,8 +249,18 @@ func is_mouse_distance_less_than(n:int):
 	return distance < n
 
 
+func fall_end():
+	state = PlayerState.IDLE
+
+
+func _ready():
+	hp = max_hp
+	mp = max_mp
+
+
 func _process(delta):
 	#print(state)
+	#print(mp)
 	doubletap_time -= delta
 	
 	if Input.is_action_just_pressed("ui_swap_weapon"):
@@ -244,22 +288,34 @@ func _physics_process(delta):
 		
 		PlayerState.LEVITATE:
 			levitate_state(delta)
+			mp -= (levitate_cost * delta)
+		
+		PlayerState.DAMAGED:
+			damaged_state(delta)
+		
+		PlayerState.DEAD:
+			dead_state(delta)
+	
+	if is_on_floor() and (mp < max_mp):
+		mp += (mp_recovery * delta)
 	
 	if Input.is_action_pressed("ui_change_gravity"):
-		var target_gravity_degree = 0
+		if (mp >= rotate_gravity_cost):
+			var target_gravity_degree = 0
+			if Input.is_action_pressed("ui_up"):
+				target_gravity_degree = rad_to_deg(gravity_direction.angle_to(Vector2.UP))
+			elif Input.is_action_pressed("ui_left"):
+				target_gravity_degree = rad_to_deg(gravity_direction.angle_to(Vector2.LEFT))
+			elif Input.is_action_pressed("ui_down"):
+				target_gravity_degree = rad_to_deg(gravity_direction.angle_to(Vector2.DOWN))
+			elif Input.is_action_pressed("ui_right"):
+				target_gravity_degree = rad_to_deg(gravity_direction.angle_to(Vector2.RIGHT))
 
-		if Input.is_action_pressed("ui_up"):
-			target_gravity_degree = rad_to_deg(gravity_direction.angle_to(Vector2.UP))
-		elif Input.is_action_pressed("ui_left"):
-			target_gravity_degree = rad_to_deg(gravity_direction.angle_to(Vector2.LEFT))
-		elif Input.is_action_pressed("ui_down"):
-			target_gravity_degree = rad_to_deg(gravity_direction.angle_to(Vector2.DOWN))
-		elif Input.is_action_pressed("ui_right"):
-			target_gravity_degree = rad_to_deg(gravity_direction.angle_to(Vector2.RIGHT))
+			target_gravity_degree = round(target_gravity_degree)
+			if target_gravity_degree:
+				rotate_character(rad_to_deg(rotate_gravity(target_gravity_degree)) - 90)
 
-		target_gravity_degree = round(target_gravity_degree)
-		if target_gravity_degree:
-			rotate_character(rad_to_deg(rotate_gravity(target_gravity_degree)) - 90)
+			mp -= rotate_gravity_cost
 
 	if weapon:
 		if weapon.weapon_type == Weapon.WeaponType.RANGE:
@@ -281,7 +337,7 @@ func _physics_process(delta):
 func _input(event):
 	# Double tap AWSD to change gravity
 	if event is InputEventKey and event.is_pressed() and not event.is_echo():
-		if last_keycode == event.keycode and doubletap_time >= 0: 
+		if (last_keycode == event.keycode) and (doubletap_time >= 0) and (mp >= rotate_gravity_cost): 
 			#print("DOUBLETAP: ", String.chr(event.keycode))
 			var target_gravity_degree = 0
 			if String.chr(event.keycode) == "W":
@@ -297,6 +353,7 @@ func _input(event):
 			if target_gravity_degree:
 				rotate_character(rad_to_deg(rotate_gravity(target_gravity_degree)) - 90)
 
+			mp -= rotate_gravity_cost
 			last_keycode = 0
 
 		else:
@@ -306,7 +363,7 @@ func _input(event):
 	#if event is InputEventMouseMotion:
 		#rotate_weapon()
 
-	if event.is_action_pressed("ui_attack") and not event.is_echo():
+	if event.is_action_pressed("ui_attack") and not event.is_echo() and state != PlayerState.DAMAGED and state != PlayerState.DEAD:
 		if weapon:
 			if weapon.weapon_type == Weapon.WeaponType.MELEE:
 				rotate_weapon(global_position.angle_to_point(get_global_mouse_position()) - rotation)
@@ -322,3 +379,25 @@ func _on_shadow_timer_timeout():
 	player_shadow.flip_h = character_sprite.flip_h
 	
 	get_tree().current_scene.add_child(player_shadow)
+
+
+func _on_hurtxox_damage_registered(damage, type, pos):
+	if invincible_timer.is_stopped():
+		hp -= 1
+		shake_camera(300, 0.3)
+		state = PlayerState.DAMAGED
+		character_animation.play("Damaged")
+		invincible_timer.start()
+
+		velocity = global_position.direction_to(pos) * -SPEED
+
+
+func _on_invincible_timer_timeout():
+	if hp <= 0:
+		state = PlayerState.DEAD
+		if character_animation.is_playing():
+			character_animation.stop()
+		character_animation.play("Dead")
+		velocity = Vector2.ZERO
+	else:
+		state = PlayerState.IDLE

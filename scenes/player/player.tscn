@@ -1,7 +1,7 @@
-[gd_scene load_steps=25 format=3 uid="uid://dree0fqsr8bo0"]
+[gd_scene load_steps=28 format=3 uid="uid://dree0fqsr8bo0"]
 
 [ext_resource type="Script" path="res://scripts/Player.gd" id="1_l1vsu"]
-[ext_resource type="Texture2D" uid="uid://duliqo0toy4g7" path="res://assets/animation/player/character_sheet.png" id="2_mbxj6"]
+[ext_resource type="Texture2D" uid="uid://dhmmbu6op4n34" path="res://assets/animation/player/character gravty sheet.png" id="3_3a1gh"]
 [ext_resource type="Texture2D" uid="uid://v6fq5y17q1y8" path="res://assets/Envi/light.png" id="3_qo5pe"]
 [ext_resource type="PackedScene" uid="uid://blmsd72bwr4js" path="res://scenes/weapon/Pistol.tscn" id="4_2mko8"]
 [ext_resource type="PackedScene" uid="uid://d31un6l3w8fnt" path="res://scenes/weapon/claymore.tscn" id="5_i6hh2"]
@@ -40,7 +40,43 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 1,
-"values": [5, 6, 7, 8, 9]
+"values": [0, 1, 2, 3, 4]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CharacterLighting:energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("WeaponPivot:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:collision_layer")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [129]
 }
 
 [sub_resource type="Animation" id="Animation_fqg6o"]
@@ -57,7 +93,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [11]
+"values": [15]
 }
 
 [sub_resource type="Animation" id="Animation_brb30"]
@@ -73,6 +109,54 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CharacterLighting:color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.513726, 0.780392, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CharacterLighting:energy")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [2.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("WeaponPivot:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:collision_layer")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [129]
 }
 
 [sub_resource type="Animation" id="Animation_i3se2"]
@@ -90,7 +174,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.15, 0.3, 0.45),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [10, 11, 12, 13]
+"values": [14, 15, 16, 17]
 }
 tracks/1/type = "method"
 tracks/1/imported = false
@@ -110,8 +194,134 @@ tracks/1/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_akwus"]
+resource_name = "Damaged"
+length = 0.5
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [22, 7]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CharacterLighting:color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(0.513726, 0.780392, 1, 1), Color(1, 0, 0, 1), Color(0.513726, 0.780392, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CharacterLighting:energy")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [1.0, 2.0, 1.0]
+}
+
+[sub_resource type="Animation" id="Animation_vu0y6"]
+resource_name = "Dead"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [7, 22, 23, 24, 25, 26, 27]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CharacterLighting:energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("WeaponPivot:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:collision_layer")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [128]
+}
+
+[sub_resource type="Animation" id="Animation_rw8e2"]
+resource_name = "Fall"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [21, 22, 2]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"fall_end"
+}]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_u71k4"]
 _data = {
+"Damaged": SubResource("Animation_akwus"),
+"Dead": SubResource("Animation_vu0y6"),
+"Fall": SubResource("Animation_rw8e2"),
 "Idle": SubResource("Animation_0iivn"),
 "Jump": SubResource("Animation_fqg6o"),
 "RESET": SubResource("Animation_brb30"),
@@ -119,24 +329,28 @@ _data = {
 }
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("weapon")]
+collision_layer = 129
+collision_mask = 129
 script = ExtResource("1_l1vsu")
 weapon = NodePath("WeaponPivot/Claymore")
+
+[node name="PlayerUI" type="CanvasLayer" parent="."]
 
 [node name="PlayerCamera" parent="." instance=ExtResource("6_p4e1i")]
 zoom = Vector2(0.8, 0.8)
 
 [node name="CharacterSprite" type="Sprite2D" parent="."]
-texture = ExtResource("2_mbxj6")
+texture = ExtResource("3_3a1gh")
 offset = Vector2(-3, 0)
-hframes = 5
-vframes = 3
+hframes = 7
+vframes = 5
 frame = 5
 
 [node name="CharacterLighting" type="PointLight2D" parent="."]
 position = Vector2(1.99994, 1.00006)
 scale = Vector2(0.11747, 0.125937)
 color = Color(0.513726, 0.780392, 1, 1)
-energy = 0.5
+energy = 2.0
 range_z_min = -6
 texture = ExtResource("3_qo5pe")
 texture_scale = 2.19
@@ -146,12 +360,12 @@ metadata/_edit_lock_ = true
 shape = SubResource("CapsuleShape2D_2ewdk")
 
 [node name="WeaponPivot" type="Marker2D" parent="."]
+visible = false
 
 [node name="Pistol" parent="WeaponPivot" instance=ExtResource("4_2mko8")]
 visible = false
 
 [node name="Claymore" parent="WeaponPivot" instance=ExtResource("5_i6hh2")]
-z_index = 1
 
 [node name="Footsteps" type="Node" parent="."]
 script = ExtResource("7_rto0k")
@@ -202,4 +416,10 @@ wait_time = 0.05
 wait_time = 0.1
 one_shot = true
 
+[node name="InvincibleTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[connection signal="damage_registered" from="Hurtxox" to="." method="_on_hurtxox_damage_registered"]
 [connection signal="timeout" from="ShadowTimer" to="." method="_on_shadow_timer_timeout"]
+[connection signal="timeout" from="InvincibleTimer" to="." method="_on_invincible_timer_timeout"]

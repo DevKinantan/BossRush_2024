@@ -17,6 +17,10 @@ func _ready():
 	pass
 
 
+func trigger_hurtbox(damage, hit_type, pos):
+	damage_registered.emit(damage * damage_multiplier, hit_type, pos)
+
+
 func _on_area_entered(area):
 	if area is Hitbox:
 		damage_registered.emit(area.damage * damage_multiplier, HitType.MELEE, area.global_position)
