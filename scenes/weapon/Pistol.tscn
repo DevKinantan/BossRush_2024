@@ -16,6 +16,38 @@
 [ext_resource type="AudioStream" uid="uid://6m6jmuqnxm1s" path="res://assets/SFX/pistol/reload_6.wav" id="13_g2wjn"]
 [ext_resource type="AudioStream" uid="uid://bahfw68hdqolr" path="res://assets/SFX/pistol/empty.wav" id="15_n5w6t"]
 
+[sub_resource type="Animation" id="Animation_38d06"]
+resource_name = "Empty"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2]
+}
+
+[sub_resource type="Animation" id="Animation_1n7ef"]
+resource_name = "Normal"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
 [sub_resource type="Animation" id="Animation_qcvt5"]
 length = 0.001
 tracks/0/type = "value"
@@ -123,38 +155,6 @@ tracks/4/keys = {
 "values": [1.0, 0.0]
 }
 
-[sub_resource type="Animation" id="Animation_38d06"]
-resource_name = "Empty"
-length = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [2]
-}
-
-[sub_resource type="Animation" id="Animation_1n7ef"]
-resource_name = "Normal"
-length = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_x5e1t"]
 _data = {
 "Empty": SubResource("Animation_38d06"),
@@ -169,6 +169,7 @@ position = Vector2(20, 0)
 texture = ExtResource("1_s4iyb")
 hframes = 3
 script = ExtResource("2_vc5ic")
+total_bullets = 21
 damage = 1
 weapon_type = 1
 
