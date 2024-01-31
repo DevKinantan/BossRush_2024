@@ -8,6 +8,7 @@ enum AttackPattern {
 	NOT_MOVING,
 }
 var attack_pattern = AttackPattern.NOT_MOVING
+var queue_free_parent:bool = false
 
 
 func hand_move_animation_end():
@@ -21,7 +22,10 @@ func _on_portal_portal_opened():
 
 
 func _on_portal_portal_closed():
-	queue_free()
+	if queue_free_parent:
+		get_parent().queue_free()
+	else:
+		queue_free()
 
 
 func _on_shoot_timer_timeout():

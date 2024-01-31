@@ -2,6 +2,7 @@ extends Node2D
 
 @onready var animation_player:AnimationPlayer = $AnimationPlayer
 
+var queue_free_parent:bool = false
 var wiggle:bool = true
 
 
@@ -17,4 +18,7 @@ func _on_portal_portal_opened():
 
 
 func _on_portal_portal_closed():
-	queue_free()
+	if queue_free_parent:
+		get_parent().queue_free()
+	else :
+		queue_free()

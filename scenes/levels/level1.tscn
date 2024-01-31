@@ -815,8 +815,12 @@ radius = 80.0
 [node name="Level1" type="Node2D"]
 script = ExtResource("1_0i6nl")
 
+[node name="AttackTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+autostart = true
+
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color(0.866667, 0.866667, 0.866667, 1)
 
 [node name="TileMap" type="TileMap" parent="."]
 position = Vector2(-2, 0)

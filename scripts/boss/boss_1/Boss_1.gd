@@ -217,7 +217,9 @@ func _on_attack_tree_exited():
 	can_attack = true
 	if not cooldown_timer.is_stopped():
 		cooldown_timer.stop()
-	cooldown_timer.start()
+	
+	if hp > 0:
+		cooldown_timer.start()
 
 
 func _on_border_detector_is_coliding(direction):
