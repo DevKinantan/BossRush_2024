@@ -1153,16 +1153,16 @@ metadata/_edit_group_ = true
 [node name="BossPortalLocation" type="Node2D" parent="."]
 
 [node name="LeftDown" type="Marker2D" parent="BossPortalLocation"]
-position = Vector2(599, 793)
+position = Vector2(596, 894)
 
 [node name="LeftUp" type="Marker2D" parent="BossPortalLocation"]
-position = Vector2(693, 437)
+position = Vector2(693, 514)
 
 [node name="RightUp" type="Marker2D" parent="BossPortalLocation"]
-position = Vector2(1290, 439)
+position = Vector2(1275, 447)
 
 [node name="RightDown" type="Marker2D" parent="BossPortalLocation"]
-position = Vector2(1310, 767)
+position = Vector2(1389, 851)
 
 [node name="Player" parent="." instance=ExtResource("3_0fgxk")]
 position = Vector2(302, 526)
@@ -1183,3 +1183,5 @@ metadata/_edit_group_ = true
 [connection signal="body_exited" from="Environment/Lamp4" to="Environment/Lamp4" method="_on_body_exited"]
 [connection signal="body_entered" from="Environment/Lamp5" to="Environment/Lamp5" method="_on_body_entered"]
 [connection signal="body_exited" from="Environment/Lamp5" to="Environment/Lamp5" method="_on_body_exited"]
+[connection signal="boss_damaged" from="Boss_1" to="." method="_on_boss_1_boss_damaged"]
+[connection signal="boss_dead" from="Boss_1" to="." method="_on_boss_1_boss_dead"]

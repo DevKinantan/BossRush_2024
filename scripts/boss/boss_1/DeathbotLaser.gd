@@ -6,6 +6,8 @@ signal laser_stop
 @onready var animation_player = $AnimationPlayer
 @onready var laser = $Laser
 
+@export var damage: float = 1.0
+
 
 func shoot_laser():
 	animation_player.play("Preshoot")

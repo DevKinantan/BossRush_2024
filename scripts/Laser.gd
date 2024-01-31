@@ -29,6 +29,7 @@ func _physics_process(_delta):
 			cast_point = to_local(get_collision_point())
 			collision_particle.position = cast_point
 			collision_particle.emitting = true
+			area.trigger_hurtbox(get_parent().damage, Hurtbox.HitType.LASER, global_position)
 		else:
 			add_exception(area)
 			collision_particle.emitting = false

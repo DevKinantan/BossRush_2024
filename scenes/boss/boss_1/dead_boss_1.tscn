@@ -1,5 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://bitmj7pgisbiq"]
+[gd_scene load_steps=4 format=3 uid="uid://bitmj7pgisbiq"]
 
+[ext_resource type="Script" path="res://scripts/boss/boss_1/dead_boss_1.gd" id="1_xogjj"]
 [ext_resource type="Texture2D" uid="uid://cj3hjoitiq0t7" path="res://assets/animation/boss_1/boss_idle_head.png" id="1_y1s0k"]
 [ext_resource type="Texture2D" uid="uid://cac2mdgwkq1lw" path="res://assets/animation/boss_1/boss_idle.png" id="2_8is53"]
 
@@ -9,6 +10,9 @@ collision_layer = 64
 collision_mask = 64
 mass = 100.0
 freeze_mode = 1
+max_contacts_reported = 1
+contact_monitor = true
+script = ExtResource("1_xogjj")
 
 [node name="Head" type="Sprite2D" parent="."]
 scale = Vector2(3, 3)
@@ -21,4 +25,6 @@ texture = ExtResource("2_8is53")
 hframes = 6
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-polygon = PackedVector2Array(-36, -84, -86, -72, -85, -31, -100, -30, -97, 11, -72, 39, -72, 46, -86, 47, -86, 58, -79, 70, -68, 69, -68, 88, -43, 106, -17, 99, -11, 108, 11, 108, 22, 97, 38, 100, 63, 80, 64, 68, 77, 69, 89, 55, 87, 47, 73, 46, 72, 35, 96, 9, 100, -31, 82, -30, 81, -38, 87, -44, 86, -75, 34, -85, 34, -98, 11, -109, -13, -108, -30, -98)
+polygon = PackedVector2Array(-36, -84, -86, -72, -85, -31, -100, -30, -97, 11, -72, 39, -72, 46, -86, 47, -86, 58, -79, 70, -68, 69, -68, 88, -42, 103, -30, 109, -12, 112, 0, 112, 12, 108, 26, 104, 38, 100, 63, 80, 64, 68, 77, 69, 89, 55, 87, 47, 73, 46, 72, 35, 96, 9, 100, -31, 82, -30, 81, -38, 87, -44, 86, -75, 34, -85, 34, -98, 11, -109, -13, -108, -30, -98)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

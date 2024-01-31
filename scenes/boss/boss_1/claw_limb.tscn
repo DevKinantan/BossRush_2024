@@ -1,13 +1,18 @@
-[gd_scene load_steps=22 format=3 uid="uid://c5pqbkhk5ucos"]
+[gd_scene load_steps=25 format=3 uid="uid://c5pqbkhk5ucos"]
 
 [ext_resource type="Script" path="res://scripts/boss/boss_1/ClawLimb.gd" id="1_a0fgp"]
 [ext_resource type="PackedScene" uid="uid://cvs7l31kped8o" path="res://scenes/boss/boss_1/shoulder.tscn" id="1_ndf41"]
 [ext_resource type="PackedScene" uid="uid://c8rj82ls8w12x" path="res://scenes/boss/boss_1/deathbot_claw.tscn" id="2_yy28c"]
 [ext_resource type="Texture2D" uid="uid://dmfsukjj6bgua" path="res://assets/animation/boss_1/boss_animation_portal_weapon.png" id="3_cvcde"]
+[ext_resource type="PackedScene" uid="uid://d0w16a01kpbqc" path="res://scenes/hitbox.tscn" id="4_dtuci"]
+[ext_resource type="Script" path="res://scripts/boss/boss_1/DeathbotClaw.gd" id="4_koyeh"]
 [ext_resource type="Shader" path="res://shader/transparent_mask.gdshader" id="4_qpn6x"]
 [ext_resource type="Texture2D" uid="uid://5a6bulm7xirg" path="res://assets/sprites/transparent_mask.png" id="5_rqgos"]
 [ext_resource type="Script" path="res://scripts/boss/boss_1/Portal.gd" id="6_ussjy"]
 [ext_resource type="Texture2D" uid="uid://du2emj3dwv4vw" path="res://assets/sprites/light.png" id="7_8jdbq"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_08q3s"]
+radius = 32.45
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_42px8"]
 shader = ExtResource("4_qpn6x")
@@ -256,6 +261,18 @@ tracks/1/keys = {
 "method": &"play"
 }]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("BackBufferCopy/Limb/DeathbotClaw/Hitbox/CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.9),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
 
 [sub_resource type="Animation" id="Animation_g3adg"]
 resource_name = "HandMove"
@@ -268,7 +285,7 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.9),
-"transitions": PackedFloat32Array(0.2, 10),
+"transitions": PackedFloat32Array(3.80546, 10),
 "update": 0,
 "values": [Vector2(-140, 0), Vector2(100, 0)]
 }
@@ -369,6 +386,18 @@ tracks/8/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [0.0]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("BackBufferCopy/Limb/DeathbotClaw/Hitbox/CollisionShape2D:disabled")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
 }
 
 [sub_resource type="Animation" id="Animation_hnutj"]
@@ -608,6 +637,18 @@ tracks/8/keys = {
 "update": 0,
 "values": [0.0]
 }
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("BackBufferCopy/Limb/DeathbotClaw/Hitbox/CollisionShape2D:disabled")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_1aexc"]
 _data = {
@@ -627,7 +668,6 @@ copy_mode = 2
 [node name="Limb" type="Node2D" parent="BackBufferCopy"]
 position = Vector2(-140, 0)
 rotation = -1.5708
-metadata/_edit_group_ = true
 
 [node name="Shoulder" parent="BackBufferCopy/Limb" instance=ExtResource("1_ndf41")]
 
@@ -649,9 +689,19 @@ rotation = 1.39626
 [node name="DeathbotClaw" parent="BackBufferCopy/Limb" instance=ExtResource("2_yy28c")]
 position = Vector2(30, 125)
 rotation = -0.523599
+script = ExtResource("4_koyeh")
 
 [node name="RF2" parent="BackBufferCopy/Limb/DeathbotClaw/Skeleton2D/Base/RF1" index="1"]
 scale = Vector2(0.999999, 0.999999)
+
+[node name="Hitbox" parent="BackBufferCopy/Limb/DeathbotClaw" instance=ExtResource("4_dtuci")]
+position = Vector2(-2.44808, 48.239)
+collision_layer = 8
+collision_mask = 8
+
+[node name="CollisionShape2D" parent="BackBufferCopy/Limb/DeathbotClaw/Hitbox" index="0"]
+position = Vector2(-2.36603, 2.09805)
+shape = SubResource("CircleShape2D_08q3s")
 
 [node name="Mask" type="Sprite2D" parent="BackBufferCopy"]
 light_mask = 0
@@ -713,3 +763,4 @@ libraries = {
 
 [editable path="BackBufferCopy/Limb/Shoulder"]
 [editable path="BackBufferCopy/Limb/DeathbotClaw"]
+[editable path="BackBufferCopy/Limb/DeathbotClaw/Hitbox"]

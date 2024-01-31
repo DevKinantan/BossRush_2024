@@ -4,12 +4,13 @@ class_name Level1 extends Node2D
 @onready var teleport_portal_out := $TeleportPortalOut
 @onready var attack_timer := $AttackTimer
 
-@export var num_of_attack:int = 2
+@export var num_of_attack:int = 0
 
 var portal_scn := preload("res://scenes/levels/portal.tscn")
 var claw_limb_scn := preload("res://scenes/boss/boss_1/claw_limb.tscn")
 var laser_limb_scn := preload("res://scenes/boss/boss_1/laser_limb.tscn")
 
+var boss_is_dead: bool = false
 var can_attack: bool = true
 var teleport_portal_out_markers = []
 var boss: Enemy
@@ -107,7 +108,7 @@ func _ready():
 
 
 func _process(_delta):
-	if can_attack and  attack_timer.is_stopped():
+	if can_attack and attack_timer.is_stopped() and boss != null and not boss_is_dead:
 		for i in range(num_of_attack):
 			var attack_type: int = randi_range(1, 2)
 			match attack_type:
@@ -118,3 +119,16 @@ func _process(_delta):
 func _on_attack_finsihed():
 	can_attack = true
 	attack_timer.start()
+
+
+func _on_boss_1_boss_dead():
+	boss = null
+	boss_is_dead = true
+
+
+func _on_boss_1_boss_damaged(current_hp):
+	if current_hp <= 50.0:
+		num_of_attack = 2
+
+	elif current_hp <= 80.0:
+		num_of_attack = 1

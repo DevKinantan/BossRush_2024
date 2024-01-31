@@ -2,6 +2,8 @@ extends Enemy
 
 signal player_enter_boss_area
 signal player_exit_boss_area
+signal boss_dead
+signal boss_damaged(current_hp)
 
 @export var attack_offset: int = 140
 @export var speed: int = 50
@@ -245,6 +247,7 @@ func _on_hurtbox_damage_registered(damage, type, pos):
 			can_attack = false
 			is_invicible = true
 			animation_player.play("Dead")
+			emit_signal("boss_dead")
 
 		elif damage_accumulation >= damage_to_teleport:
 			teleport(pos)
@@ -253,6 +256,8 @@ func _on_hurtbox_damage_registered(damage, type, pos):
 			projectile_damage_accumulation = 0
 			var player_pos = level_controller.player.global_position
 			create_portal_shield(get_angle_to(player_pos))
+		
+		emit_signal("boss_damaged", hp)
 
 
 func _on_critical_hurt_box_damage_registered(damage, type, pos):
@@ -272,6 +277,7 @@ func _on_critical_hurt_box_damage_registered(damage, type, pos):
 			can_attack = false
 			is_invicible = true
 			animation_player.play("Dead")
+			emit_signal("boss_dead")
 
 		elif damage_accumulation >= damage_to_teleport:
 			teleport(pos)
@@ -280,6 +286,8 @@ func _on_critical_hurt_box_damage_registered(damage, type, pos):
 			projectile_damage_accumulation = 0
 			var player_pos = level_controller.player.global_position
 			create_portal_shield(get_angle_to(player_pos))
+		
+		emit_signal("boss_damaged", hp)
 
 
 func _on_invincible_timer_timeout():
