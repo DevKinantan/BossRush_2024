@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://db6h1s2lrbslr"]
+[gd_scene load_steps=7 format=3 uid="uid://db6h1s2lrbslr"]
 
 [ext_resource type="Script" path="res://scripts/PickUpWeapon.gd" id="1_knoja"]
 [ext_resource type="Texture2D" uid="uid://fnb7qfltoh56" path="res://assets/animation/weapon/claymore2.png" id="2_4i5jp"]
 [ext_resource type="Texture2D" uid="uid://du2emj3dwv4vw" path="res://assets/sprites/light.png" id="3_loxim"]
+[ext_resource type="Texture2D" uid="uid://x2n7qwqjthew" path="res://assets/UI/E.png" id="4_ut5hx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m4upm"]
 size = Vector2(37, 26.375)
@@ -50,6 +51,13 @@ offset_top = -37.0
 offset_right = 5.0
 offset_bottom = -14.0
 text = "E"
+
+[node name="E" type="Sprite2D" parent="."]
+position = Vector2(0, -24)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("4_ut5hx")
+hframes = 2
+frame = 1
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://dv0tvs0i3ysyr"]
+[gd_scene load_steps=8 format=3 uid="uid://dv0tvs0i3ysyr"]
 
 [ext_resource type="Script" path="res://scripts/PickUpWeapon.gd" id="1_nxvam"]
 [ext_resource type="PackedScene" uid="uid://blmsd72bwr4js" path="res://scenes/weapon/Pistol.tscn" id="2_1jym0"]
 [ext_resource type="Texture2D" uid="uid://d1xf7yu2lajuv" path="res://assets/animation/weapon/pistol-Sheet.png" id="3_5dg7o"]
 [ext_resource type="Texture2D" uid="uid://du2emj3dwv4vw" path="res://assets/sprites/light.png" id="4_o05ye"]
+[ext_resource type="Texture2D" uid="uid://x2n7qwqjthew" path="res://assets/UI/E.png" id="5_41jy2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m4upm"]
 size = Vector2(37, 26.375)
@@ -51,6 +52,14 @@ offset_top = -37.0
 offset_right = 5.0
 offset_bottom = -14.0
 text = "E"
+
+[node name="E" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -24)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("5_41jy2")
+hframes = 2
+frame = 1
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

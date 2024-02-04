@@ -1,22 +1,22 @@
-[gd_scene load_steps=8 format=3 uid="uid://dh5eeh0ifk43k"]
+[gd_scene load_steps=8 format=3 uid="uid://dvqto08irfxu0"]
 
-[ext_resource type="Script" path="res://scripts/PickUpWeapon.gd" id="1_e1y8o"]
-[ext_resource type="PackedScene" uid="uid://bahb01fdrg2bt" path="res://scenes/weapon/ka2075.tscn" id="2_4xiwy"]
-[ext_resource type="Texture2D" uid="uid://ierb0ljaqmf6" path="res://assets/animation/weapon/Ak2075.png" id="3_gv0h4"]
-[ext_resource type="Texture2D" uid="uid://du2emj3dwv4vw" path="res://assets/sprites/light.png" id="4_ry5pf"]
-[ext_resource type="Texture2D" uid="uid://x2n7qwqjthew" path="res://assets/UI/E.png" id="5_bfxk5"]
+[ext_resource type="Script" path="res://scripts/PickUpWeapon.gd" id="1_8acqy"]
+[ext_resource type="PackedScene" uid="uid://dqmulr4gwdkc0" path="res://scenes/weapon/blaster.tscn" id="2_prmsy"]
+[ext_resource type="Texture2D" uid="uid://w154icou762u" path="res://assets/animation/weapon/railgun.png" id="3_5a4hd"]
+[ext_resource type="Texture2D" uid="uid://du2emj3dwv4vw" path="res://assets/sprites/light.png" id="4_c6tvl"]
+[ext_resource type="Texture2D" uid="uid://x2n7qwqjthew" path="res://assets/UI/E.png" id="5_kchvt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m4upm"]
 size = Vector2(37, 26.375)
 
-[sub_resource type="Gradient" id="Gradient_f86h3"]
+[sub_resource type="Gradient" id="Gradient_nw5kr"]
 offsets = PackedFloat32Array(0, 0.669725, 1)
-colors = PackedColorArray(1, 0.792157, 0.156863, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+colors = PackedColorArray(0.984314, 1, 0, 1, 1, 0.101961, 0.0705882, 1, 1, 1, 1, 0)
 
-[node name="KA2075Spawn" type="Node2D"]
+[node name="BlasterSpawn" type="Node2D"]
 z_index = -1
-script = ExtResource("1_e1y8o")
-weapon_scn = ExtResource("2_4xiwy")
+script = ExtResource("1_8acqy")
+weapon_scn = ExtResource("2_prmsy")
 metadata/_edit_group_ = true
 
 [node name="Area2D" type="Area2D" parent="."]
@@ -33,22 +33,18 @@ gravity = Vector2(0, 0)
 initial_velocity_min = 50.0
 initial_velocity_max = 50.0
 scale_amount_max = 2.0
-color_ramp = SubResource("Gradient_f86h3")
+color_ramp = SubResource("Gradient_nw5kr")
 
 [node name="WeaponSprite" type="Sprite2D" parent="."]
-light_mask = 0
-position = Vector2(4, -4)
-rotation = -0.785398
-scale = Vector2(0.7, 0.7)
-texture = ExtResource("3_gv0h4")
-hframes = 4
+rotation = -0.261799
+texture = ExtResource("3_5a4hd")
+hframes = 18
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-position = Vector2(5, -5)
-color = Color(0.498039, 1, 1, 1)
-texture = ExtResource("4_ry5pf")
+color = Color(0.482353, 1, 1, 1)
+texture = ExtResource("4_c6tvl")
 offset = Vector2(-5, 5)
-texture_scale = 0.2
+texture_scale = 0.15
 
 [node name="Label" type="Label" parent="."]
 offset_left = -4.0
@@ -58,9 +54,10 @@ offset_bottom = -14.0
 text = "E"
 
 [node name="E" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(0, -24)
 scale = Vector2(1.5, 1.5)
-texture = ExtResource("5_bfxk5")
+texture = ExtResource("5_kchvt")
 hframes = 2
 frame = 1
 

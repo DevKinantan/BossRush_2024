@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://x0hkf6miinsc"]
+[gd_scene load_steps=8 format=3 uid="uid://x0hkf6miinsc"]
 
 [ext_resource type="Script" path="res://scripts/PickUpWeapon.gd" id="1_gfcql"]
 [ext_resource type="PackedScene" uid="uid://bgn054xlf3r4e" path="res://scenes/weapon/rapier.tscn" id="2_50c5x"]
 [ext_resource type="Texture2D" uid="uid://cys5ybxsagbv1" path="res://assets/animation/weapon/UltRapier.png" id="2_tnfuv"]
 [ext_resource type="Texture2D" uid="uid://du2emj3dwv4vw" path="res://assets/sprites/light.png" id="3_bgtyn"]
+[ext_resource type="Texture2D" uid="uid://x2n7qwqjthew" path="res://assets/UI/E.png" id="5_l6x2s"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m4upm"]
 size = Vector2(37, 26.375)
@@ -35,7 +36,8 @@ scale_amount_max = 2.0
 color_ramp = SubResource("Gradient_o1rtx")
 
 [node name="WeaponSprite" type="Sprite2D" parent="."]
-rotation = 2.79253
+position = Vector2(0, 2)
+rotation = 2.61799
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("2_tnfuv")
 hframes = 10
@@ -52,6 +54,13 @@ offset_top = -37.0
 offset_right = 5.0
 offset_bottom = -14.0
 text = "E"
+
+[node name="E" type="Sprite2D" parent="."]
+position = Vector2(0, -24)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("5_l6x2s")
+hframes = 2
+frame = 1
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

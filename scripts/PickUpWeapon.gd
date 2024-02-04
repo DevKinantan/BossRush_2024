@@ -1,6 +1,7 @@
 extends Node2D
 
 @onready var label = $Label
+@onready var e_button = $E
 
 @export var weapon_scn = preload("res://scenes/weapon/claymore.tscn")
 
@@ -9,6 +10,7 @@ var player: Player
 
 func _ready():
 	label.visible = false
+	e_button.visible = false
 
 
 func _input(event):
@@ -28,9 +30,11 @@ func _on_area_2d_body_entered(body):
 	if body is Player: 
 		player = body
 		label.visible = true
+		e_button.visible = true
 
 
 func _on_area_2d_body_exited(body):
 	if body is Player: 
 		player = null
 		label.visible = false
+		e_button.visible = false

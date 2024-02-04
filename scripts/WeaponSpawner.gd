@@ -5,6 +5,7 @@ extends Marker2D
 	preload("res://scenes/weapon/weapon_spawn/pistol_spawn.tscn"),
 	preload("res://scenes/weapon/weapon_spawn/rapier_spawn.tscn"),
 	preload("res://scenes/weapon/weapon_spawn/ka2075_spawn.tscn"),
+	preload("res://scenes/weapon/weapon_spawn/blaster_spawn.tscn")
 ]
 
 @onready var spawn_timer := $SpawnTimer
