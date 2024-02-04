@@ -14,6 +14,7 @@ signal boss_damaged(current_hp)
 @onready var hit_animation_player := $HitAnimationPlayer
 @onready var smoke_fx_animation_player := $SmokeFXAnimationPlayer
 @onready var border_detector := $BorderDetector
+@onready var boss_scream_sound := $BossScreamSound
 @onready var cooldown_timer:Timer = $CooldownTimer
 @onready var invincible_timer:Timer = $InvincibleTimer
 
@@ -25,6 +26,7 @@ var portal_scn = preload("res://scenes/levels/portal.tscn")
 @export var can_attack:bool = false
 @export var max_hp:float = 100.0
 @export var damage_to_teleport: float = 10.0
+@export var damage_to_scream: float = 3.0
 @export var projectile_damage_to_create_portal: float = 5.0
 
 var hp := max_hp
@@ -32,6 +34,7 @@ var is_invicible: bool = false
 var player_nearby:Player
 var teleport_locations = []
 var damage_accumulation:float = 0.0
+var scream_damage_accumulation:float = 0.0
 var projectile_damage_accumulation:float = 0.0
 
 enum BossState {
@@ -180,6 +183,17 @@ func alive_state():
 		velocity.y = move_toward(velocity.y, 0, 1)
 
 
+func shake_camera(magnitude:int, duration:float = 0.2):
+	var camera = get_viewport().get_camera_2d()
+	if camera is PlayerCamera2D:
+		camera.shake(magnitude, duration)
+
+
+func scream():
+	boss_scream_sound.play_random_audio()
+	shake_camera(300, 2.0)
+
+
 func _ready():
 	teleport_locations.append(global_position)
 	defensive_claw_attack(false)
@@ -221,7 +235,7 @@ func _on_attack_tree_exited():
 	if not cooldown_timer.is_stopped():
 		cooldown_timer.stop()
 	
-	if hp > 0:
+	if hp > 0 and cooldown_timer.is_inside_tree():
 		cooldown_timer.start()
 
 
@@ -239,10 +253,15 @@ func _on_hurtbox_damage_registered(damage, type, pos):
 			hit_animation_player.stop()
 		hit_animation_player.play("BodyHit")
 		damage_accumulation += damage
+		scream_damage_accumulation += damage
 		hp -= damage
 
 		if type == Hurtbox.HitType.PROJECTILE:
 			projectile_damage_accumulation += damage
+
+		if scream_damage_accumulation >= damage_to_scream:
+			scream()
+			scream_damage_accumulation = 0
 
 		if hp <= 0:
 			state = BossState.DEAD
@@ -278,10 +297,15 @@ func _on_critical_hurt_box_damage_registered(damage, type, pos):
 			hit_animation_player.stop()
 		hit_animation_player.play("HeadHit")
 		damage_accumulation += damage
+		scream_damage_accumulation += damage
 		hp -= damage
 		
 		if type == Hurtbox.HitType.PROJECTILE:
 			projectile_damage_accumulation += damage
+		
+		if scream_damage_accumulation >= damage_to_scream:
+			scream()
+			scream_damage_accumulation = 0
 
 		if hp <= 0:
 			state = BossState.DEAD

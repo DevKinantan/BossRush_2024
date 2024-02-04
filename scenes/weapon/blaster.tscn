@@ -1,0 +1,258 @@
+[gd_scene load_steps=16 format=3 uid="uid://dqmulr4gwdkc0"]
+
+[ext_resource type="Texture2D" uid="uid://w154icou762u" path="res://assets/animation/weapon/railgun.png" id="1_mikgo"]
+[ext_resource type="Script" path="res://scripts/weapon/Blaster.gd" id="2_uw88a"]
+[ext_resource type="PackedScene" uid="uid://ddgqga4cheqrn" path="res://scenes/projectile/projectile_laser.tscn" id="3_ug2t6"]
+[ext_resource type="Texture2D" uid="uid://du2emj3dwv4vw" path="res://assets/sprites/light.png" id="4_rg3o4"]
+[ext_resource type="AudioStream" uid="uid://d3gmv1xqbsk1" path="res://assets/SFX/blaster/blaster_2.wav" id="4_smsys"]
+[ext_resource type="Script" path="res://scripts/weapon/EnergyWeaponUI.gd" id="5_lgtjg"]
+[ext_resource type="Texture2D" uid="uid://5xswvmg3vkjt" path="res://assets/UI/EqWeaponUI.png" id="6_jnshl"]
+[ext_resource type="Texture2D" uid="uid://bwu7nx3ek10e5" path="res://assets/animation/weapon/Railgun-Sheet.png" id="7_6geu0"]
+[ext_resource type="Texture2D" uid="uid://dbx87aw48qyle" path="res://assets/UI/AmmoUI.png" id="8_6y6uc"]
+[ext_resource type="FontFile" uid="uid://j61n07mbl1ud" path="res://assets/fonts/PixelifySans-VariableFont_wght.ttf" id="9_y5uq6"]
+
+[sub_resource type="Animation" id="Animation_oa7ci"]
+resource_name = "Recharge"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationPlayer")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": ["Ready", -1, 1.0, false],
+"method": &"play"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PointLight2D:energy")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_yue7q"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PointLight2D:energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [2.0]
+}
+
+[sub_resource type="Animation" id="Animation_05ucw"]
+resource_name = "Ready"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [14]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PointLight2D:energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_qkylv"]
+resource_name = "Shoot"
+length = 0.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [14, 15, 16]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"shoot"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PointLight2D:energy")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 2.0, 0.0]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("BlasterSound")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lrr1a"]
+_data = {
+"RESET": SubResource("Animation_yue7q"),
+"Ready": SubResource("Animation_05ucw"),
+"Recharge": SubResource("Animation_oa7ci"),
+"Shoot": SubResource("Animation_qkylv")
+}
+
+[node name="Blaster" type="Sprite2D"]
+position = Vector2(19, 0)
+texture = ExtResource("1_mikgo")
+hframes = 18
+script = ExtResource("2_uw88a")
+projectile_scn = ExtResource("3_ug2t6")
+damage = 1
+weapon_type = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_lrr1a")
+}
+autoplay = "Ready"
+
+[node name="ReloadTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[node name="BlasterSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_smsys")
+
+[node name="ProjectileExit" type="Marker2D" parent="."]
+position = Vector2(11, 0)
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(6, 0)
+color = Color(0.847059, 0.262745, 0.0823529, 1)
+energy = 2.0
+range_z_min = -1
+texture = ExtResource("4_rg3o4")
+texture_scale = 0.3
+
+[node name="BlasterUI" type="CanvasLayer" parent="."]
+script = ExtResource("5_lgtjg")
+
+[node name="WeaponStatus" type="Control" parent="BlasterUI"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 450.0
+offset_top = 218.0
+offset_right = 557.0
+offset_bottom = 311.0
+
+[node name="Weapon" type="TextureRect" parent="BlasterUI/WeaponStatus"]
+layout_mode = 0
+offset_right = 126.0
+offset_bottom = 105.0
+texture = ExtResource("6_jnshl")
+stretch_mode = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="BlasterUI/WeaponStatus/Weapon"]
+position = Vector2(61, 29)
+scale = Vector2(2, 2)
+texture = ExtResource("7_6geu0")
+hframes = 18
+
+[node name="Energy" type="TextureRect" parent="BlasterUI/WeaponStatus"]
+self_modulate = Color(0.423529, 0.482353, 0.466667, 1)
+layout_mode = 0
+offset_left = 12.0
+offset_top = -11.0
+offset_right = 128.0
+offset_bottom = 106.0
+texture = ExtResource("8_6y6uc")
+stretch_mode = 4
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="BlasterUI/WeaponStatus/Energy"]
+layout_mode = 0
+offset_left = 41.0
+offset_top = 68.0
+offset_right = 86.0
+offset_bottom = 90.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("9_y5uq6")
+theme_override_font_sizes/font_size = 15
+text = "100%"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="energy_updated" from="." to="BlasterUI" method="_on_blaster_energy_updated"]
+[connection signal="timeout" from="ReloadTimer" to="." method="_on_reload_timer_timeout"]

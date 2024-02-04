@@ -22,7 +22,8 @@ func _ready():
 
 
 func _on_weapon_spawn_exit_tree():
-	spawn_timer.start()
+	if spawn_timer.is_inside_tree():
+		spawn_timer.start()
 
 
 func _on_spawn_timer_timeout():

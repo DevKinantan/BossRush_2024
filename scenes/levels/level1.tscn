@@ -1,9 +1,15 @@
-[gd_scene load_steps=33 format=3 uid="uid://g3qbne6n25l5"]
+[gd_scene load_steps=40 format=3 uid="uid://g3qbne6n25l5"]
 
 [ext_resource type="Script" path="res://scripts/level/Level1.gd" id="1_0i6nl"]
 [ext_resource type="Texture2D" uid="uid://dv5glmgdfw7nb" path="res://assets/Envi/object.png" id="1_d6q4b"]
 [ext_resource type="Texture2D" uid="uid://cgdnb5a4sqp2t" path="res://assets/Envi/tile.png" id="1_kvwmk"]
+[ext_resource type="Texture2D" uid="uid://dt8fby263bkeo" path="res://assets/UI/tutorial1.png" id="2_wnedv"]
 [ext_resource type="PackedScene" uid="uid://dree0fqsr8bo0" path="res://scenes/player/player.tscn" id="3_0fgxk"]
+[ext_resource type="AudioStream" uid="uid://7q4y6rjvxnl0" path="res://assets/music/boss_1_phase_2_2.ogg" id="3_5vtut"]
+[ext_resource type="AudioStream" uid="uid://c1l23ntfi60gl" path="res://assets/music/boss_1_phase_1_3.ogg" id="4_bc2j7"]
+[ext_resource type="AudioStream" uid="uid://6b4tytudgd0v" path="res://assets/SFX/boss_1_hit/transition_scream_2.ogg" id="5_5jwe3"]
+[ext_resource type="AudioStream" uid="uid://bn3crxgwlnfce" path="res://assets/SFX/boss_1_hit/transition_scream_1.ogg" id="6_txv7e"]
+[ext_resource type="AudioStream" uid="uid://bm4mypdpi85iy" path="res://assets/SFX/boss_1_hit/transition_scream_3.ogg" id="7_uvd67"]
 [ext_resource type="Script" path="res://scripts/level/Background.gd" id="8_nup6t"]
 [ext_resource type="Texture2D" uid="uid://bu76pki8yi7ap" path="res://assets/Envi/decorbg.png" id="8_xoglo"]
 [ext_resource type="Texture2D" uid="uid://v6fq5y17q1y8" path="res://assets/Envi/light.png" id="9_27j1o"]
@@ -22,6 +28,7 @@
 [ext_resource type="PackedScene" uid="uid://6ibita446vw7" path="res://scenes/boss/boss_1/canon.tscn" id="19_y6j0w"]
 [ext_resource type="PackedScene" uid="uid://ck3el5bm8tw1b" path="res://scenes/boss/boss_1/canon2.tscn" id="20_cl0qn"]
 [ext_resource type="PackedScene" uid="uid://371houofjka3" path="res://scenes/boss/boss_1/canon3.tscn" id="21_2ol0j"]
+[ext_resource type="Script" path="res://scripts/Tutorial.gd" id="24_52c5j"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_f8y6g"]
 texture = ExtResource("1_d6q4b")
@@ -826,6 +833,31 @@ wait_time = 2.0
 one_shot = true
 autostart = true
 
+[node name="Music" type="Node" parent="."]
+
+[node name="Phase_1" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource("3_5vtut")
+volume_db = -80.0
+
+[node name="Phase_2" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource("3_5vtut")
+volume_db = -80.0
+
+[node name="Phase_3" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource("4_bc2j7")
+volume_db = -80.0
+
+[node name="TransitionSFX" type="Node" parent="."]
+
+[node name="Scream_1" type="AudioStreamPlayer" parent="TransitionSFX"]
+stream = ExtResource("5_5jwe3")
+
+[node name="Scream_2" type="AudioStreamPlayer" parent="TransitionSFX"]
+stream = ExtResource("6_txv7e")
+
+[node name="Scream_3" type="AudioStreamPlayer" parent="TransitionSFX"]
+stream = ExtResource("7_uvd67")
+
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0.647059, 0.647059, 0.647059, 1)
 
@@ -1188,8 +1220,7 @@ position = Vector2(976, 564)
 position = Vector2(1518, 404)
 
 [node name="WeaponSpawner4" parent="WeaponSpawnLocation" instance=ExtResource("15_xicxk")]
-position = Vector2(618, 320)
-rotation = 1.5708
+position = Vector2(589, 244)
 
 [node name="WeaponSpawner5" parent="WeaponSpawnLocation" instance=ExtResource("15_xicxk")]
 position = Vector2(1279, 1203)
@@ -1221,13 +1252,22 @@ position = Vector2(427, -38)
 position = Vector2(555, -37)
 
 [node name="Player" parent="." instance=ExtResource("3_0fgxk")]
-position = Vector2(1000, 544)
+position = Vector2(299, 527)
 metadata/_edit_group_ = true
 
 [node name="Boss_1" parent="." instance=ExtResource("15_b7ise")]
-position = Vector2(1424, 743)
+position = Vector2(1307, 629)
 can_attack = true
 metadata/_edit_group_ = true
+
+[node name="Tutorial" type="CanvasLayer" parent="."]
+process_mode = 3
+script = ExtResource("24_52c5j")
+
+[node name="Tutorial" type="Sprite2D" parent="Tutorial"]
+position = Vector2(305, 161)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_wnedv")
 
 [node name="FinalCanon" type="CanvasLayer" parent="."]
 script = ExtResource("18_wtqlv")

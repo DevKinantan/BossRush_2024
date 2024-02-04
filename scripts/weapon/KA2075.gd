@@ -70,6 +70,9 @@ func _input(event):
 	if event.is_action_released("ui_attack"):
 		animation_player.play("Idle")
 		screen_shake_magnitude = 100
+	
+	elif event.is_action_pressed("ui_reload") and (magazine < max_capacity):
+		reload_timer.start()
 
 
 func _on_reload_timer_timeout():
@@ -81,5 +84,6 @@ func _on_push_magazine_audio_finished():
 
 
 func _on_reload_sound_finished():
-	magazine = max_capacity if total_bullets >= max_capacity else total_bullets
-	total_bullets -= magazine
+	var leftover = magazine
+	magazine = max_capacity if total_bullets >= (max_capacity - leftover) else total_bullets
+	total_bullets -= (magazine - leftover)

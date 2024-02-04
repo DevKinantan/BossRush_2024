@@ -13,7 +13,7 @@ signal canon_move_back
 var total_fired := 0
 
 
-func shake_camera(magnitude:int = 1000, duration:float = 0.5):
+func shake_camera(magnitude:int = 800, duration:float = 0.5):
 	var camera = get_viewport().get_camera_2d()
 	if camera is PlayerCamera2D:
 		camera.shake(magnitude, duration)

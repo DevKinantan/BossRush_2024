@@ -1,14 +1,20 @@
-[gd_scene load_steps=42 format=3 uid="uid://bd703il7fav2n"]
+[gd_scene load_steps=48 format=3 uid="uid://bd703il7fav2n"]
 
 [ext_resource type="Texture2D" uid="uid://cac2mdgwkq1lw" path="res://assets/animation/boss_1/boss_idle.png" id="1_1basg"]
 [ext_resource type="Script" path="res://scripts/boss/boss_1/Boss_1.gd" id="1_h3ob4"]
 [ext_resource type="Texture2D" uid="uid://cj3hjoitiq0t7" path="res://assets/animation/boss_1/boss_idle_head.png" id="1_t2lvo"]
 [ext_resource type="AudioStream" uid="uid://cgybb6hxgmw6e" path="res://assets/SFX/hit/blood_squirt.wav" id="2_cgry0"]
+[ext_resource type="Script" path="res://scripts/RandomAudioPlayer2D.gd" id="3_8ajg8"]
 [ext_resource type="Texture2D" uid="uid://du2emj3dwv4vw" path="res://assets/sprites/light.png" id="3_tjsdd"]
+[ext_resource type="AudioStream" uid="uid://ct8niffjtdjow" path="res://assets/SFX/portal/weapon_portal.ogg" id="3_wxxqb"]
 [ext_resource type="Shader" path="res://shader/transparent_mask.gdshader" id="4_0gb43"]
+[ext_resource type="AudioStream" uid="uid://c8csnqnqsdwhm" path="res://assets/SFX/boss_1_hit/boss1_scream_2.wav" id="4_xkw8n"]
+[ext_resource type="AudioStream" uid="uid://cqhawni5bvll6" path="res://assets/SFX/boss_1_hit/boss1_scream_3.wav" id="5_8y12w"]
 [ext_resource type="Texture2D" uid="uid://5a6bulm7xirg" path="res://assets/sprites/transparent_mask.png" id="5_w27ga"]
+[ext_resource type="AudioStream" uid="uid://dmha2afxgvgtf" path="res://assets/SFX/boss_1_hit/boss1_scream_4.wav" id="6_6lq8v"]
 [ext_resource type="Texture2D" uid="uid://dmfsukjj6bgua" path="res://assets/animation/boss_1/boss_animation_portal_weapon.png" id="6_8n0ri"]
 [ext_resource type="PackedScene" uid="uid://cebq01wuri0p7" path="res://scenes/hurtbox.tscn" id="6_nvpoe"]
+[ext_resource type="AudioStream" uid="uid://br0fandchsiet" path="res://assets/SFX/boss_1_hit/boss1_scream_5.wav" id="7_dpxdq"]
 [ext_resource type="Script" path="res://scripts/Hitbox.gd" id="9_q13l3"]
 [ext_resource type="Script" path="res://scripts/BorderDetector.gd" id="9_wor0p"]
 [ext_resource type="Texture2D" uid="uid://cocsr17dv4nb1" path="res://assets/animation/boss_1/fx_boss_behind.png" id="12_3ybu5"]
@@ -193,6 +199,30 @@ tracks/11/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("PortalSound:volume_db")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0, 0.5, 1.3, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [-80.0, 0.0, 0.0, -80.0]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("PortalSound:playing")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
 
 [sub_resource type="Animation" id="Animation_8tvau"]
 resource_name = "ExitPortal"
@@ -342,6 +372,30 @@ tracks/11/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("PortalSound:volume_db")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0, 0.5, 1.3, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [-80.0, 0.0, 0.0, -80.0]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("PortalSound:playing")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
 }
 
 [sub_resource type="Animation" id="Animation_isfrv"]
@@ -589,6 +643,30 @@ tracks/11/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Color(1, 1, 1, 1)]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("PortalSound:volume_db")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-80.0]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("PortalSound:playing")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4ns7k"]
@@ -1165,6 +1243,28 @@ one_shot = true
 
 [node name="BloodSquirt" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_cgry0")
+
+[node name="PortalSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_wxxqb")
+volume_db = -80.0
+autoplay = true
+max_distance = 300.0
+panning_strength = 3.0
+
+[node name="BossScreamSound" type="Node2D" parent="."]
+script = ExtResource("3_8ajg8")
+
+[node name="Scream_2" type="AudioStreamPlayer2D" parent="BossScreamSound"]
+stream = ExtResource("4_xkw8n")
+
+[node name="Scream_3" type="AudioStreamPlayer2D" parent="BossScreamSound"]
+stream = ExtResource("5_8y12w")
+
+[node name="Scream_4" type="AudioStreamPlayer2D" parent="BossScreamSound"]
+stream = ExtResource("6_6lq8v")
+
+[node name="Scream_5" type="AudioStreamPlayer2D" parent="BossScreamSound"]
+stream = ExtResource("7_dpxdq")
 
 [node name="BackBufferCopy" type="BackBufferCopy" parent="."]
 position = Vector2(-100, 0)

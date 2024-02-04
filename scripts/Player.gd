@@ -20,6 +20,8 @@ const JUMP_VELOCITY = -350.0
 @onready var landing_1 := $LandingSound/Landing_1
 @onready var landing_2 := $LandingSound/Landing_2
 
+@onready var lose_screen_ui := $LoseScreenUI
+
 @export var weapon: Weapon
 @export var max_hp: int = 10
 @export var max_mp: float = 100.0
@@ -437,3 +439,7 @@ func _on_invincible_timer_timeout():
 		velocity = Vector2.ZERO
 	else:
 		state = PlayerState.IDLE
+
+
+func _on_player_dead():
+	lose_screen_ui.visible = true

@@ -174,7 +174,7 @@ texture = ExtResource("1_s4iyb")
 hframes = 3
 script = ExtResource("2_vc5ic")
 total_bullets = 21
-damage = 1
+damage = 2
 weapon_type = 1
 
 [node name="PointLight2D" type="PointLight2D" parent="."]

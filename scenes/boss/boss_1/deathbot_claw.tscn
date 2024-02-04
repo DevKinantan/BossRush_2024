@@ -1,11 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://c8rj82ls8w12x"]
+[gd_scene load_steps=7 format=3 uid="uid://c8rj82ls8w12x"]
 
 [ext_resource type="Texture2D" uid="uid://x7egq8ioqqih" path="res://assets/assets_rig/pinch_reff.png" id="1_a0oqm"]
 [ext_resource type="Texture2D" uid="uid://bqmq0y45n4781" path="res://assets/assets_rig/boss_pinch_sheets.png" id="2_105b7"]
+[ext_resource type="AudioStream" uid="uid://djx43ux0birja" path="res://assets/SFX/claw/claw_1.wav" id="4_lewuv"]
 
 [sub_resource type="Animation" id="Animation_frey4"]
 resource_name = "Pinching"
-length = 0.5
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -14,8 +14,8 @@ tracks/0/path = NodePath("Skeleton2D/Base/RF1/LF1:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(0.25, 1, 1),
 "update": 0,
 "values": [-0.0872665, -0.436332, -0.0872665]
 }
@@ -26,8 +26,8 @@ tracks/1/path = NodePath("Skeleton2D/Base/RF1/RF2:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(0.25, 1, 1),
 "update": 0,
 "values": [-0.261799, 0.0873548, -0.261799]
 }
@@ -38,8 +38,8 @@ tracks/2/path = NodePath("Skeleton2D/Base/RF1/LF1/LF2:rotation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(0.25, 1, 1),
 "update": 0,
 "values": [1.0472, 0.610865, 1.0472]
 }
@@ -50,10 +50,24 @@ tracks/3/path = NodePath("Skeleton2D/Base/RF1/RF2/RF3:rotation")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(0.25, 1, 1),
 "update": 0,
 "values": [1.91986, 2.44346, 1.91986]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Claw_1")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_jbh04"]
@@ -197,3 +211,8 @@ rest = Transform2D(-0.558851, 0.829268, -0.829268, -0.558851, 3, 24)
 auto_calculate_length_and_angle = false
 length = 16.0
 bone_angle = 110.0
+
+[node name="Claw_1" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_lewuv")
+max_distance = 1000.0
+panning_strength = 3.0

@@ -1,13 +1,22 @@
-[gd_scene load_steps=29 format=3 uid="uid://dree0fqsr8bo0"]
+[gd_scene load_steps=38 format=3 uid="uid://dree0fqsr8bo0"]
 
 [ext_resource type="Script" path="res://scripts/Player.gd" id="1_l1vsu"]
 [ext_resource type="PackedScene" uid="uid://dgxn2rf8eixp0" path="res://scenes/player/player_ui.tscn" id="2_j3fiq"]
 [ext_resource type="Texture2D" uid="uid://dhmmbu6op4n34" path="res://assets/animation/player/character gravty sheet.png" id="3_3a1gh"]
+[ext_resource type="Script" path="res://scripts/LoseScreenUI.gd" id="3_fs5to"]
+[ext_resource type="Texture2D" uid="uid://b71oc3mdhumm4" path="res://assets/UI/winlosescreen/winlosebackground.png" id="3_m653i"]
 [ext_resource type="Texture2D" uid="uid://v6fq5y17q1y8" path="res://assets/Envi/light.png" id="3_qo5pe"]
+[ext_resource type="Texture2D" uid="uid://h551f2oevs5f" path="res://assets/UI/winlosescreen/loseroundUIdark.png" id="4_87b6c"]
+[ext_resource type="Texture2D" uid="uid://bwcpor72catd" path="res://assets/UI/winlosescreen/loseroundUIlight.png" id="5_0fl47"]
+[ext_resource type="Texture2D" uid="uid://csjq8oypaajh3" path="res://assets/UI/winlosescreen/mataclosedefeat.png" id="6_bb4li"]
 [ext_resource type="PackedScene" uid="uid://7uj75r48185n" path="res://scenes/player/player_camera.tscn" id="6_p4e1i"]
+[ext_resource type="Texture2D" uid="uid://dbw12ngoeu8xw" path="res://assets/UI/winlosescreen/retryarrow.png" id="7_l2yc0"]
 [ext_resource type="Script" path="res://scripts/RandomAudioPlayer.gd" id="7_rto0k"]
+[ext_resource type="Texture2D" uid="uid://b61rk6embniao" path="res://assets/UI/winlosescreen/retry.png" id="8_0lloy"]
 [ext_resource type="AudioStream" uid="uid://be8pr0tr0deb3" path="res://assets/SFX/footstep/footstep_gravel_1.wav" id="8_anr8m"]
+[ext_resource type="Texture2D" uid="uid://dk3g31wlwfl3r" path="res://assets/UI/winlosescreen/defeat.png" id="9_kdyqa"]
 [ext_resource type="AudioStream" uid="uid://cji0uxnlpf5a2" path="res://assets/SFX/footstep/footstep_gravel_2.wav" id="9_vgcqt"]
+[ext_resource type="Texture2D" uid="uid://carfr7jk3momi" path="res://assets/UI/winlosescreen/uiframe.png" id="10_86rr0"]
 [ext_resource type="AudioStream" uid="uid://vf53e4coimav" path="res://assets/SFX/footstep/footstep_gravel_4.wav" id="11_m7672"]
 [ext_resource type="AudioStream" uid="uid://btpnuqr6yeuwk" path="res://assets/SFX/footstep/footstep_gravel_5.wav" id="12_k37xm"]
 [ext_resource type="AudioStream" uid="uid://boghj7kyjbob0" path="res://assets/SFX/footstep/footstep_gravel_7.wav" id="12_t3kc2"]
@@ -386,13 +395,123 @@ _data = {
 "Walk": SubResource("Animation_i3se2")
 }
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("weapon")]
 collision_layer = 129
 collision_mask = 129
 script = ExtResource("1_l1vsu")
+weapon = NodePath("")
 mp_recovery = 50.0
 
 [node name="PlayerUI" parent="." instance=ExtResource("2_j3fiq")]
+
+[node name="LoseScreenUI" type="CanvasLayer" parent="."]
+visible = false
+script = ExtResource("3_fs5to")
+
+[node name="BG" type="Sprite2D" parent="LoseScreenUI"]
+self_modulate = Color(1, 1, 1, 0.705882)
+position = Vector2(288, 162)
+texture = ExtResource("3_m653i")
+
+[node name="Control" type="Control" parent="LoseScreenUI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+
+[node name="TextureButton" type="TextureButton" parent="LoseScreenUI/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -109.5
+offset_top = -81.0
+offset_right = 109.5
+offset_bottom = 121.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("4_87b6c")
+texture_hover = ExtResource("5_0fl47")
+
+[node name="EyeClose" type="TextureRect" parent="LoseScreenUI/Control/TextureButton"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -29.0
+offset_top = -27.5
+offset_right = 29.0
+offset_bottom = 27.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_bb4li")
+
+[node name="EyeOpen" type="TextureRect" parent="LoseScreenUI/Control/TextureButton"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -29.0
+offset_top = -27.5
+offset_right = 29.0
+offset_bottom = 27.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_l2yc0")
+
+[node name="Retry" type="TextureRect" parent="LoseScreenUI/Control/TextureButton/EyeOpen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -63.0
+offset_top = -63.1667
+offset_right = 63.0
+offset_bottom = -0.166656
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_0lloy")
+
+[node name="Defeat" type="TextureRect" parent="LoseScreenUI/Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -142.5
+offset_right = 170.5
+offset_bottom = 108.0
+grow_horizontal = 2
+texture = ExtResource("9_kdyqa")
+
+[node name="Left" type="TextureRect" parent="LoseScreenUI/Control"]
+layout_mode = 0
+offset_top = 30.0
+offset_right = 313.0
+offset_bottom = 138.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("10_86rr0")
+
+[node name="Left2" type="TextureRect" parent="LoseScreenUI/Control"]
+layout_mode = 0
+offset_left = 418.0
+offset_top = 30.0
+offset_right = 731.0
+offset_bottom = 138.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("10_86rr0")
+flip_h = true
 
 [node name="PlayerCamera" parent="." instance=ExtResource("6_p4e1i")]
 zoom = Vector2(0.8, 0.8)
@@ -499,6 +618,10 @@ one_shot = true
 
 [connection signal="hp_changed" from="." to="PlayerUI" method="_on_player_hp_changed"]
 [connection signal="mp_changed" from="." to="PlayerUI" method="_on_player_mp_changed"]
+[connection signal="player_dead" from="." to="." method="_on_player_dead"]
+[connection signal="mouse_entered" from="LoseScreenUI/Control/TextureButton" to="LoseScreenUI" method="_on_texture_button_mouse_entered"]
+[connection signal="mouse_exited" from="LoseScreenUI/Control/TextureButton" to="LoseScreenUI" method="_on_texture_button_mouse_exited"]
+[connection signal="pressed" from="LoseScreenUI/Control/TextureButton" to="LoseScreenUI" method="_on_texture_button_pressed"]
 [connection signal="damage_registered" from="Hurtxox" to="." method="_on_hurtxox_damage_registered"]
 [connection signal="timeout" from="ShadowTimer" to="." method="_on_shadow_timer_timeout"]
 [connection signal="timeout" from="InvincibleTimer" to="." method="_on_invincible_timer_timeout"]

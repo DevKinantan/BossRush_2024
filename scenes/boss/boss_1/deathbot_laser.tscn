@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://cs12smfvvjt1f"]
+[gd_scene load_steps=15 format=3 uid="uid://cs12smfvvjt1f"]
 
 [ext_resource type="Texture2D" uid="uid://d2p6yx840d2fw" path="res://assets/animation/boss_1/boss_animation_laser_idle.png" id="1_77a6l"]
 [ext_resource type="Script" path="res://scripts/boss/boss_1/DeathbotLaser.gd" id="1_yn0rj"]
 [ext_resource type="Texture2D" uid="uid://cmxm4h70fpwge" path="res://assets/sprites/trail.png" id="2_ctb5y"]
 [ext_resource type="Texture2D" uid="uid://c6bie61c62vlw" path="res://assets/animation/boss_1/boss_animation_laser_shoot.png" id="2_mq6a2"]
 [ext_resource type="Script" path="res://scripts/Laser.gd" id="3_2tlli"]
+[ext_resource type="AudioStream" uid="uid://iy8by0phhw6a" path="res://assets/SFX/boss_laser/boss_laser.wav" id="6_40gck"]
 
 [sub_resource type="Curve" id="Curve_7p4ul"]
 _data = [Vector2(0.469466, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -160,6 +161,20 @@ tracks/3/keys = {
 "values": [{
 "args": [],
 "method": &"preshoot_end"
+}]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("BossLaserSound")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
 }]
 }
 
@@ -327,3 +342,7 @@ libraries = {
 "": SubResource("AnimationLibrary_yhnva")
 }
 autoplay = "Idle"
+
+[node name="BossLaserSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_40gck")
+max_distance = 500.0

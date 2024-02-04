@@ -67,6 +67,11 @@ func _ready():
 	magazine = max_capacity
 
 
+func _input(event):
+	if event.is_action_pressed("ui_reload") and (magazine < max_capacity):
+		reload_timer.start()
+
+
 func _on_reload_timer_timeout():
 	magazine += 1
 	total_bullets -= 1
