@@ -1,8 +1,13 @@
 extends Weapon
 
+signal bullets_updated(current_magazine, currnet_total_bullets)
+
 @export var projectile_scn = preload("res://scenes/projectile/projectile_A.tscn")
 @export var max_capacity:int = 6
-@export var total_bullets: int = 15
+@export var total_bullets: int = 15:
+	set(new_value):
+		bullets_updated.emit(magazine, new_value)
+		total_bullets = new_value
 
 @onready var animation_player = $AnimationPlayer
 @onready var reload_timer = $ReloadTimer
@@ -11,7 +16,10 @@ extends Weapon
 @onready var empty_magazine_audio = $EmptyMagazineAudio
 
 var projectile_velocity:float = 1000.0
-var magazine: int = max_capacity
+var magazine: int = max_capacity:
+	set(new_value):
+		bullets_updated.emit(new_value, total_bullets)
+		magazine = new_value
 
 
 func attack():
@@ -52,6 +60,11 @@ func shoot():
 		if animation_player.is_playing():
 			animation_player.stop()
 		animation_player.play("Empty")
+
+
+func _ready():
+	total_bullets = total_bullets
+	magazine = max_capacity
 
 
 func _on_reload_timer_timeout():

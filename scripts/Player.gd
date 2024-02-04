@@ -1,10 +1,11 @@
 class_name Player extends CharacterBody2D
 
 signal gravity_direction_changed(gravity_direction)
-signal hp_changed(current_hp)
+signal hp_changed(current_hp, damaged)
 signal mp_changed(current_mp)
+signal player_dead
 
-const DOUBLETAP_DELAY = .25
+const DOUBLETAP_DELAY = 0.25
 const SPEED = 250.0
 const JUMP_VELOCITY = -350.0
 
@@ -16,24 +17,30 @@ const JUMP_VELOCITY = -350.0
 @onready var koyori_timer: Timer = $KoyoriTimer
 @onready var invincible_timer: Timer = $InvincibleTimer
 
+@onready var landing_1 := $LandingSound/Landing_1
+@onready var landing_2 := $LandingSound/Landing_2
+
 @export var weapon: Weapon
 @export var max_hp: int = 10
 @export var max_mp: float = 100.0
 @export var levitate_cost: float = 10.0
-@export var mp_recovery: float = 20.0
+@export var mp_recovery: float = 30.0
 @export var rotate_gravity_cost: float = 10.0
+@export var velocity_to_stager: int = 200
 
 var hp: int = max_hp:
 	set(new_value):
+		hp_changed.emit(new_value, (new_value < hp))
 		hp = clamp(new_value, 0, max_hp)
-		hp_changed.emit(hp)
 
 var mp: float = max_mp:
 	set(new_value):
+		mp_changed.emit(new_value)
 		mp = clamp(new_value, 0, max_mp)
-		mp_changed.emit(mp)
 
 var player_shadow_scn = preload("res://scenes/player/player_shadow.tscn")
+var walk_dust_scn = preload("res://scenes/player/walk_dust.tscn")
+var fall_dust_scn = preload("res://scenes/player/fall_dust.tscn")
 
 var gravity_direction = Vector2(0, 1)
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -115,11 +122,15 @@ func jump_state(delta):
 		state = PlayerState.IDLE
 		var magnitude = (abs(last_velocity.x) + abs(last_velocity.y)) / 5
 		shake_camera(magnitude, 0.3)
-		if magnitude > 180:
+		if magnitude > velocity_to_stager:
 			character_animation.play("Fall")
 			state = PlayerState.FALL
 			velocity = Vector2.ZERO
-	
+			spawn_fall_dust()
+			landing_2.play()
+		else :
+			landing_1.play()
+
 	if Input.is_action_just_pressed("ui_jump") and (mp > 0):
 		velocity = Vector2.ZERO
 		character_animation.stop()
@@ -146,6 +157,7 @@ func levitate_state(delta):
 		state = PlayerState.IDLE
 		var magnitude = (abs(last_velocity.x) + abs(last_velocity.y)) / 5
 		shake_camera(magnitude)
+		landing_1.play()
 	
 	get_move_direction_input()
 
@@ -180,6 +192,11 @@ func rotate_character(angle_degree:float):
 	tween.tween_property(self, "rotation_degrees", angle_degree, 0.2)
 	tween.tween_callback(shadow_timer.stop).set_delay(0.2)
 
+	character_sprite.flip_h = not character_sprite.flip_h
+
+	var offset_x = character_sprite.offset.x
+	character_sprite.offset.x = abs(offset_x) if character_sprite.flip_h else -abs(offset_x)
+
 
 func rotate_weapon(angle: float):
 	weapon_pivot.rotation = angle
@@ -193,6 +210,8 @@ func rotate_weapon(angle: float):
 		weapon.flip_v = (gravity_direction.x != 1)
 		if (cos(weapon_pivot.rotation) * gravity_direction.x) < 0:
 			weapon.flip_v = not(weapon.flip_v)
+	
+	weapon.position.y = -abs(weapon.position.y) if weapon.flip_v else abs(weapon.position.y)
 
 
 func flip_character():
@@ -253,6 +272,23 @@ func fall_end():
 	state = PlayerState.IDLE
 
 
+func spawn_dust():
+	if is_on_floor():
+		var walk_dust = walk_dust_scn.instantiate()
+		walk_dust.flip_h = character_sprite.flip_h
+		get_tree().current_scene.add_child(walk_dust)
+		walk_dust.global_position = global_position
+		walk_dust.rotation = rotation
+
+
+func spawn_fall_dust():
+	var fall_dust = fall_dust_scn.instantiate()
+	fall_dust.flip_h = character_sprite.flip_h
+	get_tree().current_scene.add_child(fall_dust)
+	fall_dust.global_position = global_position
+	fall_dust.rotation = rotation
+
+
 func _ready():
 	hp = max_hp
 	mp = max_mp
@@ -263,17 +299,17 @@ func _process(delta):
 	#print(mp)
 	doubletap_time -= delta
 	
-	if Input.is_action_just_pressed("ui_swap_weapon"):
-		if weapon.name == "Claymore":
-			weapon = $WeaponPivot/Pistol
-			$WeaponPivot/Pistol.visible = true
-			$WeaponPivot/Claymore.visible = false
-		
-		elif weapon.name == "Pistol":
-			weapon = $WeaponPivot/Claymore
-			$WeaponPivot/Pistol.visible = false
-			$WeaponPivot/Claymore.visible = true
-	
+	#if Input.is_action_just_pressed("ui_swap_weapon"):
+		#if weapon.name == "Claymore":
+			#weapon = $WeaponPivot/Pistol
+			#$WeaponPivot/Pistol.visible = true
+			#$WeaponPivot/Claymore.visible = false
+		#
+		#elif weapon.name == "Pistol":
+			#weapon = $WeaponPivot/Claymore
+			#$WeaponPivot/Pistol.visible = false
+			#$WeaponPivot/Claymore.visible = true
+
 
 func _physics_process(delta):
 	match state:
@@ -299,7 +335,7 @@ func _physics_process(delta):
 	if is_on_floor() and (mp < max_mp):
 		mp += (mp_recovery * delta)
 	
-	if Input.is_action_pressed("ui_change_gravity"):
+	if Input.is_action_pressed("ui_change_gravity") and state != PlayerState.DAMAGED and state != PlayerState.DEAD and state != PlayerState.FALL:
 		if (mp >= rotate_gravity_cost):
 			var target_gravity_degree = 0
 			if Input.is_action_pressed("ui_up"):
@@ -314,10 +350,9 @@ func _physics_process(delta):
 			target_gravity_degree = round(target_gravity_degree)
 			if target_gravity_degree:
 				rotate_character(rad_to_deg(rotate_gravity(target_gravity_degree)) - 90)
+				mp -= rotate_gravity_cost
 
-			mp -= rotate_gravity_cost
-
-	if weapon:
+	if weapon and weapon_pivot.get_child_count() != 0:
 		if weapon.weapon_type == Weapon.WeaponType.RANGE:
 			rotate_weapon(global_position.angle_to_point(get_global_mouse_position()) - rotation)
 		
@@ -336,7 +371,7 @@ func _physics_process(delta):
 
 func _input(event):
 	# Double tap AWSD to change gravity
-	if event is InputEventKey and event.is_pressed() and not event.is_echo():
+	if event is InputEventKey and event.is_pressed() and not event.is_echo() and state != PlayerState.DAMAGED and state != PlayerState.DEAD and state != PlayerState.FALL:
 		if (last_keycode == event.keycode) and (doubletap_time >= 0) and (mp >= rotate_gravity_cost): 
 			#print("DOUBLETAP: ", String.chr(event.keycode))
 			var target_gravity_degree = 0
@@ -352,8 +387,8 @@ func _input(event):
 			target_gravity_degree = round(target_gravity_degree)
 			if target_gravity_degree:
 				rotate_character(rad_to_deg(rotate_gravity(target_gravity_degree)) - 90)
+				mp -= rotate_gravity_cost
 
-			mp -= rotate_gravity_cost
 			last_keycode = 0
 
 		else:
@@ -363,8 +398,8 @@ func _input(event):
 	#if event is InputEventMouseMotion:
 		#rotate_weapon()
 
-	if event.is_action_pressed("ui_attack") and not event.is_echo() and state != PlayerState.DAMAGED and state != PlayerState.DEAD:
-		if weapon:
+	if event.is_action_pressed("ui_attack") and not event.is_echo() and state != PlayerState.DAMAGED and state != PlayerState.DEAD and state != PlayerState.FALL:
+		if weapon and weapon_pivot.get_child_count() != 0:
 			if weapon.weapon_type == Weapon.WeaponType.MELEE:
 				rotate_weapon(global_position.angle_to_point(get_global_mouse_position()) - rotation)
 
@@ -377,11 +412,11 @@ func _on_shadow_timer_timeout():
 	player_shadow.position = position
 	player_shadow.rotation = rotation
 	player_shadow.flip_h = character_sprite.flip_h
-	
+
 	get_tree().current_scene.add_child(player_shadow)
 
 
-func _on_hurtxox_damage_registered(damage, type, pos):
+func _on_hurtxox_damage_registered(_damage, _type, pos):
 	if invincible_timer.is_stopped():
 		hp -= 1
 		shake_camera(300, 0.3)
@@ -394,6 +429,7 @@ func _on_hurtxox_damage_registered(damage, type, pos):
 
 func _on_invincible_timer_timeout():
 	if hp <= 0:
+		player_dead.emit()
 		state = PlayerState.DEAD
 		if character_animation.is_playing():
 			character_animation.stop()

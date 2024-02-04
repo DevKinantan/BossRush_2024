@@ -12,6 +12,7 @@ signal boss_damaged(current_hp)
 @onready var portal_pivot := $BackBufferCopy/PortalPivot
 @onready var animation_player := $AnimationPlayer
 @onready var hit_animation_player := $HitAnimationPlayer
+@onready var smoke_fx_animation_player := $SmokeFXAnimationPlayer
 @onready var border_detector := $BorderDetector
 @onready var cooldown_timer:Timer = $CooldownTimer
 @onready var invincible_timer:Timer = $InvincibleTimer
@@ -24,7 +25,7 @@ var portal_scn = preload("res://scenes/levels/portal.tscn")
 @export var can_attack:bool = false
 @export var max_hp:float = 100.0
 @export var damage_to_teleport: float = 10.0
-@export var projectile_damage_to_create_portal: float = 2.0
+@export var projectile_damage_to_create_portal: float = 5.0
 
 var hp := max_hp
 var is_invicible: bool = false
@@ -234,6 +235,8 @@ func _on_hurtbox_damage_registered(damage, type, pos):
 	if not is_invicible:
 		invincible_timer.start()
 		is_invicible = true
+		if hit_animation_player.is_playing():
+			hit_animation_player.stop()
 		hit_animation_player.play("BodyHit")
 		damage_accumulation += damage
 		hp -= damage
@@ -258,12 +261,21 @@ func _on_hurtbox_damage_registered(damage, type, pos):
 			create_portal_shield(get_angle_to(player_pos))
 		
 		emit_signal("boss_damaged", hp)
+		
+		if hp <= 20.0:
+			smoke_fx_animation_player.play("Phase3")
+		elif hp <= 50.0:
+			smoke_fx_animation_player.play("Phase2")
+		else:
+			smoke_fx_animation_player.play("Phase1")
 
 
 func _on_critical_hurt_box_damage_registered(damage, type, pos):
 	if not is_invicible:
 		invincible_timer.start()
 		is_invicible = true
+		if hit_animation_player.is_playing():
+			hit_animation_player.stop()
 		hit_animation_player.play("HeadHit")
 		damage_accumulation += damage
 		hp -= damage
@@ -288,6 +300,13 @@ func _on_critical_hurt_box_damage_registered(damage, type, pos):
 			create_portal_shield(get_angle_to(player_pos))
 		
 		emit_signal("boss_damaged", hp)
+
+		if hp <= 20.0:
+			smoke_fx_animation_player.play("Phase3")
+		elif hp <= 50.0:
+			smoke_fx_animation_player.play("Phase2")
+		else:
+			smoke_fx_animation_player.play("Phase1")
 
 
 func _on_invincible_timer_timeout():

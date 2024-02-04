@@ -1,12 +1,16 @@
-[gd_scene load_steps=14 format=3 uid="uid://d31un6l3w8fnt"]
+[gd_scene load_steps=18 format=3 uid="uid://d31un6l3w8fnt"]
 
-[ext_resource type="Texture2D" uid="uid://cyk0ovwyh0x56" path="res://assets/animation/weapon/claymore.png" id="1_s8fy2"]
+[ext_resource type="Texture2D" uid="uid://fnb7qfltoh56" path="res://assets/animation/weapon/claymore2.png" id="1_0mjn5"]
 [ext_resource type="Script" path="res://scripts/weapon/Claymore.gd" id="2_khiq8"]
 [ext_resource type="Texture2D" uid="uid://du2emj3dwv4vw" path="res://assets/sprites/light.png" id="3_1d6jk"]
 [ext_resource type="PackedScene" uid="uid://d0w16a01kpbqc" path="res://scenes/hitbox.tscn" id="4_b0vy1"]
 [ext_resource type="AudioStream" uid="uid://30fi03e8i3i7" path="res://assets/SFX/sword/claymore_1.wav" id="5_vcigi"]
 [ext_resource type="AudioStream" uid="uid://cq16tn6flhom5" path="res://assets/SFX/sword/claymore_2.wav" id="6_087hj"]
 [ext_resource type="AudioStream" uid="uid://m6m8lle0wnf" path="res://assets/SFX/sword/claymore_3.wav" id="7_oyky6"]
+[ext_resource type="Script" path="res://scripts/weapon/DurabilityWeaponUI.gd" id="8_oe0t6"]
+[ext_resource type="Texture2D" uid="uid://5xswvmg3vkjt" path="res://assets/UI/EqWeaponUI.png" id="9_1vcwm"]
+[ext_resource type="Texture2D" uid="uid://dbx87aw48qyle" path="res://assets/UI/AmmoUI.png" id="10_c01jn"]
+[ext_resource type="FontFile" uid="uid://j61n07mbl1ud" path="res://assets/fonts/PixelifySans-VariableFont_wght.ttf" id="11_00cyt"]
 
 [sub_resource type="Animation" id="Animation_d601x"]
 resource_name = "Idle"
@@ -33,7 +37,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(15, 1), Vector2(15, -1)]
+"values": [Vector2(25, 1), Vector2(25, -1)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -42,7 +46,7 @@ tracks/2/path = NodePath(".:rotation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0.00147879),
+"times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [0.0]
@@ -81,7 +85,7 @@ tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(1, 1)]
+"values": [Vector2(0.6, 0.6)]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
@@ -105,7 +109,7 @@ tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [2.0]
+"values": [2.5]
 }
 tracks/8/type = "value"
 tracks/8/imported = false
@@ -270,7 +274,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.5),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [Vector2(1, 1), Vector2(3, 3), Vector2(1, 1)]
+"values": [Vector2(0.6, 0.6), Vector2(3, 3), Vector2(1, 1)]
 }
 tracks/3/type = "method"
 tracks/3/imported = false
@@ -335,6 +339,18 @@ tracks/7/keys = {
 "args": [0.0],
 "method": &"play"
 }]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath(".:offset")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(12, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_gkswo"]
@@ -525,20 +541,12 @@ z_index = 3
 position = Vector2(0, -10)
 rotation = 1.5708
 scale = Vector2(2, 2)
-texture = ExtResource("1_s8fy2")
+texture = ExtResource("1_0mjn5")
 offset = Vector2(15, 2)
 flip_h = true
 hframes = 11
 script = ExtResource("2_khiq8")
 damage = 1
-
-[node name="PointLight2D" type="PointLight2D" parent="."]
-position = Vector2(15, -1)
-color = Color(1, 0.141176, 0, 1)
-energy = 2.0
-range_z_min = -1
-texture = ExtResource("3_1d6jk")
-texture_scale = 0.2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -550,8 +558,6 @@ autoplay = "Idle"
 wait_time = 0.2
 one_shot = true
 
-[node name="Hitbox" parent="." instance=ExtResource("4_b0vy1")]
-
 [node name="SwingAudio" type="Node" parent="."]
 
 [node name="Swing_1" type="AudioStreamPlayer" parent="SwingAudio"]
@@ -562,3 +568,64 @@ stream = ExtResource("6_087hj")
 
 [node name="Swing_3" type="AudioStreamPlayer" parent="SwingAudio"]
 stream = ExtResource("7_oyky6")
+
+[node name="ClaymoreUI" type="CanvasLayer" parent="."]
+script = ExtResource("8_oe0t6")
+
+[node name="WeaponStatus" type="Control" parent="ClaymoreUI"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 450.0
+offset_top = 218.0
+offset_right = 557.0
+offset_bottom = 311.0
+
+[node name="Weapon" type="TextureRect" parent="ClaymoreUI/WeaponStatus"]
+layout_mode = 0
+offset_right = 126.0
+offset_bottom = 105.0
+texture = ExtResource("9_1vcwm")
+stretch_mode = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="ClaymoreUI/WeaponStatus/Weapon"]
+position = Vector2(53, 34)
+rotation = 1.22173
+texture = ExtResource("1_0mjn5")
+hframes = 11
+
+[node name="Durability" type="TextureRect" parent="ClaymoreUI/WeaponStatus"]
+self_modulate = Color(0.423529, 0.482353, 0.466667, 1)
+layout_mode = 0
+offset_left = 12.0
+offset_top = -11.0
+offset_right = 128.0
+offset_bottom = 106.0
+texture = ExtResource("10_c01jn")
+stretch_mode = 4
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="ClaymoreUI/WeaponStatus/Durability"]
+layout_mode = 0
+offset_left = 41.0
+offset_top = 68.0
+offset_right = 86.0
+offset_bottom = 90.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("11_00cyt")
+theme_override_font_sizes/font_size = 15
+text = "100%"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(15, -1)
+color = Color(1, 0.141176, 0, 1)
+energy = 2.0
+range_z_min = -1
+texture = ExtResource("3_1d6jk")
+texture_scale = 0.2
+
+[node name="Hitbox" parent="." instance=ExtResource("4_b0vy1")]
+
+[connection signal="durability_changed" from="." to="ClaymoreUI" method="_on_weapon_durability_changed"]
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]

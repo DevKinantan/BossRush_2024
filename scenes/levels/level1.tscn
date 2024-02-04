@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://g3qbne6n25l5"]
+[gd_scene load_steps=33 format=3 uid="uid://g3qbne6n25l5"]
 
 [ext_resource type="Script" path="res://scripts/level/Level1.gd" id="1_0i6nl"]
 [ext_resource type="Texture2D" uid="uid://dv5glmgdfw7nb" path="res://assets/Envi/object.png" id="1_d6q4b"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scripts/level/Background.gd" id="8_nup6t"]
 [ext_resource type="Texture2D" uid="uid://bu76pki8yi7ap" path="res://assets/Envi/decorbg.png" id="8_xoglo"]
 [ext_resource type="Texture2D" uid="uid://v6fq5y17q1y8" path="res://assets/Envi/light.png" id="9_27j1o"]
+[ext_resource type="Texture2D" uid="uid://b40vndf8leo0l" path="res://assets/animation/boss_1/kokoron_pixel.png" id="9_w8cfn"]
 [ext_resource type="Texture2D" uid="uid://dssvtl1r4nj6h" path="res://assets/Envi/tallll.png" id="11_lolmu"]
 [ext_resource type="Script" path="res://scripts/level/Lamp.gd" id="13_jg7cc"]
 [ext_resource type="Texture2D" uid="uid://bjeqhnerixu76" path="res://assets/Envi/billboared.png" id="13_t6k03"]
@@ -14,8 +15,13 @@
 [ext_resource type="Texture2D" uid="uid://du2emj3dwv4vw" path="res://assets/sprites/light.png" id="14_sbjjt"]
 [ext_resource type="PackedScene" uid="uid://bd703il7fav2n" path="res://scenes/boss/boss_1/boss_1.tscn" id="15_b7ise"]
 [ext_resource type="Texture2D" uid="uid://b0yk43bih4fyj" path="res://assets/Envi/vine2.png" id="15_tq77d"]
+[ext_resource type="PackedScene" uid="uid://c4xmx7k5vptx8" path="res://scenes/weapon_spawner.tscn" id="15_xicxk"]
 [ext_resource type="Texture2D" uid="uid://chmakg3b61q02" path="res://assets/Envi/mashin.png" id="16_687rp"]
 [ext_resource type="PackedScene" uid="uid://cfanpoyfuhmfw" path="res://scenes/levels/firefly.tscn" id="16_hl2fq"]
+[ext_resource type="Script" path="res://scripts/boss/boss_1/FinalCanon.gd" id="18_wtqlv"]
+[ext_resource type="PackedScene" uid="uid://6ibita446vw7" path="res://scenes/boss/boss_1/canon.tscn" id="19_y6j0w"]
+[ext_resource type="PackedScene" uid="uid://ck3el5bm8tw1b" path="res://scenes/boss/boss_1/canon2.tscn" id="20_cl0qn"]
+[ext_resource type="PackedScene" uid="uid://371houofjka3" path="res://scenes/boss/boss_1/canon3.tscn" id="21_2ol0j"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_f8y6g"]
 texture = ExtResource("1_d6q4b")
@@ -816,11 +822,12 @@ radius = 80.0
 script = ExtResource("1_0i6nl")
 
 [node name="AttackTimer" type="Timer" parent="."]
-wait_time = 5.0
+wait_time = 2.0
 one_shot = true
 autostart = true
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0.647059, 0.647059, 0.647059, 1)
 
 [node name="TileMap" type="TileMap" parent="."]
 position = Vector2(-2, 0)
@@ -908,6 +915,12 @@ libraries = {
 "": SubResource("AnimationLibrary_ccrlp")
 }
 autoplay = "Flickering"
+
+[node name="Sprite2D" type="Sprite2D" parent="Environment/Billboared"]
+self_modulate = Color(0.968627, 0.968627, 0.647059, 1)
+position = Vector2(6, 0)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("9_w8cfn")
 
 [node name="Vine1" type="Sprite2D" parent="Environment"]
 modulate = Color(0.807843, 0.482353, 0.858824, 1)
@@ -1164,14 +1177,73 @@ position = Vector2(1275, 447)
 [node name="RightDown" type="Marker2D" parent="BossPortalLocation"]
 position = Vector2(1389, 851)
 
+[node name="WeaponSpawnLocation" type="Node2D" parent="."]
+
+[node name="WeaponSpawner" parent="WeaponSpawnLocation" instance=ExtResource("15_xicxk")]
+
+[node name="WeaponSpawner2" parent="WeaponSpawnLocation" instance=ExtResource("15_xicxk")]
+position = Vector2(976, 564)
+
+[node name="WeaponSpawner3" parent="WeaponSpawnLocation" instance=ExtResource("15_xicxk")]
+position = Vector2(1518, 404)
+
+[node name="WeaponSpawner4" parent="WeaponSpawnLocation" instance=ExtResource("15_xicxk")]
+position = Vector2(618, 320)
+rotation = 1.5708
+
+[node name="WeaponSpawner5" parent="WeaponSpawnLocation" instance=ExtResource("15_xicxk")]
+position = Vector2(1279, 1203)
+
+[node name="WeaponSpawner6" parent="WeaponSpawnLocation" instance=ExtResource("15_xicxk")]
+position = Vector2(607, 1203)
+
+[node name="CanonProjectileLocation" type="Node2D" parent="."]
+
+[node name="ProjectilePostion_1" type="Marker2D" parent="CanonProjectileLocation"]
+position = Vector2(36, 326)
+
+[node name="ProjectilePostion_2" type="Marker2D" parent="CanonProjectileLocation"]
+position = Vector2(32, 167)
+
+[node name="ProjectilePostion_3" type="Marker2D" parent="CanonProjectileLocation"]
+position = Vector2(124, 95)
+
+[node name="ProjectilePostion_4" type="Marker2D" parent="CanonProjectileLocation"]
+position = Vector2(208, 25)
+
+[node name="ProjectilePostion_5" type="Marker2D" parent="CanonProjectileLocation"]
+position = Vector2(300, -35)
+
+[node name="ProjectilePostion_6" type="Marker2D" parent="CanonProjectileLocation"]
+position = Vector2(427, -38)
+
+[node name="ProjectilePostion_7" type="Marker2D" parent="CanonProjectileLocation"]
+position = Vector2(555, -37)
+
 [node name="Player" parent="." instance=ExtResource("3_0fgxk")]
-position = Vector2(302, 526)
+position = Vector2(1000, 544)
 metadata/_edit_group_ = true
 
 [node name="Boss_1" parent="." instance=ExtResource("15_b7ise")]
-position = Vector2(1424, 748)
+position = Vector2(1424, 743)
 can_attack = true
 metadata/_edit_group_ = true
+
+[node name="FinalCanon" type="CanvasLayer" parent="."]
+script = ExtResource("18_wtqlv")
+
+[node name="Canon" parent="FinalCanon" instance=ExtResource("19_y6j0w")]
+position = Vector2(215, 324)
+
+[node name="Canon2" parent="FinalCanon" instance=ExtResource("20_cl0qn")]
+position = Vector2(138, 324)
+
+[node name="Canon3" parent="FinalCanon" instance=ExtResource("21_2ol0j")]
+position = Vector2(61, 324)
+
+[node name="CanonTimer" type="Timer" parent="FinalCanon"]
+wait_time = 120.0
+one_shot = true
 
 [connection signal="body_entered" from="Environment/Lamp" to="Environment/Lamp" method="_on_body_entered"]
 [connection signal="body_exited" from="Environment/Lamp" to="Environment/Lamp" method="_on_body_exited"]
@@ -1183,5 +1255,11 @@ metadata/_edit_group_ = true
 [connection signal="body_exited" from="Environment/Lamp4" to="Environment/Lamp4" method="_on_body_exited"]
 [connection signal="body_entered" from="Environment/Lamp5" to="Environment/Lamp5" method="_on_body_entered"]
 [connection signal="body_exited" from="Environment/Lamp5" to="Environment/Lamp5" method="_on_body_exited"]
+[connection signal="player_dead" from="Player" to="." method="_on_player_player_dead"]
 [connection signal="boss_damaged" from="Boss_1" to="." method="_on_boss_1_boss_damaged"]
 [connection signal="boss_dead" from="Boss_1" to="." method="_on_boss_1_boss_dead"]
+[connection signal="canon_fired" from="FinalCanon/Canon" to="." method="_on_canon_canon_fired"]
+[connection signal="canon_fired" from="FinalCanon/Canon2" to="." method="_on_canon_canon_fired"]
+[connection signal="canon_fired" from="FinalCanon/Canon3" to="." method="_on_canon_canon_fired"]
+[connection signal="canon_move_back" from="FinalCanon/Canon3" to="." method="_on_canon_3_canon_move_back"]
+[connection signal="timeout" from="FinalCanon/CanonTimer" to="." method="_on_canon_timer_timeout"]

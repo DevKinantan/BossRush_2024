@@ -1,8 +1,88 @@
-[gd_scene load_steps=4 format=3 uid="uid://bitmj7pgisbiq"]
+[gd_scene load_steps=14 format=3 uid="uid://bitmj7pgisbiq"]
 
 [ext_resource type="Script" path="res://scripts/boss/boss_1/dead_boss_1.gd" id="1_xogjj"]
 [ext_resource type="Texture2D" uid="uid://cj3hjoitiq0t7" path="res://assets/animation/boss_1/boss_idle_head.png" id="1_y1s0k"]
 [ext_resource type="Texture2D" uid="uid://cac2mdgwkq1lw" path="res://assets/animation/boss_1/boss_idle.png" id="2_8is53"]
+[ext_resource type="Texture2D" uid="uid://cocsr17dv4nb1" path="res://assets/animation/boss_1/fx_boss_behind.png" id="2_40imr"]
+[ext_resource type="Texture2D" uid="uid://cvr3f8eyesbf6" path="res://assets/animation/boss_1/fx_phase2_boss_front.png" id="3_ourbi"]
+[ext_resource type="Texture2D" uid="uid://1lmijrrtxinx" path="res://assets/Particle/Particle Asap.png" id="4_sofe3"]
+[ext_resource type="AudioStream" uid="uid://rlk67chnq8um" path="res://assets/SFX/fall/landing_2.wav" id="7_tjd1x"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_wrlsq"]
+particles_animation = true
+particles_anim_h_frames = 8
+particles_anim_v_frames = 1
+particles_anim_loop = true
+
+[sub_resource type="Curve" id="Curve_vvotx"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.800781, 0.683019), 0.0, 0.0, 0, 0, Vector2(0.988281, 0.0490566), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_daxja"]
+offsets = PackedFloat32Array(0, 0.522936, 1)
+colors = PackedColorArray(0, 0, 0, 0.784314, 0.550293, 0.550293, 0.550293, 0.498039, 1, 1, 1, 0)
+
+[sub_resource type="Animation" id="Animation_6y7x0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SmokeBehind:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SmokeFront:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_qniws"]
+resource_name = "Smoke"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SmokeBehind:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SmokeFront:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_87h2y"]
+_data = {
+"RESET": SubResource("Animation_6y7x0"),
+"Smoke": SubResource("Animation_qniws")
+}
 
 [node name="DeadBoss_1" type="RigidBody2D"]
 z_index = -1
@@ -14,6 +94,12 @@ max_contacts_reported = 1
 contact_monitor = true
 script = ExtResource("1_xogjj")
 
+[node name="SmokeBehind" type="Sprite2D" parent="."]
+self_modulate = Color(0.498039, 0.498039, 0.498039, 0.784314)
+scale = Vector2(3, 3)
+texture = ExtResource("2_40imr")
+hframes = 6
+
 [node name="Head" type="Sprite2D" parent="."]
 scale = Vector2(3, 3)
 texture = ExtResource("1_y1s0k")
@@ -24,7 +110,44 @@ scale = Vector2(3, 3)
 texture = ExtResource("2_8is53")
 hframes = 6
 
+[node name="SmokeFront" type="Sprite2D" parent="."]
+self_modulate = Color(0.498039, 0.498039, 0.498039, 0.784314)
+scale = Vector2(3, 3)
+texture = ExtResource("3_ourbi")
+hframes = 6
+
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+visible = false
 polygon = PackedVector2Array(-36, -84, -86, -72, -85, -31, -100, -30, -97, 11, -72, 39, -72, 46, -86, 47, -86, 58, -79, 70, -68, 69, -68, 88, -42, 103, -30, 109, -12, 112, 0, 112, 12, 108, 26, 104, 38, 100, 63, 80, 64, 68, 77, 69, 89, 55, 87, 47, 73, 46, 72, 35, 96, 9, 100, -31, 82, -30, 81, -38, 87, -44, 86, -75, 34, -85, 34, -98, 11, -109, -13, -108, -30, -98)
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+z_index = 1
+material = SubResource("CanvasItemMaterial_wrlsq")
+amount = 24
+lifetime = 2.0
+texture = ExtResource("4_sofe3")
+emission_shape = 1
+emission_sphere_radius = 100.0
+direction = Vector2(0, -1)
+gravity = Vector2(0, -100)
+linear_accel_min = 100.0
+linear_accel_max = 100.0
+scale_amount_max = 4.0
+scale_amount_curve = SubResource("Curve_vvotx")
+color_ramp = SubResource("Gradient_daxja")
+anim_speed_min = 0.5
+anim_speed_max = 1.0
+anim_offset_min = 1.0
+anim_offset_max = 1.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_87h2y")
+}
+autoplay = "Smoke"
+
+[node name="FallSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_tjd1x")
+pitch_scale = 0.1
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

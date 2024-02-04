@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4xmx7k5vptx8"]
+
+[ext_resource type="Script" path="res://scripts/WeaponSpawner.gd" id="1_5jxsd"]
+
+[node name="WeaponSpawner" type="Marker2D"]
+position = Vector2(575, 852)
+gizmo_extents = 12.0
+script = ExtResource("1_5jxsd")
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 60.0
+one_shot = true
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]

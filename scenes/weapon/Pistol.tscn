@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://blmsd72bwr4js"]
+[gd_scene load_steps=25 format=3 uid="uid://blmsd72bwr4js"]
 
 [ext_resource type="Texture2D" uid="uid://d1xf7yu2lajuv" path="res://assets/animation/weapon/pistol-Sheet.png" id="1_s4iyb"]
 [ext_resource type="Script" path="res://scripts/weapon/Pistol.gd" id="2_vc5ic"]
@@ -15,6 +15,10 @@
 [ext_resource type="AudioStream" uid="uid://13kr8a5x2apr" path="res://assets/SFX/pistol/reload_5.wav" id="12_jgkmb"]
 [ext_resource type="AudioStream" uid="uid://6m6jmuqnxm1s" path="res://assets/SFX/pistol/reload_6.wav" id="13_g2wjn"]
 [ext_resource type="AudioStream" uid="uid://bahfw68hdqolr" path="res://assets/SFX/pistol/empty.wav" id="15_n5w6t"]
+[ext_resource type="Texture2D" uid="uid://5xswvmg3vkjt" path="res://assets/UI/EqWeaponUI.png" id="16_iefic"]
+[ext_resource type="Script" path="res://scripts/weapon/PistolUI.gd" id="16_jtuxn"]
+[ext_resource type="Texture2D" uid="uid://dbx87aw48qyle" path="res://assets/UI/AmmoUI.png" id="17_4lnfk"]
+[ext_resource type="FontFile" uid="uid://j61n07mbl1ud" path="res://assets/fonts/PixelifySans-VariableFont_wght.ttf" id="18_vawsc"]
 
 [sub_resource type="Animation" id="Animation_38d06"]
 resource_name = "Empty"
@@ -121,7 +125,7 @@ tracks/2/path = NodePath(".")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0.1),
+"times": PackedFloat32Array(0.2),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
@@ -135,7 +139,7 @@ tracks/3/path = NodePath("ShotSounds")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0.1),
+"times": PackedFloat32Array(0.2),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
@@ -179,7 +183,7 @@ enabled = false
 color = Color(1, 0.945098, 0, 1)
 range_z_min = -1
 texture = ExtResource("3_654bx")
-texture_scale = 0.2
+texture_scale = 0.3
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -187,7 +191,7 @@ libraries = {
 }
 
 [node name="ReloadTimer" type="Timer" parent="."]
-wait_time = 0.5
+wait_time = 0.3
 one_shot = true
 
 [node name="ShotSounds" type="Node" parent="."]
@@ -229,4 +233,53 @@ stream = ExtResource("9_ob2v8")
 [node name="EmptyMagazineAudio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("15_n5w6t")
 
+[node name="PistolUI" type="CanvasLayer" parent="."]
+script = ExtResource("16_jtuxn")
+
+[node name="WeaponStatus" type="Control" parent="PistolUI"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 450.0
+offset_top = 218.0
+offset_right = 557.0
+offset_bottom = 311.0
+
+[node name="Weapon" type="TextureRect" parent="PistolUI/WeaponStatus"]
+layout_mode = 0
+offset_right = 126.0
+offset_bottom = 105.0
+texture = ExtResource("16_iefic")
+stretch_mode = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="PistolUI/WeaponStatus/Weapon"]
+position = Vector2(61, 29)
+scale = Vector2(2, 2)
+texture = ExtResource("1_s4iyb")
+hframes = 3
+
+[node name="Ammo" type="TextureRect" parent="PistolUI/WeaponStatus"]
+self_modulate = Color(0.423529, 0.482353, 0.466667, 1)
+layout_mode = 0
+offset_left = 12.0
+offset_top = -11.0
+offset_right = 128.0
+offset_bottom = 106.0
+texture = ExtResource("17_4lnfk")
+stretch_mode = 4
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="PistolUI/WeaponStatus/Ammo"]
+layout_mode = 0
+offset_left = 41.0
+offset_top = 68.0
+offset_right = 86.0
+offset_bottom = 90.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("18_vawsc")
+theme_override_font_sizes/font_size = 15
+text = "00 | 00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="bullets_updated" from="." to="PistolUI" method="_on_pistol_bullets_updated"]
 [connection signal="timeout" from="ReloadTimer" to="." method="_on_reload_timer_timeout"]

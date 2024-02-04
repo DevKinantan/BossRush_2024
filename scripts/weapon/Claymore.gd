@@ -1,8 +1,17 @@
 extends Weapon
 
+signal durability_changed(current_durability)
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var attack_timer: Timer = $ChainAttackTimer
+
+@export var max_durability: int = 100
+@export var durability_reduction: int = 5
+
+var durabitily: int = max_durability:
+	set(new_value):
+		durabitily = clamp(new_value, 0, max_durability)
+		durability_changed.emit(durabitily)
 
 var chain_attack: bool = false 
 
@@ -49,3 +58,7 @@ func _on_hitbox_area_entered(area):
 		var camera = get_viewport().get_camera_2d()
 		if camera is PlayerCamera2D:
 			camera.shake(300, 0.2)
+		
+		durabitily -= durability_reduction
+		if durabitily <= 0:
+			queue_free()

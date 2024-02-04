@@ -13,6 +13,8 @@ config_version=5
 config/name="BossRush_2024"
 run/main_scene="res://scenes/levels/level1.tscn"
 config/features=PackedStringArray("4.2")
+boot_splash/bg_color=Color(0.105882, 0.133333, 0.286275, 1)
+boot_splash/image="res://assets/UI/splashpnpng.png"
 config/icon="res://icon.png"
 
 [display]
@@ -20,6 +22,7 @@ config/icon="res://icon.png"
 window/size/viewport_width=576
 window/size/viewport_height=324
 window/stretch/mode="canvas_items"
+mouse_cursor/custom_image="res://assets/UI/cursor.png"
 
 [input]
 

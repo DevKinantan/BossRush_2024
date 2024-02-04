@@ -1,17 +1,26 @@
 class_name Level1 extends Node2D
 
 @onready var boss_portal_location := $BossPortalLocation
+@onready var canon_projectile_location := $CanonProjectileLocation
 @onready var teleport_portal_out := $TeleportPortalOut
 @onready var attack_timer := $AttackTimer
+
+@onready var canon := $FinalCanon/Canon
+@onready var canon2 := $FinalCanon/Canon2
+@onready var canon3 := $FinalCanon/Canon3
+@onready var canon_timer := $FinalCanon/CanonTimer
 
 @export var num_of_attack:int = 0
 
 var portal_scn := preload("res://scenes/levels/portal.tscn")
 var claw_limb_scn := preload("res://scenes/boss/boss_1/claw_limb.tscn")
 var laser_limb_scn := preload("res://scenes/boss/boss_1/laser_limb.tscn")
+var canon_projectile_scn := preload("res://scenes/boss/boss_1/canon_projectile.tscn")
 
 var boss_is_dead: bool = false
+var player_is_dead: bool = false
 var can_attack: bool = true
+var can_bombard: bool = true
 var teleport_portal_out_markers = []
 var boss: Enemy
 var player: Player
@@ -95,6 +104,21 @@ func laser_attack_player():
 	can_attack = false
 
 
+func fire_canons():
+	var tween = create_tween()
+	tween.tween_callback(canon.fire)
+	tween.tween_callback(canon2.fire).set_delay(2.0)
+	tween.tween_callback(canon3.fire).set_delay(2.0)
+
+
+func spawn_canon_projectile():
+	var spawn_location: Vector2 = canon_projectile_location.get_children().pick_random().global_position
+	var canon_projectile := canon_projectile_scn.instantiate()
+	
+	get_tree().current_scene.add_child(canon_projectile)
+	canon_projectile.global_position = spawn_location
+
+
 func _ready():
 	boss = get_node_or_null("Boss_1")
 	if boss:
@@ -108,7 +132,7 @@ func _ready():
 
 
 func _process(_delta):
-	if can_attack and attack_timer.is_stopped() and boss != null and not boss_is_dead:
+	if can_attack and attack_timer.is_stopped() and boss != null and not boss_is_dead and player != null and not player_is_dead:
 		for i in range(num_of_attack):
 			var attack_type: int = randi_range(1, 2)
 			match attack_type:
@@ -127,8 +151,36 @@ func _on_boss_1_boss_dead():
 
 
 func _on_boss_1_boss_damaged(current_hp):
-	if current_hp <= 50.0:
+	if current_hp <= 20.0 and can_bombard:
+		fire_canons()
+		can_bombard = false
+
+	elif current_hp <= 50.0:
 		num_of_attack = 2
 
 	elif current_hp <= 80.0:
 		num_of_attack = 1
+
+
+func _on_player_player_dead():
+	player = null
+	player_is_dead = true
+
+
+func _on_canon_3_canon_move_back():
+	canon_timer.start()
+
+
+func _on_canon_timer_timeout():
+	if boss != null and not boss_is_dead and player != null and not player_is_dead:
+		fire_canons()
+
+
+func _on_canon_canon_fired():
+	var tween := create_tween()
+	tween.tween_callback(spawn_canon_projectile).set_delay(5.0)
+
+
+func _input(event):
+	if event.is_action_pressed("ui_swap_weapon"):
+		fire_canons()

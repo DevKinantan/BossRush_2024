@@ -1,0 +1,67 @@
+[gd_scene load_steps=5 format=3 uid="uid://df33owepcrof8"]
+
+[ext_resource type="Texture2D" uid="uid://dhmmbu6op4n34" path="res://assets/animation/player/character gravty sheet.png" id="1_omali"]
+
+[sub_resource type="Animation" id="Animation_7lkv0"]
+resource_name = "Dust"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [28, 29, 30]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.4),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_yry1r"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [28]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0cg01"]
+_data = {
+"Dust": SubResource("Animation_7lkv0"),
+"RESET": SubResource("Animation_yry1r")
+}
+
+[node name="WalkDust" type="Sprite2D"]
+texture = ExtResource("1_omali")
+hframes = 7
+vframes = 5
+frame = 28
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_0cg01")
+}
+autoplay = "Dust"

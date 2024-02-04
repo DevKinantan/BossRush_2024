@@ -1,14 +1,18 @@
-[gd_scene load_steps=31 format=3 uid="uid://bd703il7fav2n"]
+[gd_scene load_steps=42 format=3 uid="uid://bd703il7fav2n"]
 
 [ext_resource type="Texture2D" uid="uid://cac2mdgwkq1lw" path="res://assets/animation/boss_1/boss_idle.png" id="1_1basg"]
 [ext_resource type="Script" path="res://scripts/boss/boss_1/Boss_1.gd" id="1_h3ob4"]
 [ext_resource type="Texture2D" uid="uid://cj3hjoitiq0t7" path="res://assets/animation/boss_1/boss_idle_head.png" id="1_t2lvo"]
+[ext_resource type="AudioStream" uid="uid://cgybb6hxgmw6e" path="res://assets/SFX/hit/blood_squirt.wav" id="2_cgry0"]
 [ext_resource type="Texture2D" uid="uid://du2emj3dwv4vw" path="res://assets/sprites/light.png" id="3_tjsdd"]
 [ext_resource type="Shader" path="res://shader/transparent_mask.gdshader" id="4_0gb43"]
 [ext_resource type="Texture2D" uid="uid://5a6bulm7xirg" path="res://assets/sprites/transparent_mask.png" id="5_w27ga"]
 [ext_resource type="Texture2D" uid="uid://dmfsukjj6bgua" path="res://assets/animation/boss_1/boss_animation_portal_weapon.png" id="6_8n0ri"]
 [ext_resource type="PackedScene" uid="uid://cebq01wuri0p7" path="res://scenes/hurtbox.tscn" id="6_nvpoe"]
+[ext_resource type="Script" path="res://scripts/Hitbox.gd" id="9_q13l3"]
 [ext_resource type="Script" path="res://scripts/BorderDetector.gd" id="9_wor0p"]
+[ext_resource type="Texture2D" uid="uid://cocsr17dv4nb1" path="res://assets/animation/boss_1/fx_boss_behind.png" id="12_3ybu5"]
+[ext_resource type="Texture2D" uid="uid://cvr3f8eyesbf6" path="res://assets/animation/boss_1/fx_phase2_boss_front.png" id="13_4auxw"]
 
 [sub_resource type="Animation" id="Animation_becmj"]
 resource_name = "Dead"
@@ -165,6 +169,30 @@ tracks/9/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("BodyHitbox/CollisionShape2D:disabled")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0, 0.9),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("SmokeFX:modulate")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0.8, 1.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_8tvau"]
 resource_name = "ExitPortal"
@@ -291,6 +319,30 @@ tracks/9/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("BodyHitbox/CollisionShape2D:disabled")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0, 1.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("SmokeFX:modulate")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0, 1.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_isfrv"]
 resource_name = "NoPortal"
@@ -378,6 +430,18 @@ tracks/6/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("SmokeFX:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_gwitb"]
@@ -490,6 +554,42 @@ tracks/8/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("BodyHitbox/CollisionShape2D:disabled")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("SmokeFX:visible")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("SmokeFX:modulate")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4ns7k"]
 _data = {
@@ -533,6 +633,32 @@ tracks/0/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(5, 5, 5, 1), Color(1, 1, 1, 1)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("BackBufferCopy/Body/Head/BloodParticle:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("BloodSquirt")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_gtqv3"]
 length = 0.001
@@ -560,12 +686,326 @@ tracks/1/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1)]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("BackBufferCopy/Body/Head/BloodParticle:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_wq8mo"]
 _data = {
 "BodyHit": SubResource("Animation_2081b"),
 "HeadHit": SubResource("Animation_eroor"),
 "RESET": SubResource("Animation_gtqv3")
+}
+
+[sub_resource type="Animation" id="Animation_ajw4i"]
+resource_name = "Phase1"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SmokeFX/BehindSmokeFX:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SmokeFX/FrontSmokeFX:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SmokeFX/BehindSmokeFX:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SmokeFX/BehindSmokeFX:self_modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.784314)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SmokeFX/FrontSmokeFX:self_modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.784314)]
+}
+
+[sub_resource type="Animation" id="Animation_537ep"]
+resource_name = "Phase2"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SmokeFX/BehindSmokeFX:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SmokeFX/FrontSmokeFX:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SmokeFX/BehindSmokeFX:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SmokeFX/FrontSmokeFX:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SmokeFX/FrontSmokeFX:self_modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.784314)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("SmokeFX/BehindSmokeFX:self_modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.784314)]
+}
+
+[sub_resource type="Animation" id="Animation_l283t"]
+resource_name = "Phase3"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SmokeFX/BehindSmokeFX:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SmokeFX/FrontSmokeFX:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SmokeFX/BehindSmokeFX:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SmokeFX/FrontSmokeFX:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SmokeFX/FrontSmokeFX:self_modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.498039, 0.498039, 0.498039, 0.784314)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("SmokeFX/BehindSmokeFX:self_modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.498039, 0.498039, 0.498039, 0.784314)]
+}
+
+[sub_resource type="Animation" id="Animation_ap8x4"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SmokeFX/BehindSmokeFX:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SmokeFX/FrontSmokeFX:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SmokeFX/BehindSmokeFX:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SmokeFX/FrontSmokeFX:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SmokeFX/BehindSmokeFX:self_modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.784314)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("SmokeFX/FrontSmokeFX:self_modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.784314)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_o4hx1"]
+_data = {
+"Phase1": SubResource("Animation_ajw4i"),
+"Phase2": SubResource("Animation_537ep"),
+"Phase3": SubResource("Animation_l283t"),
+"RESET": SubResource("Animation_ap8x4")
 }
 
 [sub_resource type="Animation" id="Animation_g1tpv"]
@@ -584,6 +1024,18 @@ tracks/0/keys = {
 "update": 1,
 "values": [0, 1, 2, 3, 4, 5]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("BloodParticle:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_oirvo"]
 length = 0.001
@@ -599,12 +1051,28 @@ tracks/0/keys = {
 "update": 1,
 "values": [0]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("BloodParticle:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_xjgil"]
 _data = {
 "Idle": SubResource("Animation_g1tpv"),
 "RESET": SubResource("Animation_oirvo")
 }
+
+[sub_resource type="Gradient" id="Gradient_dmof3"]
+offsets = PackedFloat32Array(0, 0.724771, 1)
+colors = PackedColorArray(0.952941, 0.423529, 0.376471, 1, 0.744815, 0.075158, 0.0728132, 1, 0.815686, 0.0901961, 0.0862745, 0)
 
 [sub_resource type="Animation" id="Animation_w7rkp"]
 resource_name = "Idle"
@@ -659,11 +1127,16 @@ radius = 400.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_50i3w"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_iexue"]
+radius = 25.5517
+
 [node name="Boss_1" type="CharacterBody2D"]
+z_index = 1
 scale = Vector2(3, 3)
 collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_h3ob4")
+projectile_damage_to_create_portal = 4.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -676,12 +1149,22 @@ libraries = {
 "": SubResource("AnimationLibrary_wq8mo")
 }
 
+[node name="SmokeFXAnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_o4hx1")
+}
+autoplay = "Phase1"
+
 [node name="CooldownTimer" type="Timer" parent="."]
 one_shot = true
 
 [node name="InvincibleTimer" type="Timer" parent="."]
+process_callback = 0
 wait_time = 0.2
 one_shot = true
+
+[node name="BloodSquirt" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_cgry0")
 
 [node name="BackBufferCopy" type="BackBufferCopy" parent="."]
 position = Vector2(-100, 0)
@@ -705,6 +1188,22 @@ libraries = {
 "": SubResource("AnimationLibrary_xjgil")
 }
 autoplay = "Idle"
+
+[node name="BloodParticle" type="CPUParticles2D" parent="BackBufferCopy/Body/Head"]
+z_index = -1
+position = Vector2(0, -28)
+emitting = false
+amount = 20
+one_shot = true
+explosiveness = 0.5
+emission_shape = 1
+emission_sphere_radius = 10.0
+direction = Vector2(0, -1)
+gravity = Vector2(0, 500)
+initial_velocity_min = 50.0
+initial_velocity_max = 150.0
+scale_amount_max = 4.0
+color_ramp = SubResource("Gradient_dmof3")
 
 [node name="Torso" type="Sprite2D" parent="BackBufferCopy/Body"]
 texture = ExtResource("1_1basg")
@@ -769,14 +1268,12 @@ shape = SubResource("CircleShape2D_b1284")
 scale = Vector2(0.3, 0.3)
 
 [node name="DetectionArea" type="Area2D" parent="."]
-visible = false
 scale = Vector2(0.3, 0.3)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
 shape = SubResource("CircleShape2D_0epan")
 
 [node name="CriticalHurtBox" parent="." instance=ExtResource("6_nvpoe")]
-visible = false
 position = Vector2(0, -25)
 collision_layer = 2
 collision_mask = 2
@@ -787,12 +1284,20 @@ shape = SubResource("CircleShape2D_50i3w")
 disabled = true
 
 [node name="Hurtbox" parent="." instance=ExtResource("6_nvpoe")]
-visible = false
 collision_layer = 2
 collision_mask = 2
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hurtbox"]
 polygon = PackedVector2Array(-11.7143, -28.5714, -30.2857, -26, -32, 16.8571, -16, 34.2857, 11.1429, 35.4286, 31.7143, 16.2857, 28.8571, -25.4286, 12.2857, -28.8571, 12.2857, -12.8571, -12.2857, -13.1429)
+disabled = true
+
+[node name="BodyHitbox" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 8
+script = ExtResource("9_q13l3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BodyHitbox"]
+shape = SubResource("CircleShape2D_iexue")
 disabled = true
 
 [node name="BorderDetector" type="Node2D" parent="."]
@@ -820,6 +1325,20 @@ rotation = 3.14159
 collision_mask = 64
 collide_with_areas = true
 collide_with_bodies = false
+
+[node name="SmokeFX" type="Node2D" parent="."]
+
+[node name="BehindSmokeFX" type="Sprite2D" parent="SmokeFX"]
+self_modulate = Color(1, 1, 1, 0.784314)
+z_index = -1
+texture = ExtResource("12_3ybu5")
+hframes = 6
+
+[node name="FrontSmokeFX" type="Sprite2D" parent="SmokeFX"]
+visible = false
+self_modulate = Color(1, 1, 1, 0.784314)
+texture = ExtResource("13_4auxw")
+hframes = 6
 
 [connection signal="timeout" from="InvincibleTimer" to="." method="_on_invincible_timer_timeout"]
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
