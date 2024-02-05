@@ -21,6 +21,7 @@ const JUMP_VELOCITY = -350.0
 @onready var landing_2 := $LandingSound/Landing_2
 
 @onready var lose_screen_ui := $LoseScreenUI
+@onready var win_screen_ui := $WinScreenUI
 
 @export var weapon: Weapon
 @export var max_hp: int = 10
@@ -443,3 +444,9 @@ func _on_invincible_timer_timeout():
 
 func _on_player_dead():
 	lose_screen_ui.visible = true
+
+
+func _on_boss_1_boss_dead():
+	var tween = create_tween()
+	tween.tween_property(win_screen_ui, "visible", true, 0.1).set_delay(5.0)
+	#win_screen_ui.visible = true

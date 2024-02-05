@@ -25,9 +25,9 @@ var portal_scn = preload("res://scenes/levels/portal.tscn")
 
 @export var can_attack:bool = false
 @export var max_hp:float = 100.0
-@export var damage_to_teleport: float = 10.0
-@export var damage_to_scream: float = 3.0
-@export var projectile_damage_to_create_portal: float = 5.0
+@export var damage_to_teleport: float = 15.0
+@export var damage_to_scream: float = 6.0
+@export var projectile_damage_to_create_portal: float = 7.0
 
 var hp := max_hp
 var is_invicible: bool = false
@@ -325,9 +325,9 @@ func _on_critical_hurt_box_damage_registered(damage, type, pos):
 		
 		emit_signal("boss_damaged", hp)
 
-		if hp <= 20.0:
+		if hp <= 30.0:
 			smoke_fx_animation_player.play("Phase3")
-		elif hp <= 50.0:
+		elif hp <= 70.0:
 			smoke_fx_animation_player.play("Phase2")
 		else:
 			smoke_fx_animation_player.play("Phase1")

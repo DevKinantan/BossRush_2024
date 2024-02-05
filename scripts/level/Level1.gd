@@ -183,16 +183,16 @@ func _on_boss_1_boss_dead():
 
 
 func _on_boss_1_boss_damaged(current_hp):
-	if current_hp <= 20.0 and can_bombard:
+	if current_hp <= 30.0 and can_bombard:
 		fire_canons()
 		can_bombard = false
 		phase = 3
 
-	elif current_hp <= 50.0:
+	elif current_hp <= 70.0:
 		num_of_attack = 2
 		phase = 2
 
-	elif current_hp <= 80.0:
+	elif current_hp <= 90.0:
 		num_of_attack = 1
 	
 	if phase == 1 and not music_phase_1.playing:
@@ -200,7 +200,7 @@ func _on_boss_1_boss_damaged(current_hp):
 		shake_camera(400, 2.0)
 		var tween := create_tween()
 		tween.tween_callback(music_phase_1.play)
-		tween.tween_property(music_phase_1, "volume_db", -14.0, 2.0)
+		tween.tween_property(music_phase_1, "volume_db", -10.0, 2.0)
 	
 	elif phase == 2 and not music_phase_2.playing:
 		scream_2.play()

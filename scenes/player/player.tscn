@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://dree0fqsr8bo0"]
+[gd_scene load_steps=45 format=3 uid="uid://dree0fqsr8bo0"]
 
 [ext_resource type="Script" path="res://scripts/Player.gd" id="1_l1vsu"]
 [ext_resource type="PackedScene" uid="uid://dgxn2rf8eixp0" path="res://scenes/player/player_ui.tscn" id="2_j3fiq"]
@@ -19,12 +19,19 @@
 [ext_resource type="Texture2D" uid="uid://carfr7jk3momi" path="res://assets/UI/winlosescreen/uiframe.png" id="10_86rr0"]
 [ext_resource type="AudioStream" uid="uid://vf53e4coimav" path="res://assets/SFX/footstep/footstep_gravel_4.wav" id="11_m7672"]
 [ext_resource type="AudioStream" uid="uid://btpnuqr6yeuwk" path="res://assets/SFX/footstep/footstep_gravel_5.wav" id="12_k37xm"]
+[ext_resource type="Script" path="res://scripts/WinScreenUI.gd" id="12_olwyj"]
+[ext_resource type="Texture2D" uid="uid://hpxisdju7fn3" path="res://assets/UI/winningroundUI.png" id="12_p8pla"]
 [ext_resource type="AudioStream" uid="uid://boghj7kyjbob0" path="res://assets/SFX/footstep/footstep_gravel_7.wav" id="12_t3kc2"]
 [ext_resource type="AudioStream" uid="uid://ch6eb7egqwaqm" path="res://assets/SFX/footstep/footstep_gravel_6.wav" id="13_l6di0"]
+[ext_resource type="Texture2D" uid="uid://cu2a8n2rgj3iu" path="res://assets/UI/winningroundUI2.png" id="13_ok1jx"]
 [ext_resource type="AudioStream" uid="uid://b0m8e3d1uv6mk" path="res://assets/SFX/footstep/footstep_gravel_8.wav" id="13_tw1np"]
+[ext_resource type="Texture2D" uid="uid://xu1llh1al0ok" path="res://assets/UI/mataclose.png" id="14_1o8ga"]
 [ext_resource type="AudioStream" uid="uid://dd4p31gouorba" path="res://assets/SFX/footstep/footstep_gravel_9.wav" id="14_kvgnd"]
 [ext_resource type="AudioStream" uid="uid://cw78ugv6ij8xm" path="res://assets/SFX/footstep/footstep_gravel_10.wav" id="15_3cu3f"]
+[ext_resource type="Texture2D" uid="uid://b1otksm454kbd" path="res://assets/UI/nextarrow.png" id="15_hdb88"]
+[ext_resource type="Texture2D" uid="uid://d2pxqng75dumr" path="res://assets/UI/next.png" id="16_8hxme"]
 [ext_resource type="AudioStream" uid="uid://rlk67chnq8um" path="res://assets/SFX/fall/landing_2.wav" id="17_0sdpf"]
+[ext_resource type="Texture2D" uid="uid://cwco6elw4faue" path="res://assets/UI/victory.png" id="17_6ll30"]
 [ext_resource type="PackedScene" uid="uid://cebq01wuri0p7" path="res://scenes/hurtbox.tscn" id="17_tc8vn"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2ewdk"]
@@ -395,11 +402,10 @@ _data = {
 "Walk": SubResource("Animation_i3se2")
 }
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("weapon")]
+[node name="Player" type="CharacterBody2D"]
 collision_layer = 129
 collision_mask = 129
 script = ExtResource("1_l1vsu")
-weapon = NodePath("")
 mp_recovery = 50.0
 
 [node name="PlayerUI" parent="." instance=ExtResource("2_j3fiq")]
@@ -504,6 +510,115 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("10_86rr0")
 
 [node name="Left2" type="TextureRect" parent="LoseScreenUI/Control"]
+layout_mode = 0
+offset_left = 418.0
+offset_top = 30.0
+offset_right = 731.0
+offset_bottom = 138.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("10_86rr0")
+flip_h = true
+
+[node name="WinScreenUI" type="CanvasLayer" parent="."]
+visible = false
+script = ExtResource("12_olwyj")
+
+[node name="BG" type="Sprite2D" parent="WinScreenUI"]
+self_modulate = Color(1, 1, 1, 0.705882)
+position = Vector2(288, 162)
+texture = ExtResource("3_m653i")
+
+[node name="Control" type="Control" parent="WinScreenUI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+
+[node name="TextureButton" type="TextureButton" parent="WinScreenUI/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -109.5
+offset_top = -81.0
+offset_right = 109.5
+offset_bottom = 121.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("13_ok1jx")
+texture_hover = ExtResource("12_p8pla")
+
+[node name="EyeClose" type="TextureRect" parent="WinScreenUI/Control/TextureButton"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -29.0
+offset_top = -27.5
+offset_right = 29.0
+offset_bottom = 27.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("14_1o8ga")
+
+[node name="EyeOpen" type="TextureRect" parent="WinScreenUI/Control/TextureButton"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -29.0
+offset_top = -27.5
+offset_right = 29.0
+offset_bottom = 27.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("15_hdb88")
+
+[node name="Retry" type="TextureRect" parent="WinScreenUI/Control/TextureButton/EyeOpen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -63.0
+offset_top = -63.1667
+offset_right = 63.0
+offset_bottom = -0.166656
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("16_8hxme")
+
+[node name="Victory" type="TextureRect" parent="WinScreenUI/Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -142.5
+offset_right = 170.5
+offset_bottom = 108.0
+grow_horizontal = 2
+texture = ExtResource("17_6ll30")
+
+[node name="Left" type="TextureRect" parent="WinScreenUI/Control"]
+layout_mode = 0
+offset_top = 30.0
+offset_right = 313.0
+offset_bottom = 138.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("10_86rr0")
+
+[node name="Left2" type="TextureRect" parent="WinScreenUI/Control"]
 layout_mode = 0
 offset_left = 418.0
 offset_top = 30.0
@@ -622,6 +737,9 @@ one_shot = true
 [connection signal="mouse_entered" from="LoseScreenUI/Control/TextureButton" to="LoseScreenUI" method="_on_texture_button_mouse_entered"]
 [connection signal="mouse_exited" from="LoseScreenUI/Control/TextureButton" to="LoseScreenUI" method="_on_texture_button_mouse_exited"]
 [connection signal="pressed" from="LoseScreenUI/Control/TextureButton" to="LoseScreenUI" method="_on_texture_button_pressed"]
+[connection signal="mouse_entered" from="WinScreenUI/Control/TextureButton" to="WinScreenUI" method="_on_texture_button_mouse_entered"]
+[connection signal="mouse_exited" from="WinScreenUI/Control/TextureButton" to="WinScreenUI" method="_on_texture_button_mouse_exited"]
+[connection signal="pressed" from="WinScreenUI/Control/TextureButton" to="WinScreenUI" method="_on_texture_button_pressed"]
 [connection signal="damage_registered" from="Hurtxox" to="." method="_on_hurtxox_damage_registered"]
 [connection signal="timeout" from="ShadowTimer" to="." method="_on_shadow_timer_timeout"]
 [connection signal="timeout" from="InvincibleTimer" to="." method="_on_invincible_timer_timeout"]

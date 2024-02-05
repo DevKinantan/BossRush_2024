@@ -561,7 +561,7 @@ offset = Vector2(0, -1)
 hframes = 10
 frame = 1
 script = ExtResource("2_luk6r")
-damage = 1
+damage = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -631,7 +631,6 @@ vertical_alignment = 1
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 position = Vector2(17, 0)
-scale = Vector2(1, 1)
 color = Color(0.984314, 0.752941, 0.176471, 1)
 range_z_min = -1
 texture = ExtResource("3_o3pjc")
